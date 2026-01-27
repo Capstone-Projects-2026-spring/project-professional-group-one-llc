@@ -6,3 +6,4 @@ AAC Beacon is a smart communication tool designed to make finding and using freq
 ## Collaborators
 - Joey Slepski
 - Junwei Chen
+- Cian Brownlee
