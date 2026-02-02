@@ -2,9 +2,14 @@
 sidebar_position: 2
 ---
 
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 # System Block Diagram
 
-<img src="/workspaces/project-professional-group-one-llc/documentation/static/img/Location Aware AAC.jpg" alt="System Block Diagram"/>
+<img
+  src={useBaseUrl('/img/location-aware-aac.jpg')}
+  alt="System Block Diagram"
+/>
 
 **Figure 1.** 
 High level design of the Location Aware AAC application.
