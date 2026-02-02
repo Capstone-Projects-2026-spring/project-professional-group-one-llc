@@ -26,3 +26,93 @@ Supabase provides secure storage for user profiles, location metadata, and assoc
 Together, these components create a responsive and context aware AAC experience that reduces cognitive load and improves communication efficiency for users.
 
 
+```mermaid
+flowchart LR
+
+%% =====================
+%% Bluetooth Beacon Layer
+%% =====================
+subgraph Beacons[Bluetooth Beacon Layer]
+    B1[Library Beacon]
+    B2[Classroom Beacon]
+    B3[Play Area Beacon]
+end
+
+%% =====================
+%% Child Device / Client Side
+%% =====================
+subgraph Client[Child Device and Client Side - React Frontend]
+    HW[Device Hardware<br/>Tablet / Phone / Chromebook]
+    BT[Bluetooth Radio]
+
+    BLE[BLE Scanning Module<br/>Detect Beacon IDs and RSSI]
+    CTX[Context Interpreter<br/>Determine Closest Location]
+    CACHE[Local State and Cache<br/>Offline Boards and Fallback]
+
+    REACT[React App<br/>UI and State Management]
+    AACUI[AAC Interface<br/>Grid Buttons Symbols]
+    ICONS[Context Icons and Options<br/>Location Specific]
+    SENT[Sentence Builder<br/>Constructs Phrases]
+    SPEECH[Speech Output Trigger]
+end
+
+%% =====================
+%% Backend / Server Side
+%% =====================
+subgraph Backend[Backend Server Side - Supabase]
+    SUPA[Supabase Platform]
+    DB[PostgreSQL Database<br/>Profiles Locations AAC Content]
+    AUTHDB[Auth and Row Level Security]
+    STORAGE[Storage Bucket<br/>Icons Images Optional]
+    LOGS[Analytics and Logging]
+
+    SUPA --> DB
+    SUPA --> AUTHDB
+    SUPA --> STORAGE
+end
+
+%% =====================
+%% Admin Interface
+%% =====================
+subgraph Admin[Admin Interface]
+    DASH[Admin Dashboard<br/>Manage Locations and AAC Content]
+end
+
+%% =====================
+%% External Supporting Services
+%% =====================
+subgraph External[External Supporting Services]
+    TTS[Text to Speech Engine]
+end
+
+%% =====================
+%% Data Flows
+%% =====================
+B1 --> BLE
+B2 --> BLE
+B3 --> BLE
+
+HW --> BT --> BLE
+BLE --> CTX
+CTX --> CACHE
+
+%% React renders the UI and adapts options based on detected location
+CTX --> REACT
+CACHE --> REACT
+
+REACT --> ICONS
+ICONS --> AACUI
+AACUI --> SENT --> SPEECH --> TTS
+
+%% Frontend retrieves personalized, location specific options from Supabase
+REACT -->|Fetch profiles locations AAC options| SUPA
+SUPA -->|Return personalized content| REACT
+
+%% Admin configuration stored in Supabase
+DASH -->|Update beacon locations vocab profiles| SUPA
+
+%% Usage logging
+REACT --> LOGS
+CTX --> LOGS
+
+```
