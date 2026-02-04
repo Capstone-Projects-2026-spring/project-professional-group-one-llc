@@ -11,3 +11,10 @@ AAC Beacon is a smart communication tool designed to make finding and using freq
 - Benjamin No
 - Joshua Slootsky
 - Daniel Galvez
+
+## Initial Website setup
+1. Install Node.js
+ - Go to https://nodejs.org/en/download and install using the prebuilt version
+2. Install vite
+ - Open Command Prompt and enter the command npm create vite@latest
+3. Navigate to
