@@ -13,8 +13,16 @@ AAC Beacon is a smart communication tool designed to make finding and using freq
 - Daniel Galvez
 
 ## Initial Website setup
-1. Install Node.js
- - Go to https://nodejs.org/en/download and install using the prebuilt version
-2. Install vite
- - Open Command Prompt and enter the command npm create vite@latest
-3. Navigate to
+1. Install git on your computer
+2. Clone the project files with https://github.com/Capstone-Projects-2026-spring/project-professional-group-one-llc.git
+    - open the terminal in the project folder and use git fetch --all (use git branch -a to make sure you downloaded the branches)
+    - use git checkout vitetest to move to the website branch
+3. Install Node.js
+    - Go to https://nodejs.org/en/download and install using the prebuilt version
+4. Navigate to the AACapp folder in the cloned Github files
+5. Install vite
+    - Open Command Prompt and enter the command: npm install
+    - Then enter the command: npm run dev
+    - Common error is that your machine will not let you run scripts
+        - Open powershell and enter the command: Set-ExecutionPolicy Unrestricted -Scope CurrentUser
+6. Open a brower and put localhost:5173
