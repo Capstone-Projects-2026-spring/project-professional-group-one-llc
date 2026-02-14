@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,22 +9,25 @@ import {
   SafeAreaView,
   Alert,
 } from 'react-native';
+import useLocationDetection from './src/hooks/useLocationDetection';
+import RoomSelector from './src/components/RoomSelector';
+
+const DEFAULT_SUGGESTIONS = [
+  { label: 'Hello', emoji: '👋' },
+  { label: 'Yes', emoji: '✅' },
+  { label: 'No', emoji: '❌' },
+  { label: 'Please', emoji: '🙏' },
+  { label: 'Thank you', emoji: '😊' },
+  { label: 'Help', emoji: '🆘' },
+  { label: 'More', emoji: '➕' },
+  { label: 'Done', emoji: '✔️' },
+  { label: 'Wait', emoji: '✋' },
+  { label: 'I want', emoji: '👉' },
+  { label: 'I need', emoji: '💬' },
+  { label: 'Go', emoji: '🚶' },
+];
 
 const CATEGORIES = {
-  Suggested: [
-    { label: 'Hello', emoji: '👋' },
-    { label: 'Yes', emoji: '✅' },
-    { label: 'No', emoji: '❌' },
-    { label: 'Please', emoji: '🙏' },
-    { label: 'Thank you', emoji: '😊' },
-    { label: 'Help', emoji: '🆘' },
-    { label: 'More', emoji: '➕' },
-    { label: 'Done', emoji: '✔️' },
-    { label: 'Wait', emoji: '✋' },
-    { label: 'I want', emoji: '👉' },
-    { label: 'I need', emoji: '💬' },
-    { label: 'Go', emoji: '🚶' },
-  ],
   People: [
     { label: 'I', emoji: '🙋' },
     { label: 'You', emoji: '🫵' },
@@ -79,6 +82,19 @@ export default function App() {
   const [sentence, setSentence] = useState([]);
   const [activeCategory, setActiveCategory] = useState('Suggested');
 
+  // ── Room / location context ───────────────────────────────────
+  const { currentRoom, allRooms, setRoomManually } = useLocationDetection();
+
+  // Build the full category map with a dynamic "Suggested" category
+  const categories = useMemo(() => {
+    const suggested = currentRoom
+      ? currentRoom.suggestions
+      : DEFAULT_SUGGESTIONS;
+    return { Suggested: suggested, ...CATEGORIES };
+  }, [currentRoom]);
+
+  const suggestedColor = currentRoom ? currentRoom.color : '#6C63FF';
+
   const addWord = (word) => {
     setSentence((prev) => [...prev, word]);
   };
@@ -97,7 +113,12 @@ export default function App() {
     Alert.alert('Speaking', text);
   };
 
-  const words = CATEGORIES[activeCategory] || [];
+  const words = categories[activeCategory] || [];
+
+  const categoryColors = {
+    ...CATEGORY_COLORS,
+    Suggested: suggestedColor,
+  };
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -106,8 +127,19 @@ export default function App() {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>AAC Beacon</Text>
-        <Text style={styles.headerSubtitle}>📍 Suggested</Text>
+        <Text style={styles.headerSubtitle}>
+          {currentRoom
+            ? `📍 ${currentRoom.emoji} ${currentRoom.label}`
+            : '📍 General'}
+        </Text>
       </View>
+
+      {/* Room Selector (placeholder for Bluetooth beacons) */}
+      <RoomSelector
+        rooms={allRooms}
+        activeRoomId={currentRoom?.id ?? null}
+        onSelectRoom={setRoomManually}
+      />
 
       {/* Sentence Bar */}
       <View style={styles.sentenceBar}>
@@ -152,8 +184,8 @@ export default function App() {
             key={i}
             style={[
               styles.tile,
-              { backgroundColor: CATEGORY_COLORS[activeCategory] + '22' },
-              { borderColor: CATEGORY_COLORS[activeCategory] },
+              { backgroundColor: (categoryColors[activeCategory] || '#6C63FF') + '22' },
+              { borderColor: categoryColors[activeCategory] || '#6C63FF' },
             ]}
             onPress={() => addWord(word.label)}
             activeOpacity={0.6}
@@ -166,13 +198,13 @@ export default function App() {
 
       {/* Category Tabs */}
       <View style={styles.categoryBar}>
-        {Object.keys(CATEGORIES).map((cat) => (
+        {Object.keys(categories).map((cat) => (
           <TouchableOpacity
             key={cat}
             style={[
               styles.categoryTab,
               activeCategory === cat && {
-                backgroundColor: CATEGORY_COLORS[cat],
+                backgroundColor: categoryColors[cat] || '#6C63FF',
               },
             ]}
             onPress={() => setActiveCategory(cat)}
