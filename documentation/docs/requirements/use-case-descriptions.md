@@ -37,6 +37,9 @@ sidebar_position: 5
 2. The user opens the AAC Beacon mobile or web application.
 3. The application detects the nearby beacon and connects to the device. 
 4. The application loads and displays the personalized set of frequently used words associated with that room.
+5. I, the child, wish to play with LEGO.
+6. I look down onto my AAC board and see new words have appeared, like "LEGO" and "play", since I have entered the room.
+   
 
 ---
 
