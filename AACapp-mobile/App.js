@@ -97,6 +97,7 @@ export default function App() {
 
   const addWord = (word) => {
     setSentence((prev) => [...prev, word]);
+    console.log('Current sentence:', [...sentence, word].join(' '));
   };
 
   const removeLastWord = () => {
