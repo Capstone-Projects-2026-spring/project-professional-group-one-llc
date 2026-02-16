@@ -40,19 +40,7 @@ sidebar_position: 5
 
 ---
 
-### Use Case 4 - Managing Room Vocabulary
-
-<i>As an admin user, I want to customize vocabulary sets for my child user for different rooms so that my communication is faster and more relevant.</i>
-
-1. The admin user navigates to the 'Room Vocabulary Management' page.
-2. The admin user selects a specific room or beacon location.
-3. The admin user adds, edits, or removes frequently used words and phrases for that room.
-4. The admin user saves their changes.
-5. The updated vocabulary becomes automatically available when the child user connects to that beacon.
-
----
-
-### Use Case 5 - Using Vocabulary for Communication
+### Use Case 4 - Using Vocabulary for Communication
 
 <i>As a user, I want to quickly select words from my personalized vocabulary so that I can communicate efficiently.</i>
 
@@ -64,7 +52,7 @@ sidebar_position: 5
 
 ---
 
-### Use Case 6 - Updating Favorite Words
+### Use Case 5 - Updating Favorite Words
 
 <i>As an admin user, I want to update my frequently used words so that the system reflects my communication needs.</i>
 
@@ -76,7 +64,7 @@ sidebar_position: 5
 
 ---
 
-### Use Case 7 - Beacon Connection Failure Handling
+### Use Case 6 - Beacon Connection Failure Handling
 
 <i>As a user, I want to be notified if a beacon connection fails so that I can still access my communication tools.</i>
 
