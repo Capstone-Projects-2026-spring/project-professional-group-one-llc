@@ -1,0 +1,65 @@
+export const DEFAULT_SUGGESTIONS = [
+  { label: 'Hello', emoji: '👋' },
+  { label: 'Yes', emoji: '✅' },
+  { label: 'No', emoji: '❌' },
+  { label: 'Please', emoji: '🙏' },
+  { label: 'Thank you', emoji: '😊' },
+  { label: 'Help', emoji: '🆘' },
+  { label: 'More', emoji: '➕' },
+  { label: 'Done', emoji: '✔️' },
+  { label: 'Wait', emoji: '✋' },
+  { label: 'I want', emoji: '👉' },
+  { label: 'I need', emoji: '💬' },
+  { label: 'Go', emoji: '🚶' },
+];
+
+export const CATEGORIES = {
+  People: [
+    { label: 'I', emoji: '🙋' },
+    { label: 'You', emoji: '🫵' },
+    { label: 'We', emoji: '👥' },
+    { label: 'Mom', emoji: '👩' },
+    { label: 'Dad', emoji: '👨' },
+    { label: 'Friend', emoji: '🤝' },
+    { label: 'Teacher', emoji: '👩‍🏫' },
+    { label: 'Doctor', emoji: '👨‍⚕️' },
+  ],
+  Actions: [
+    { label: 'Eat', emoji: '🍽️' },
+    { label: 'Drink', emoji: '🥤' },
+    { label: 'Play', emoji: '🎮' },
+    { label: 'Read', emoji: '📖' },
+    { label: 'Walk', emoji: '🚶' },
+    { label: 'Sleep', emoji: '😴' },
+    { label: 'Listen', emoji: '👂' },
+    { label: 'Watch', emoji: '👀' },
+  ],
+  Feelings: [
+    { label: 'Happy', emoji: '😄' },
+    { label: 'Sad', emoji: '😢' },
+    { label: 'Tired', emoji: '😩' },
+    { label: 'Hungry', emoji: '🤤' },
+    { label: 'Thirsty', emoji: '💧' },
+    { label: 'Sick', emoji: '🤒' },
+    { label: 'Excited', emoji: '🤩' },
+    { label: 'Scared', emoji: '😨' },
+  ],
+  Places: [
+    { label: 'Home', emoji: '🏠' },
+    { label: 'School', emoji: '🏫' },
+    { label: 'Outside', emoji: '🌳' },
+    { label: 'Bathroom', emoji: '🚻' },
+    { label: 'Kitchen', emoji: '🍳' },
+    { label: 'Bedroom', emoji: '🛏️' },
+    { label: 'Store', emoji: '🏪' },
+    { label: 'Park', emoji: '🏞️' },
+  ],
+};
+
+export const CATEGORY_COLORS = {
+  Suggested: '#6C63FF',
+  People: '#FF6B6B',
+  Actions: '#4ECDC4',
+  Feelings: '#FFD93D',
+  Places: '#95E1D3',
+};
