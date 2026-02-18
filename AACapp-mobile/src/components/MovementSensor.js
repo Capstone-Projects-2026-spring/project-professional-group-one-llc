@@ -47,6 +47,7 @@ const onUpdate = ({ x, y, z }) => {
     }
     return;
   }
+}
 
   // Device is moving — cancel any stillness countdown
   clearTimeout(stillnessTimer);
