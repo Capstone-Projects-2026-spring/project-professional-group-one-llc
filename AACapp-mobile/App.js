@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import useLocationDetection from './src/hooks/useLocationDetection';
 import RoomSelector from './src/components/RoomSelector';
+import { useSpeech } from './src/hooks/useSpeech'; //hook for tts functionality
 
 const DEFAULT_SUGGESTIONS = [
   { label: 'Hello', emoji: '👋' },
