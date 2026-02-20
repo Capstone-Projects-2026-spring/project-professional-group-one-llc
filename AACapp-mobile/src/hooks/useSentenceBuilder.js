@@ -12,12 +12,17 @@ export default function useSentenceBuilder() {
     });
   };
 
-  const removeLastWord = () => {
-    setSentence((prev) => prev.slice(0, -1));
-  };
+const removeLastWord = () => {
+  setSentence((prev) => {
+    const next = prev.slice(0, -1);
+    console.log('Updated sentence:', next);
+    return next;
+  });
+};
 
   const clearSentence = () => {
     setSentence([]);
+    console.log("Cleared the sentance");
   };
 
   const speakSentence = () => {
