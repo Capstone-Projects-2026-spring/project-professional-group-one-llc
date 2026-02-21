@@ -1,8 +1,8 @@
-{
-  "label": "API Specification",
-  "position": 7,
-  "link": {
-    "type": "generated-index",
-    "description": "Please remove and replace examples where necessary."
+["docusaurus-plugin-openapi-docs", {
+  config: {
+    "aac-app-api": {
+      specPath: "openapi.yml",
+      outputDir: "docs/api",
+    }
   }
-}
+}]
