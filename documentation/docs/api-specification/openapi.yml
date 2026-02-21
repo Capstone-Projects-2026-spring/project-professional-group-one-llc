@@ -1,0 +1,581 @@
+openapi: 3.1.0
+info:
+  title: Context-Aware AAC API
+  description: |
+    REST API for the Context-Aware Augmentative & Alternative Communication application.
+    Provides room context management, BLE beacon resolution, movement session telemetry,
+    and authentication. This contract is the formal interface between the backend and
+    any external client (mobile app, caregiver portal, or third-party integration).
+  version: 1.0.0
+
+servers:
+  - url: https://api.aac-app.example.com/v1
+    description: Production
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >
+        JWT obtained from POST /auth/login. Include as `Authorization: Bearer <token>`.
+        Tokens expire after 24 hours; refresh via POST /auth/refresh.
+
+  schemas:
+    Suggestion:
+      type: object
+      required: [label, emoji]
+      properties:
+        label:
+          type: string
+          maxLength: 32
+          description: Display text shown on the AAC button (e.g. "Hungry", "Help")
+          example: Hungry
+        emoji:
+          type: string
+          description: Single emoji icon paired with the label
+          example: 🤤
+
+    Room:
+      type: object
+      required: [id, label, emoji, color, beaconId, suggestions]
+      properties:
+        id:
+          type: string
+          pattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
+          description: Unique room identifier
+          example: kitchen
+        label:
+          type: string
+          maxLength: 64
+          description: Human-readable display name shown in the room selector
+          example: Kitchen
+        emoji:
+          type: string
+          description: Single emoji representing the room
+          example: 🍳
+        color:
+          type: string
+          pattern: "^#[0-9A-Fa-f]{6}$"
+          description: Hex colour used for the active chip highlight
+          example: "#FF9F43"
+        beaconId:
+          type: string
+          description: BLE beacon UUID mapped to this room. Must be unique across all rooms.
+          example: beacon-kitchen-001
+        suggestions:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            $ref: "#/components/schemas/Suggestion"
+
+    RoomInput:
+      type: object
+      required: [id, label, emoji, color, beaconId, suggestions]
+      properties:
+        id:
+          type: string
+          pattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
+          example: playroom
+        label:
+          type: string
+          maxLength: 64
+          example: Play Room
+        emoji:
+          type: string
+          example: 🧸
+        color:
+          type: string
+          pattern: "^#[0-9A-Fa-f]{6}$"
+          example: "#F59E0B"
+        beaconId:
+          type: string
+          example: beacon-playroom-001
+        suggestions:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            $ref: "#/components/schemas/Suggestion"
+
+    SuggestionsInput:
+      type: object
+      required: [suggestions]
+      properties:
+        suggestions:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            $ref: "#/components/schemas/Suggestion"
+
+    MovementSession:
+      type: object
+      required: [userId, deviceId, distanceTravelled, scanTriggered, timestamp]
+      properties:
+        userId:
+          type: string
+          format: uuid
+          description: UUID of the authenticated user
+        deviceId:
+          type: string
+          description: Platform device identifier
+        distanceTravelled:
+          type: number
+          format: float
+          minimum: 0
+          description: Estimated displacement in metres since the last reset
+          example: 5.23
+        scanTriggered:
+          type: boolean
+          description: Whether a BLE scan was fired at end of this movement bout
+        timestamp:
+          type: string
+          format: date-time
+          description: UTC datetime of session completion (ISO 8601)
+          example: "2026-02-21T10:30:00Z"
+        detectedRoomId:
+          type: string
+          nullable: true
+          description: Room ID resolved from the BLE scan result, or null if no match
+          example: kitchen
+
+    AuthToken:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Signed JWT Bearer token
+        expiresIn:
+          type: integer
+          description: Seconds until the token expires
+          example: 86400
+        userId:
+          type: string
+          format: uuid
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error identifier
+              example: ROOM_NOT_FOUND
+            message:
+              type: string
+              description: Human-readable description
+              example: No room exists with id 'pantry'
+            details:
+              type: object
+              description: Optional field-level validation detail
+              additionalProperties: true
+
+  responses:
+    Unauthorized:
+      description: Missing, expired, or invalid Bearer token
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Bearer token is missing or has expired
+    Forbidden:
+      description: Token valid but caller lacks required permissions
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error:
+              code: FORBIDDEN
+              message: Admin scope required for this operation
+    NotFound:
+      description: The requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    BadRequest:
+      description: Malformed request or failed validation
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    InternalError:
+      description: Unexpected server-side failure
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+tags:
+  - name: Rooms
+    description: Manage room definitions and their AAC suggestion vocabularies
+  - name: Beacons
+    description: Resolve physical BLE beacons to room contexts
+  - name: Movement
+    description: Log and retrieve accelerometer-based movement session telemetry
+  - name: Auth
+    description: Obtain and refresh JWT Bearer tokens
+
+paths:
+
+  # ── Rooms ────────────────────────────────────────────────────────
+  /rooms:
+    get:
+      tags: [Rooms]
+      operationId: listRooms
+      summary: List all rooms
+      description: >
+        Returns every room context object including its full suggestion set.
+        Called by the mobile app on startup to seed the RoomSelector chip list.
+      responses:
+        "200":
+          description: Array of all room definitions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Room"
+              example:
+                - id: kitchen
+                  label: Kitchen
+                  emoji: 🍳
+                  color: "#FF9F43"
+                  beaconId: beacon-kitchen-001
+                  suggestions:
+                    - label: Hungry
+                      emoji: 🤤
+                    - label: Water
+                      emoji: 💦
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      tags: [Rooms]
+      operationId: createRoom
+      summary: Create a new room
+      description: >
+        Registers a new room context with its suggestion vocabulary.
+        The `beaconId` must be unique across all rooms — it will be programmed
+        into the physical BLE beacon assigned to this space.
+        Requires admin scope.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoomInput"
+      responses:
+        "201":
+          description: Room created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Room"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          description: A room with this `id` or `beaconId` already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                error:
+                  code: DUPLICATE_ROOM
+                  message: A room with beaconId 'beacon-playroom-001' already exists
+
+  /rooms/{roomId}:
+    parameters:
+      - name: roomId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The room's unique identifier (e.g. `kitchen`, `bathroom`)
+
+    get:
+      tags: [Rooms]
+      operationId: getRoom
+      summary: Get a room by ID
+      description: Fetches the full context for one room including its complete suggestion list.
+      responses:
+        "200":
+          description: Room found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Room"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    put:
+      tags: [Rooms]
+      operationId: replaceRoom
+      summary: Replace a room definition
+      description: >
+        Fully replaces an existing room context. All fields are required.
+        For updating only the suggestion list use `PATCH /rooms/{roomId}/suggestions`.
+        Requires admin scope.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoomInput"
+      responses:
+        "200":
+          description: Room replaced successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Room"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: Updated beaconId conflicts with another room
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    delete:
+      tags: [Rooms]
+      operationId: deleteRoom
+      summary: Delete a room
+      description: Permanently removes a room and all its suggestions. Irreversible. Requires admin scope.
+      responses:
+        "204":
+          description: Room deleted — no body returned
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /rooms/{roomId}/suggestions:
+    parameters:
+      - name: roomId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The room whose suggestions are being updated
+
+    patch:
+      tags: [Rooms]
+      operationId: updateSuggestions
+      summary: Update a room's suggestion list
+      description: >
+        Replaces the `suggestions` array for a room without modifying any other fields.
+        Intended for caregiver vocabulary customisation without requiring admin scope.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SuggestionsInput"
+            example:
+              suggestions:
+                - label: Hungry
+                  emoji: 🤤
+                - label: Water
+                  emoji: 💦
+                - label: Help
+                  emoji: 🆘
+      responses:
+        "200":
+          description: Room returned with updated suggestions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Room"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  # ── Beacons ──────────────────────────────────────────────────────
+  /beacons/{beaconId}/room:
+    parameters:
+      - name: beaconId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Raw UUID string broadcast by the detected BLE beacon advertisement
+
+    get:
+      tags: [Beacons]
+      operationId: resolveBeacon
+      summary: Resolve a beacon UUID to a room
+      description: >
+        Given a BLE beacon UUID detected by the mobile device, returns the associated
+        room context. This is the primary lookup called by the client immediately after
+        a beacon advertisement is received. Mirrors the behaviour of `getRoomByBeaconId()`
+        in `roomContexts.js`.
+      responses:
+        "200":
+          description: Beacon resolved to a room
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Room"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          description: No room is mapped to this beaconId
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                error:
+                  code: BEACON_NOT_MAPPED
+                  message: No room is registered for beacon 'beacon-unknown-999'
+
+  # ── Movement Sessions ─────────────────────────────────────────────
+  /sessions/movement:
+    post:
+      tags: [Movement]
+      operationId: logMovementSession
+      summary: Log a completed movement session
+      description: >
+        Records a movement session logged by `movementSensor.js` once the device
+        stops after crossing the TARGET_DISTANCE threshold (5 m). Used for analytics
+        on movement patterns and BLE scan frequency. Subject to the 5-second
+        SCAN_COOLDOWN enforced client-side.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MovementSession"
+      responses:
+        "201":
+          description: Session logged successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessionId:
+                    type: string
+                    format: uuid
+                    description: Server-assigned ID for the recorded session
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  # ── Auth ──────────────────────────────────────────────────────────
+  /auth/login:
+    post:
+      tags: [Auth]
+      operationId: login
+      summary: Authenticate and obtain a JWT
+      description: >
+        Validates caregiver or user credentials and returns a signed JWT for
+        subsequent API calls. This is the only public endpoint — no Bearer token required.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: caregiver@example.com
+                password:
+                  type: string
+                  format: password
+                  example: "P@ssw0rd!"
+      responses:
+        "200":
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthToken"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          description: Invalid email or password
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                error:
+                  code: INVALID_CREDENTIALS
+                  message: Email or password is incorrect
+
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      operationId: refreshToken
+      summary: Refresh an expiring JWT
+      description: Exchanges a valid (non-expired) token for a new one with a fresh 24-hour expiry.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token]
+              properties:
+                token:
+                  type: string
+                  description: The current valid JWT to be refreshed
+      responses:
+        "200":
+          description: New token issued
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthToken"
+        "401":
+          description: Token is already expired or malformed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                error:
+                  code: TOKEN_EXPIRED
+                  message: Token has expired — please log in again
