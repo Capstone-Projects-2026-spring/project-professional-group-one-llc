@@ -1,818 +1,581 @@
-openapi: 3.0.2
+openapi: 3.1.0
 info:
-  title: Swagger Petstore - OpenAPI 3.0
-  description: >-
-    This is a sample Pet Store Server based on the OpenAPI 3.0 specification. 
-    You can find out more about
+  title: Context-Aware AAC API
+  description: |
+    REST API for the Context-Aware Augmentative & Alternative Communication application.
+    Provides room context management, BLE beacon resolution, movement session telemetry,
+    and authentication. This contract is the formal interface between the backend and
+    any external client (mobile app, caregiver portal, or third-party integration).
+  version: 1.0.0
 
-    Swagger at [http://swagger.io](http://swagger.io). In the third iteration of
-    the pet store, we've switched to the design first approach!
-
-    You can now help us improve the API whether it's by making changes to the
-    definition itself or to the code.
-
-    That way, with time, we can improve the API in general, and expose some of
-    the new features in OAS3.
-
-
-    Some useful links:
-
-    - [The Pet Store
-    repository](https://github.com/swagger-api/swagger-petstore)
-
-    - [The source API definition for the Pet
-    Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
-  termsOfService: http://swagger.io/terms/
-  contact:
-    email: apiteam@swagger.io
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.11
-externalDocs:
-  description: Find out more about Swagger
-  url: http://swagger.io
 servers:
-  - url: /api/v3
+  - url: https://api.aac-app.example.com/v1
+    description: Production
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >
+        JWT obtained from POST /auth/login. Include as `Authorization: Bearer <token>`.
+        Tokens expire after 24 hours; refresh via POST /auth/refresh.
+
+  schemas:
+    Suggestion:
+      type: object
+      required: [label, emoji]
+      properties:
+        label:
+          type: string
+          maxLength: 32
+          description: Display text shown on the AAC button (e.g. "Hungry", "Help")
+          example: Hungry
+        emoji:
+          type: string
+          description: Single emoji icon paired with the label
+          example: 🤤
+
+    Room:
+      type: object
+      required: [id, label, emoji, color, beaconId, suggestions]
+      properties:
+        id:
+          type: string
+          pattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
+          description: Unique room identifier
+          example: kitchen
+        label:
+          type: string
+          maxLength: 64
+          description: Human-readable display name shown in the room selector
+          example: Kitchen
+        emoji:
+          type: string
+          description: Single emoji representing the room
+          example: 🍳
+        color:
+          type: string
+          pattern: "^#[0-9A-Fa-f]{6}$"
+          description: Hex colour used for the active chip highlight
+          example: "#FF9F43"
+        beaconId:
+          type: string
+          description: BLE beacon UUID mapped to this room. Must be unique across all rooms.
+          example: beacon-kitchen-001
+        suggestions:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            $ref: "#/components/schemas/Suggestion"
+
+    RoomInput:
+      type: object
+      required: [id, label, emoji, color, beaconId, suggestions]
+      properties:
+        id:
+          type: string
+          pattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
+          example: playroom
+        label:
+          type: string
+          maxLength: 64
+          example: Play Room
+        emoji:
+          type: string
+          example: 🧸
+        color:
+          type: string
+          pattern: "^#[0-9A-Fa-f]{6}$"
+          example: "#F59E0B"
+        beaconId:
+          type: string
+          example: beacon-playroom-001
+        suggestions:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            $ref: "#/components/schemas/Suggestion"
+
+    SuggestionsInput:
+      type: object
+      required: [suggestions]
+      properties:
+        suggestions:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            $ref: "#/components/schemas/Suggestion"
+
+    MovementSession:
+      type: object
+      required: [userId, deviceId, distanceTravelled, scanTriggered, timestamp]
+      properties:
+        userId:
+          type: string
+          format: uuid
+          description: UUID of the authenticated user
+        deviceId:
+          type: string
+          description: Platform device identifier
+        distanceTravelled:
+          type: number
+          format: float
+          minimum: 0
+          description: Estimated displacement in metres since the last reset
+          example: 5.23
+        scanTriggered:
+          type: boolean
+          description: Whether a BLE scan was fired at end of this movement bout
+        timestamp:
+          type: string
+          format: date-time
+          description: UTC datetime of session completion (ISO 8601)
+          example: "2026-02-21T10:30:00Z"
+        detectedRoomId:
+          type: string
+          nullable: true
+          description: Room ID resolved from the BLE scan result, or null if no match
+          example: kitchen
+
+    AuthToken:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Signed JWT Bearer token
+        expiresIn:
+          type: integer
+          description: Seconds until the token expires
+          example: 86400
+        userId:
+          type: string
+          format: uuid
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Machine-readable error identifier
+              example: ROOM_NOT_FOUND
+            message:
+              type: string
+              description: Human-readable description
+              example: No room exists with id 'pantry'
+            details:
+              type: object
+              description: Optional field-level validation detail
+              additionalProperties: true
+
+  responses:
+    Unauthorized:
+      description: Missing, expired, or invalid Bearer token
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Bearer token is missing or has expired
+    Forbidden:
+      description: Token valid but caller lacks required permissions
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error:
+              code: FORBIDDEN
+              message: Admin scope required for this operation
+    NotFound:
+      description: The requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    BadRequest:
+      description: Malformed request or failed validation
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    InternalError:
+      description: Unexpected server-side failure
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
 tags:
-  - name: pet
-    description: Everything about your Pets
-    externalDocs:
-      description: Find out more
-      url: http://swagger.io
-  - name: store
-    description: Access to Petstore orders
-    externalDocs:
-      description: Find out more about our store
-      url: http://swagger.io
-  - name: user
-    description: Operations about user
+  - name: Rooms
+    description: Manage room definitions and their AAC suggestion vocabularies
+  - name: Beacons
+    description: Resolve physical BLE beacons to room contexts
+  - name: Movement
+    description: Log and retrieve accelerometer-based movement session telemetry
+  - name: Auth
+    description: Obtain and refresh JWT Bearer tokens
+
 paths:
-  /pet:
+
+  # ── Rooms ────────────────────────────────────────────────────────
+  /rooms:
+    get:
+      tags: [Rooms]
+      operationId: listRooms
+      summary: List all rooms
+      description: >
+        Returns every room context object including its full suggestion set.
+        Called by the mobile app on startup to seed the RoomSelector chip list.
+      responses:
+        "200":
+          description: Array of all room definitions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Room"
+              example:
+                - id: kitchen
+                  label: Kitchen
+                  emoji: 🍳
+                  color: "#FF9F43"
+                  beaconId: beacon-kitchen-001
+                  suggestions:
+                    - label: Hungry
+                      emoji: 🤤
+                    - label: Water
+                      emoji: 💦
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      tags: [Rooms]
+      operationId: createRoom
+      summary: Create a new room
+      description: >
+        Registers a new room context with its suggestion vocabulary.
+        The `beaconId` must be unique across all rooms — it will be programmed
+        into the physical BLE beacon assigned to this space.
+        Requires admin scope.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoomInput"
+      responses:
+        "201":
+          description: Room created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Room"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          description: A room with this `id` or `beaconId` already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                error:
+                  code: DUPLICATE_ROOM
+                  message: A room with beaconId 'beacon-playroom-001' already exists
+
+  /rooms/{roomId}:
+    parameters:
+      - name: roomId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The room's unique identifier (e.g. `kitchen`, `bathroom`)
+
+    get:
+      tags: [Rooms]
+      operationId: getRoom
+      summary: Get a room by ID
+      description: Fetches the full context for one room including its complete suggestion list.
+      responses:
+        "200":
+          description: Room found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Room"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
     put:
-      tags:
-        - pet
-      summary: Update an existing pet
-      description: Update an existing pet by Id
-      operationId: updatePet
+      tags: [Rooms]
+      operationId: replaceRoom
+      summary: Replace a room definition
+      description: >
+        Fully replaces an existing room context. All fields are required.
+        For updating only the suggestion list use `PATCH /rooms/{roomId}/suggestions`.
+        Requires admin scope.
       requestBody:
-        description: Update an existent pet in the store
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Pet'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Pet'
-        required: true
+              $ref: "#/components/schemas/RoomInput"
       responses:
-        '200':
-          description: Successful operation
+        "200":
+          description: Room replaced successfully
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-        '405':
-          description: Validation exception
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-    post:
-      tags:
-        - pet
-      summary: Add a new pet to the store
-      description: Add a new pet to the store
-      operationId: addPet
-      requestBody:
-        description: Create a new pet in the store
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Pet'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Pet'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Pet'
-        required: true
-      responses:
-        '200':
-          description: Successful operation
+                $ref: "#/components/schemas/Room"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: Updated beaconId conflicts with another room
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
-        '405':
-          description: Invalid input
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/findByStatus:
-    get:
-      tags:
-        - pet
-      summary: Finds Pets by status
-      description: Multiple status values can be provided with comma separated strings
-      operationId: findPetsByStatus
-      parameters:
-        - name: status
-          in: query
-          description: Status values that need to be considered for filter
-          required: false
-          explode: true
-          schema:
-            type: string
-            default: available
-            enum:
-              - available
-              - pending
-              - sold
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid status value
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/findByTags:
-    get:
-      tags:
-        - pet
-      summary: Finds Pets by tags
-      description: >-
-        Multiple tags can be provided with comma separated strings. Use tag1,
-        tag2, tag3 for testing.
-      operationId: findPetsByTags
-      parameters:
-        - name: tags
-          in: query
-          description: Tags to filter by
-          required: false
-          explode: true
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid tag value
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/{petId}:
-    get:
-      tags:
-        - pet
-      summary: Find pet by ID
-      description: Returns a single pet
-      operationId: getPetById
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet to return
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-      security:
-        - api_key: []
-        - petstore_auth:
-            - write:pets
-            - read:pets
-    post:
-      tags:
-        - pet
-      summary: Updates a pet in the store with form data
-      description: ''
-      operationId: updatePetWithForm
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet that needs to be updated
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: name
-          in: query
-          description: Name of pet that needs to be updated
-          schema:
-            type: string
-        - name: status
-          in: query
-          description: Status of pet that needs to be updated
-          schema:
-            type: string
-      responses:
-        '405':
-          description: Invalid input
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
+                $ref: "#/components/schemas/Error"
+
     delete:
-      tags:
-        - pet
-      summary: Deletes a pet
-      description: ''
-      operationId: deletePet
-      parameters:
-        - name: api_key
-          in: header
-          description: ''
-          required: false
-          schema:
-            type: string
-        - name: petId
-          in: path
-          description: Pet id to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
+      tags: [Rooms]
+      operationId: deleteRoom
+      summary: Delete a room
+      description: Permanently removes a room and all its suggestions. Irreversible. Requires admin scope.
       responses:
-        '400':
-          description: Invalid pet value
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/{petId}/uploadImage:
-    post:
-      tags:
-        - pet
-      summary: uploads an image
-      description: ''
-      operationId: uploadFile
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet to update
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: additionalMetadata
-          in: query
-          description: Additional Metadata
-          required: false
-          schema:
-            type: string
+        "204":
+          description: Room deleted — no body returned
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /rooms/{roomId}/suggestions:
+    parameters:
+      - name: roomId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The room whose suggestions are being updated
+
+    patch:
+      tags: [Rooms]
+      operationId: updateSuggestions
+      summary: Update a room's suggestion list
+      description: >
+        Replaces the `suggestions` array for a room without modifying any other fields.
+        Intended for caregiver vocabulary customisation without requiring admin scope.
       requestBody:
+        required: true
         content:
-          application/octet-stream:
+          application/json:
             schema:
-              type: string
-              format: binary
+              $ref: "#/components/schemas/SuggestionsInput"
+            example:
+              suggestions:
+                - label: Hungry
+                  emoji: 🤤
+                - label: Water
+                  emoji: 💦
+                - label: Help
+                  emoji: 🆘
       responses:
-        '200':
-          description: successful operation
+        "200":
+          description: Room returned with updated suggestions
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponse'
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /store/inventory:
+                $ref: "#/components/schemas/Room"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  # ── Beacons ──────────────────────────────────────────────────────
+  /beacons/{beaconId}/room:
+    parameters:
+      - name: beaconId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Raw UUID string broadcast by the detected BLE beacon advertisement
+
     get:
-      tags:
-        - store
-      summary: Returns pet inventories by status
-      description: Returns a map of status codes to quantities
-      operationId: getInventory
+      tags: [Beacons]
+      operationId: resolveBeacon
+      summary: Resolve a beacon UUID to a room
+      description: >
+        Given a BLE beacon UUID detected by the mobile device, returns the associated
+        room context. This is the primary lookup called by the client immediately after
+        a beacon advertisement is received. Mirrors the behaviour of `getRoomByBeaconId()`
+        in `roomContexts.js`.
       responses:
-        '200':
-          description: successful operation
+        "200":
+          description: Beacon resolved to a room
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Room"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          description: No room is mapped to this beaconId
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                error:
+                  code: BEACON_NOT_MAPPED
+                  message: No room is registered for beacon 'beacon-unknown-999'
+
+  # ── Movement Sessions ─────────────────────────────────────────────
+  /sessions/movement:
+    post:
+      tags: [Movement]
+      operationId: logMovementSession
+      summary: Log a completed movement session
+      description: >
+        Records a movement session logged by `movementSensor.js` once the device
+        stops after crossing the TARGET_DISTANCE threshold (5 m). Used for analytics
+        on movement patterns and BLE scan frequency. Subject to the 5-second
+        SCAN_COOLDOWN enforced client-side.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MovementSession"
+      responses:
+        "201":
+          description: Session logged successfully
           content:
             application/json:
               schema:
                 type: object
-                additionalProperties:
-                  type: integer
-                  format: int32
-      security:
-        - api_key: []
-  /store/order:
+                properties:
+                  sessionId:
+                    type: string
+                    format: uuid
+                    description: Server-assigned ID for the recorded session
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  # ── Auth ──────────────────────────────────────────────────────────
+  /auth/login:
     post:
-      tags:
-        - store
-      summary: Place an order for a pet
-      description: Place a new order in the store
-      operationId: placeOrder
+      tags: [Auth]
+      operationId: login
+      summary: Authenticate and obtain a JWT
+      description: >
+        Validates caregiver or user credentials and returns a signed JWT for
+        subsequent API calls. This is the only public endpoint — no Bearer token required.
+      security: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Order'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Order'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Order'
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: caregiver@example.com
+                password:
+                  type: string
+                  format: password
+                  example: "P@ssw0rd!"
       responses:
-        '200':
-          description: successful operation
+        "200":
+          description: Authentication successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
-        '405':
-          description: Invalid input
-  /store/order/{orderId}:
-    get:
-      tags:
-        - store
-      summary: Find purchase order by ID
-      description: >-
-        For valid response try integer IDs with value <= 5 or > 10. Other values
-        will generate exceptions.
-      operationId: getOrderById
-      parameters:
-        - name: orderId
-          in: path
-          description: ID of order that needs to be fetched
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: successful operation
+                $ref: "#/components/schemas/AuthToken"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          description: Invalid email or password
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Order'
             application/json:
               schema:
-                $ref: '#/components/schemas/Order'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Order not found
-    delete:
-      tags:
-        - store
-      summary: Delete purchase order by ID
-      description: >-
-        For valid response try integer IDs with value < 1000. Anything above
-        1000 or nonintegers will generate API errors
-      operationId: deleteOrder
-      parameters:
-        - name: orderId
-          in: path
-          description: ID of the order that needs to be deleted
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Order not found
-  /user:
+                $ref: "#/components/schemas/Error"
+              example:
+                error:
+                  code: INVALID_CREDENTIALS
+                  message: Email or password is incorrect
+
+  /auth/refresh:
     post:
-      tags:
-        - user
-      summary: Create user
-      description: This can only be done by the logged in user.
-      operationId: createUser
+      tags: [Auth]
+      operationId: refreshToken
+      summary: Refresh an expiring JWT
+      description: Exchanges a valid (non-expired) token for a new one with a fresh 24-hour expiry.
       requestBody:
-        description: Created user object
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
+              type: object
+              required: [token]
+              properties:
+                token:
+                  type: string
+                  description: The current valid JWT to be refreshed
       responses:
-        default:
-          description: successful operation
+        "200":
+          description: New token issued
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
-  /user/createWithList:
-    post:
-      tags:
-        - user
-      summary: Creates list of users with given input array
-      description: Creates list of users with given input array
-      operationId: createUsersWithListInput
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/User'
-      responses:
-        '200':
-          description: Successful operation
+                $ref: "#/components/schemas/AuthToken"
+        "401":
+          description: Token is already expired or malformed
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        default:
-          description: successful operation
-  /user/login:
-    get:
-      tags:
-        - user
-      summary: Logs user into the system
-      description: ''
-      operationId: loginUser
-      parameters:
-        - name: username
-          in: query
-          description: The user name for login
-          required: false
-          schema:
-            type: string
-        - name: password
-          in: query
-          description: The password for login in clear text
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: successful operation
-          headers:
-            X-Rate-Limit:
-              description: calls per hour allowed by the user
-              schema:
-                type: integer
-                format: int32
-            X-Expires-After:
-              description: date in UTC when token expires
-              schema:
-                type: string
-                format: date-time
-          content:
-            application/xml:
-              schema:
-                type: string
-            application/json:
-              schema:
-                type: string
-        '400':
-          description: Invalid username/password supplied
-  /user/logout:
-    get:
-      tags:
-        - user
-      summary: Logs out current logged in user session
-      description: ''
-      operationId: logoutUser
-      parameters: []
-      responses:
-        default:
-          description: successful operation
-  /user/{username}:
-    get:
-      tags:
-        - user
-      summary: Get user by user name
-      description: ''
-      operationId: getUserByName
-      parameters:
-        - name: username
-          in: path
-          description: 'The name that needs to be fetched. Use user1 for testing. '
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '400':
-          description: Invalid username supplied
-        '404':
-          description: User not found
-    put:
-      tags:
-        - user
-      summary: Update user
-      description: This can only be done by the logged in user.
-      operationId: updateUser
-      parameters:
-        - name: username
-          in: path
-          description: name that need to be deleted
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Update an existent user in the store
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        default:
-          description: successful operation
-    delete:
-      tags:
-        - user
-      summary: Delete user
-      description: This can only be done by the logged in user.
-      operationId: deleteUser
-      parameters:
-        - name: username
-          in: path
-          description: The name that needs to be deleted
-          required: true
-          schema:
-            type: string
-      responses:
-        '400':
-          description: Invalid username supplied
-        '404':
-          description: User not found
-components:
-  schemas:
-    Order:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        petId:
-          type: integer
-          format: int64
-          example: 198772
-        quantity:
-          type: integer
-          format: int32
-          example: 7
-        shipDate:
-          type: string
-          format: date-time
-        status:
-          type: string
-          description: Order Status
-          example: approved
-          enum:
-            - placed
-            - approved
-            - delivered
-        complete:
-          type: boolean
-      xml:
-        name: order
-    Customer:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 100000
-        username:
-          type: string
-          example: fehguy
-        address:
-          type: array
-          xml:
-            name: addresses
-            wrapped: true
-          items:
-            $ref: '#/components/schemas/Address'
-      xml:
-        name: customer
-    Address:
-      type: object
-      properties:
-        street:
-          type: string
-          example: 437 Lytton
-        city:
-          type: string
-          example: Palo Alto
-        state:
-          type: string
-          example: CA
-        zip:
-          type: string
-          example: '94301'
-      xml:
-        name: address
-    Category:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 1
-        name:
-          type: string
-          example: Dogs
-      xml:
-        name: category
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        username:
-          type: string
-          example: theUser
-        firstName:
-          type: string
-          example: John
-        lastName:
-          type: string
-          example: James
-        email:
-          type: string
-          example: john@email.com
-        password:
-          type: string
-          example: '12345'
-        phone:
-          type: string
-          example: '12345'
-        userStatus:
-          type: integer
-          description: User Status
-          format: int32
-          example: 1
-      xml:
-        name: user
-    Tag:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-      xml:
-        name: tag
-    Pet:
-      required:
-        - name
-        - photoUrls
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        name:
-          type: string
-          example: doggie
-        category:
-          $ref: '#/components/schemas/Category'
-        photoUrls:
-          type: array
-          xml:
-            wrapped: true
-          items:
-            type: string
-            xml:
-              name: photoUrl
-        tags:
-          type: array
-          xml:
-            wrapped: true
-          items:
-            $ref: '#/components/schemas/Tag'
-        status:
-          type: string
-          description: pet status in the store
-          enum:
-            - available
-            - pending
-            - sold
-      xml:
-        name: pet
-    ApiResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        type:
-          type: string
-        message:
-          type: string
-      xml:
-        name: '##default'
-  requestBodies:
-    Pet:
-      description: Pet object that needs to be added to the store
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Pet'
-        application/xml:
-          schema:
-            $ref: '#/components/schemas/Pet'
-    UserArray:
-      description: List of user object
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/User'
-  securitySchemes:
-    petstore_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
-          scopes:
-            write:pets: modify pets in your account
-            read:pets: read your pets
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+                $ref: "#/components/schemas/Error"
+              example:
+                error:
+                  code: TOKEN_EXPIRED
+                  message: Token has expired — please log in again
