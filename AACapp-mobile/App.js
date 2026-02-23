@@ -11,6 +11,9 @@ import {
 } from 'react-native';
 import useLocationDetection from './src/hooks/useLocationDetection';
 import RoomSelector from './src/components/RoomSelector';
+import { useSpeech } from './src/hooks/useSpeech'; //hook for tts functionality
+
+const { speakText } = useSpeech();
 
 const DEFAULT_SUGGESTIONS = [
   { label: 'Hello', emoji: '👋' },
@@ -82,6 +85,8 @@ export default function App() {
   const [sentence, setSentence] = useState([]);
   const [activeCategory, setActiveCategory] = useState('Suggested');
 
+  const { speakText } = useSpeech(); 
+
   // ── Room / location context ───────────────────────────────────
   const { currentRoom, allRooms, setRoomManually } = useLocationDetection();
 
@@ -97,6 +102,7 @@ export default function App() {
 
   const addWord = (word) => {
     setSentence((prev) => [...prev, word]);
+    speakText(word); 
   };
 
   const removeLastWord = () => {
@@ -110,7 +116,7 @@ export default function App() {
   const speakSentence = () => {
     if (sentence.length === 0) return;
     const text = sentence.join(' ');
-    Alert.alert('Speaking', text);
+    speakText(text);
   };
 
   const words = categories[activeCategory] || [];
