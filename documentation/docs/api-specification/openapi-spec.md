@@ -1,10 +1,11 @@
 ---
-title: API 1 - Swagger Petstore
-description: API Specification from openapi.yml
+title: API 1 - AAC App
+description: API Specification from openapi.yml.yaml
 hide_table_of_contents: true
 sidebar_position: 2
 ---
 
-import ApiDocMdx from '@theme/ApiDocMdx';
+import ApiDoc from '@theme/ApiDoc';
+import spec from '@site/static/openapi.yml.yaml';
 
-<ApiDocMdx id="using-single-yaml" />
+<ApiDoc spec={spec} />
