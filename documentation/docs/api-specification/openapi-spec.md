@@ -7,5 +7,5 @@ sidebar_position: 2
 
 import ApiDocMdx from '@theme/ApiDocMdx';
 
-<ApiDocMdx id="using-single-yaml"/>
+<ApiDocMdx id="using-single-yaml" />
 
