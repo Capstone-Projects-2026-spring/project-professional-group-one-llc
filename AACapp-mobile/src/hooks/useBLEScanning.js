@@ -4,10 +4,13 @@
  * Handles all raw Bluetooth Low Energy scanning logic.
  *
  * Scans for nearby BLE devices, tracks the strongest RSSI signal
- * per device UUID, and returns the UUID of the closest beacon.
+ * per device ID, and returns the ID of the closest known beacon.
+ *
+ * Uses MAC address as the beacon identifier on Android (device.id).
+ * Falls back to serviceUUIDs if present.
  *
  * This hook does NOT know anything about rooms — it just returns
- * the winning beacon UUID. Room lookup is handled upstream in
+ * the winning beacon ID. Room lookup is handled upstream in
  * useLocationDetection.js.
  *
  * Requires: react-native-ble-plx
@@ -19,27 +22,17 @@ import { BleManager } from 'react-native-ble-plx';
 import { Platform, PermissionsAndroid } from 'react-native';
 import { getRoomByBeaconId } from '../data/roomContexts';
 
-// How long each scan window runs before we evaluate results (ms) //3000
-const SCAN_WINDOW = 10000;
-
-// Minimum RSSI to consider a beacon (filters out distant noise)
-// RSSI is negative — closer to 0 means stronger signal
-// -80 is a reasonable cutoff; tune this based on your environment //-80
-const MIN_RSSI = -150;
-
-// How long to wait between scan windows (ms) — prevents BLE stack spam //2000
-const SCAN_COOLDOWN = 0;
+const SCAN_WINDOW = 3000;   // ms — how long each scan window runs
+const SCAN_COOLDOWN = 2000; // ms — pause between scan windows
+const MIN_RSSI = -80;      // dBm — lower this if beacon is weak; raise to filter noise
 
 /**
  * Request Android BLE permissions at runtime.
- * iOS permissions are handled via Info.plist / app.json plugin config —
- * no runtime request needed on iOS.
+ * iOS permissions are declared in app.json via the plugin config.
  */
 async function requestAndroidPermissions() {
   if (Platform.OS !== 'android') return true;
 
-  // Android 12+ requires BLUETOOTH_SCAN and BLUETOOTH_CONNECT
-  // Android 11 and below requires ACCESS_FINE_LOCATION
   if (Platform.Version >= 31) {
     const results = await PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
@@ -58,44 +51,38 @@ async function requestAndroidPermissions() {
 }
 
 /**
- * Extract all UUIDs advertised by a scanned BLE device.
+ * Extract identifiers from a scanned BLE device.
  *
- * react-native-ble-plx exposes service UUIDs in two places:
- *   1. device.serviceUUIDs  — array of UUIDs from the advertisement packet
- *   2. device.id            — the device's MAC address (Android) or
- *                             a system-assigned identifier (iOS)
+ * Priority:
+ *   1. serviceUUIDs — present on some beacons (e.g. Eddystone)
+ *   2. device.id    — MAC address on Android, system ID on iOS
  *
- * For iBeacon and most generic BLE beacons, the primary UUID you want
- * is in serviceUUIDs[0]. If your beacons advertise a specific service,
- * that UUID will appear here.
- *
- * Returns an array of UUID strings (may be empty if beacon advertises none).
+ * For BC011 iBeacons on Android, serviceUUIDs is null so we fall
+ * back to device.id (the MAC address). Make sure your beaconId
+ * values in roomContexts.js match the MAC format: "DD:88:00:00:14:22"
  */
-function extractUUIDs(device) {
-  const uuids = [];
+function extractIDs(device) {
+  const ids = [];
 
   if (device.serviceUUIDs && device.serviceUUIDs.length > 0) {
-    uuids.push(...device.serviceUUIDs);
+    ids.push(...device.serviceUUIDs);
   }
 
-  // Fallback: use device.id if no service UUIDs found.
-  // On Android this is the MAC address. Useful if your beacons
-  // are identified by hardware address rather than service UUID.
-  if (uuids.length === 0 && device.id) {
-    uuids.push(device.id);
+  if (ids.length === 0 && device.id) {
+    ids.push(device.id);
   }
 
-  return uuids;
+  return ids;
 }
 
 /**
  * useBLEScanning
  * --------------
  * @returns {object} {
- *   strongestBeaconId : string | null  — UUID of closest beacon
+ *   strongestBeaconId : string | null  — ID of closest known beacon
  *   isScanning        : boolean
  *   error             : string | null
- *   startScanning     : () => void     — call to manually trigger a scan
+ *   startScanning     : () => void
  *   stopScanning      : () => void
  * }
  */
@@ -104,69 +91,59 @@ export default function useBLEScanning() {
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState(null);
 
-  // BleManager instance — kept in a ref so it persists across renders
-  // without triggering re-renders itself
   const managerRef = useRef(null);
-
-  // Accumulates RSSI readings per UUID during a scan window
-  // Shape: { [uuid: string]: number[] }
-  const rssiMapRef = useRef({});
-
-  // Scan cycle timer
+  const rssiMapRef = useRef({});  // { [id: string]: number[] }
   const scanTimerRef = useRef(null);
   const cooldownTimerRef = useRef(null);
-
   const isMountedRef = useRef(true);
 
-  // ── Evaluate scan results and pick the winner ──────────────────────
+  // ── Evaluate scan window results ───────────────────────────────────
+  // Filters to known beacons only, then picks the strongest by avg RSSI
   const evaluateScan = useCallback(() => {
     const rssiMap = rssiMapRef.current;
-    const uuids = Object.keys(rssiMap);
+    const ids = Object.keys(rssiMap);
 
-    if (uuids.length === 0) return;
+    if (ids.length === 0) {
+      console.log('[BLE] No devices heard this window.');
+      return;
+    }
 
-    let bestUUID = null;
+    let bestID = null;
     let bestRSSI = -Infinity;
 
-    uuids.forEach((uuid) => {
-      // Only consider known beacons
-      const room = getRoomByBeaconId(uuid);
-      if (!room) return;
+    ids.forEach((id) => {
+      const room = getRoomByBeaconId(id);
+      if (!room) return; // ignore unknown devices
 
-      const readings = rssiMap[uuid];
+      const readings = rssiMap[id];
       const avgRSSI = readings.reduce((a, b) => a + b, 0) / readings.length;
-
-      console.log(`[BLE] Known beacon: ${room.label} @ avg RSSI ${avgRSSI.toFixed(1)} dBm`);
+      console.log(`[BLE] Known beacon: ${room.label} (${id}) @ avg RSSI ${avgRSSI.toFixed(1)} dBm`);
 
       if (avgRSSI > bestRSSI) {
         bestRSSI = avgRSSI;
-        bestUUID = uuid;
+        bestID = id;
       }
     });
 
-  if (bestUUID) {
-    console.log(`[BLE] Best known beacon: ${bestUUID} @ ${bestRSSI.toFixed(1)} dBm`);
-    if (isMountedRef.current) setStrongestBeaconId(bestUUID);
-  } else {
-    console.log('[BLE] No known beacons in range.');
-  }
+    if (bestID) {
+      console.log(`[BLE] Best known beacon: ${bestID} @ ${bestRSSI.toFixed(1)} dBm`);
+      if (isMountedRef.current) setStrongestBeaconId(bestID);
+    } else {
+      console.log('[BLE] No known beacons in range.');
+    }
 
-  rssiMapRef.current = {};
-}, []);
+    rssiMapRef.current = {};
+  }, []);
 
-  // ── Core scan logic ────────────────────────────────────────────────
+  // ── Core scan cycle ────────────────────────────────────────────────
   const runScanCycle = useCallback(async () => {
     const manager = managerRef.current;
     if (!manager) return;
 
     rssiMapRef.current = {};
     setIsScanning(true);
-
     console.log('[BLE] Starting scan window...');
 
-    // Start scanning — null, null means scan all services (no UUID filter)
-    // If you know your beacon service UUIDs, pass them here to be more efficient:
-    // manager.startDeviceScan(['YOUR-SERVICE-UUID'], null, callback)
     manager.startDeviceScan(null, null, (scanError, device) => {
       if (scanError) {
         console.warn('[BLE] Scan error:', scanError.message);
@@ -175,37 +152,29 @@ export default function useBLEScanning() {
       }
 
       if (!device || device.rssi === null) return;
-
-      // console.log(`[BLE] Device: ${JSON.stringify({
-      //   id: device.id,
-      //   name: device.localName,
-      //   serviceUUIDs: device.serviceUUIDs,
-      //   manufacturerData: device.manufacturerData,
-      //   rssi: device.rssi,
-      // })}`);
-
-      // Filter out weak signals
       if (device.rssi < MIN_RSSI) return;
 
-      // Collect all UUIDs this device is advertising
-      const uuids = extractUUIDs(device);
+      // Log full device info to help diagnose beacon detection issues
+      console.log(`[BLE] Device: ${JSON.stringify({
+        id: device.id,
+        name: device.localName,
+        serviceUUIDs: device.serviceUUIDs,
+        rssi: device.rssi,
+      })}`);
 
-      uuids.forEach((uuid) => {
-        if (!rssiMapRef.current[uuid]) {
-          rssiMapRef.current[uuid] = [];
-        }
-        rssiMapRef.current[uuid].push(device.rssi);
-        console.log(`[BLE] Heard: ${uuid} RSSI: ${device.rssi} dBm`);
+      const ids = extractIDs(device);
+      ids.forEach((id) => {
+        if (!rssiMapRef.current[id]) rssiMapRef.current[id] = [];
+        rssiMapRef.current[id].push(device.rssi);
       });
     });
 
-    // After the scan window, stop and evaluate
+    // After scan window ends, evaluate and schedule next cycle
     scanTimerRef.current = setTimeout(() => {
       manager.stopDeviceScan();
       setIsScanning(false);
       evaluateScan();
 
-      // Wait for cooldown then scan again
       cooldownTimerRef.current = setTimeout(() => {
         if (isMountedRef.current) runScanCycle();
       }, SCAN_COOLDOWN);
@@ -223,26 +192,20 @@ export default function useBLEScanning() {
 
   const startScanning = useCallback(async () => {
     setError(null);
-
     const hasPermission = await requestAndroidPermissions();
     if (!hasPermission) {
       setError('Bluetooth permissions denied.');
       console.warn('[BLE] Permissions not granted.');
       return;
     }
-
     runScanCycle();
   }, [runScanCycle]);
 
   // ── Lifecycle ──────────────────────────────────────────────────────
   useEffect(() => {
     isMountedRef.current = true;
-
-    // Create the BLE manager instance
     managerRef.current = new BleManager();
 
-    // Wait for Bluetooth to be powered on before scanning
-    // 'PoweredOn' is the state we need — could be delayed on cold start
     const subscription = managerRef.current.onStateChange((state) => {
       console.log(`[BLE] Adapter state: ${state}`);
       if (state === 'PoweredOn') {
@@ -254,7 +217,7 @@ export default function useBLEScanning() {
       } else if (state === 'Unauthorized') {
         setError('Bluetooth permission not granted.');
       }
-    }, true); // true = emit current state immediately
+    }, true);
 
     return () => {
       isMountedRef.current = false;
