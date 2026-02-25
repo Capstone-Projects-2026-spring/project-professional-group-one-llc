@@ -100,7 +100,7 @@ const ROOM_CONTEXTS = {
     label: 'Classroom',
     emoji: '🏫',
     color: '#EE5A24',
-    beaconId: 'beacon-classroom-001',
+    beaconId: 'DD:88:00:00:14:22',
     suggestions: [
       { label: 'Teacher', emoji: '👩‍🏫' },
       { label: 'Question', emoji: '❓' },
@@ -122,7 +122,7 @@ const ROOM_CONTEXTS = {
     label: 'Outside',
     emoji: '🌳',
     color: '#2ECC71',
-    beaconId: 'beacon-outside-001',
+    beaconId: '426C7565-4368-6172-6D42-6561636F6E73',
     suggestions: [
       { label: 'Walk', emoji: '🚶' },
       { label: 'Run', emoji: '🏃' },

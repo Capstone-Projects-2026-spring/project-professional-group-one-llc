@@ -17,17 +17,18 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { BleManager } from 'react-native-ble-plx';
 import { Platform, PermissionsAndroid } from 'react-native';
+import { getRoomByBeaconId } from '../data/roomContexts';
 
-// How long each scan window runs before we evaluate results (ms)
-const SCAN_WINDOW = 3000;
+// How long each scan window runs before we evaluate results (ms) //3000
+const SCAN_WINDOW = 10000;
 
 // Minimum RSSI to consider a beacon (filters out distant noise)
 // RSSI is negative — closer to 0 means stronger signal
-// -80 is a reasonable cutoff; tune this based on your environment
-const MIN_RSSI = -80;
+// -80 is a reasonable cutoff; tune this based on your environment //-80
+const MIN_RSSI = -150;
 
-// How long to wait between scan windows (ms) — prevents BLE stack spam
-const SCAN_COOLDOWN = 2000;
+// How long to wait between scan windows (ms) — prevents BLE stack spam //2000
+const SCAN_COOLDOWN = 0;
 
 /**
  * Request Android BLE permissions at runtime.
@@ -124,14 +125,18 @@ export default function useBLEScanning() {
 
     if (uuids.length === 0) return;
 
-    // For each UUID, take the average RSSI across all readings
-    // then pick the UUID with the strongest (highest) average
     let bestUUID = null;
     let bestRSSI = -Infinity;
 
     uuids.forEach((uuid) => {
+      // Only consider known beacons
+      const room = getRoomByBeaconId(uuid);
+      if (!room) return;
+
       const readings = rssiMap[uuid];
       const avgRSSI = readings.reduce((a, b) => a + b, 0) / readings.length;
+
+      console.log(`[BLE] Known beacon: ${room.label} @ avg RSSI ${avgRSSI.toFixed(1)} dBm`);
 
       if (avgRSSI > bestRSSI) {
         bestRSSI = avgRSSI;
@@ -139,15 +144,15 @@ export default function useBLEScanning() {
       }
     });
 
-    console.log(`[BLE] Best beacon: ${bestUUID} @ avg RSSI ${bestRSSI.toFixed(1)} dBm`);
+  if (bestUUID) {
+    console.log(`[BLE] Best known beacon: ${bestUUID} @ ${bestRSSI.toFixed(1)} dBm`);
+    if (isMountedRef.current) setStrongestBeaconId(bestUUID);
+  } else {
+    console.log('[BLE] No known beacons in range.');
+  }
 
-    if (isMountedRef.current && bestUUID) {
-      setStrongestBeaconId(bestUUID);
-    }
-
-    // Reset for next scan window
-    rssiMapRef.current = {};
-  }, []);
+  rssiMapRef.current = {};
+}, []);
 
   // ── Core scan logic ────────────────────────────────────────────────
   const runScanCycle = useCallback(async () => {
@@ -171,6 +176,14 @@ export default function useBLEScanning() {
 
       if (!device || device.rssi === null) return;
 
+      // console.log(`[BLE] Device: ${JSON.stringify({
+      //   id: device.id,
+      //   name: device.localName,
+      //   serviceUUIDs: device.serviceUUIDs,
+      //   manufacturerData: device.manufacturerData,
+      //   rssi: device.rssi,
+      // })}`);
+
       // Filter out weak signals
       if (device.rssi < MIN_RSSI) return;
 
@@ -182,7 +195,6 @@ export default function useBLEScanning() {
           rssiMapRef.current[uuid] = [];
         }
         rssiMapRef.current[uuid].push(device.rssi);
-
         console.log(`[BLE] Heard: ${uuid} RSSI: ${device.rssi} dBm`);
       });
     });
