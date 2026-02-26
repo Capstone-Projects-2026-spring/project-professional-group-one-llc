@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  docs:
+    name: Docs (Docusaurus build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: documentation
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+          cache-dependency-path: documentation/yarn.lock
+
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
+
+  mobile:
+    name: Mobile (Expo checks)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: AACapp-mobile
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: AACapp-mobile/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run ci

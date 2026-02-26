@@ -690,7 +690,7 @@ components:
           example: '#4CAF50'
         onAddWord:
           type: string
-          description: Callback reference — (label: string) => void
+          description: "Callback reference — (label: string) => void"
           example: addWord
 
     SentenceBarProps:
@@ -733,7 +733,7 @@ components:
           example: kitchen
         onSelectRoom:
           type: string
-          description: Callback reference — (roomId: string | null) => void
+          description: "Callback reference — (roomId: string | null) => void"
 
     InteractionLogModalProps:
       type: object
@@ -779,7 +779,7 @@ components:
             Food: '#4CAF50'
         onSelectCategory:
           type: string
-          description: Callback reference — (category: string) => void
+          description: "Callback reference — (category: string) => void"
 
     AppHeaderProps:
       type: object
@@ -798,7 +798,7 @@ components:
       properties:
         speakText:
           type: string
-          description: Function — (text: string) => void — speaks the given text
+          description: "Function — (text: string) => void — speaks the given text"
         stopSpeech:
           type: string
           description: Function — () => void — stops any ongoing speech
@@ -813,7 +813,7 @@ components:
           example: ['I', 'want', 'water']
         addWord:
           type: string
-          description: Function — (word: string) => void
+          description: "Function — (word: string) => void"
         removeLastWord:
           type: string
           description: Function — () => void
@@ -834,7 +834,7 @@ components:
           example: ['I', 'am', 'hungry']
         addWord:
           type: string
-          description: Function — (word: string) => void — appends and speaks word
+          description: "Function — (word: string) => void — appends and speaks word"
         speakSentence:
           type: string
           description: Function — () => void — speaks full sentence
@@ -856,7 +856,7 @@ components:
           example: manual
         setRoomManually:
           type: string
-          description: Function — (roomId: string | null) => void
+          description: "Function — (roomId: string | null) => void"
         allRooms:
           type: array
           items:
@@ -875,4 +875,4 @@ components:
             $ref: '#/components/schemas/LogEntry'
         logButtonPress:
           type: string
-          description: Function — (buttonName: string, metadata?: object) => void
+          description: "Function — (buttonName: string, metadata?: object) => void"
