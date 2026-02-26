@@ -4,16 +4,391 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.9.2">
 <title data-rh="true">Unit tests | Project Professional Group One Llc</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/testing/unit-testing"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Unit tests | Project Professional Group One Llc"><meta data-rh="true" name="description" content="For each method, one or more test cases."><meta data-rh="true" property="og:description" content="For each method, one or more test cases."><link data-rh="true" rel="icon" href="/project-professional-group-one-llc/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/testing/unit-testing"><link data-rh="true" rel="alternate" href="https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/testing/unit-testing" hreflang="en"><link data-rh="true" rel="alternate" href="https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/testing/unit-testing" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Test Procedures","item":"https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/category/test-procedures"},{"@type":"ListItem","position":2,"name":"Unit tests","item":"https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/testing/unit-testing"}]}</script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><link rel="stylesheet" href="/project-professional-group-one-llc/assets/css/styles.7aa687c6.css">
-<script src="/project-professional-group-one-llc/assets/js/runtime~main.249e842a.js" defer="defer"></script>
-<script src="/project-professional-group-one-llc/assets/js/main.fc23a9cd.js" defer="defer"></script>
+<script src="/project-professional-group-one-llc/assets/js/runtime~main.826e76f9.js" defer="defer"></script>
+<script src="/project-professional-group-one-llc/assets/js/main.d8241137.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
 <symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
 </defs></svg>
-<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/project-professional-group-one-llc/"><div class="navbar__logo"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Project Professional Group One Llc</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/project-professional-group-one-llc/docs/intro">Documentation</a><a class="navbar__item navbar__link" href="/project-professional-group-one-llc/tutorial/Intro">Docusaurus Tutorial</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Capstone-Projects-2026-spring/project-professional-group-one-llc" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/project-professional-group-one-llc/docs/intro"><span title="Introduction" class="linkLabel_WmDU">Introduction</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/project-professional-group-one-llc/docs/category/requirements-specification"><span title="Requirements Specification" class="categoryLinkLabel_W154">Requirements Specification</span></a><button aria-label="Expand sidebar category &#x27;Requirements Specification&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/project-professional-group-one-llc/docs/category/system-architecture"><span title="System Architecture" class="categoryLinkLabel_W154">System Architecture</span></a><button aria-label="Expand sidebar category &#x27;System Architecture&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/project-professional-group-one-llc/docs/category/api-specification"><span title="API Specification" class="categoryLinkLabel_W154">API Specification</span></a><button aria-label="Expand sidebar category &#x27;API Specification&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" href="/project-professional-group-one-llc/docs/category/test-procedures"><span title="Test Procedures" class="categoryLinkLabel_W154">Test Procedures</span></a><button aria-label="Collapse sidebar category &#x27;Test Procedures&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/project-professional-group-one-llc/docs/testing/unit-testing"><span title="Unit tests" class="linkLabel_WmDU">Unit tests</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/project-professional-group-one-llc/docs/testing/integration-testing"><span title="Integration tests" class="linkLabel_WmDU">Integration tests</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/project-professional-group-one-llc/docs/testing/acceptence-testing"><span title="Acceptance test" class="linkLabel_WmDU">Acceptance test</span></a></li></ul></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/project-professional-group-one-llc/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/project-professional-group-one-llc/docs/category/test-procedures"><span>Test Procedures</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Unit tests</span></li></ul></nav><div class="theme-doc-markdown markdown"><header><h1>Unit tests</h1></header>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/project-professional-group-one-llc/"><div class="navbar__logo"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Project Professional Group One Llc</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/project-professional-group-one-llc/docs/intro">Documentation</a><a class="navbar__item navbar__link" href="/project-professional-group-one-llc/tutorial/Intro">Docusaurus Tutorial</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Capstone-Projects-2026-spring/project-professional-group-one-llc" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/project-professional-group-one-llc/docs/intro"><span title="Introduction" class="linkLabel_WmDU">Introduction</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/project-professional-group-one-llc/docs/category/requirements-specification"><span title="Requirements Specification" class="categoryLinkLabel_W154">Requirements Specification</span></a><button aria-label="Expand sidebar category &#x27;Requirements Specification&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/project-professional-group-one-llc/docs/category/system-architecture"><span title="System Architecture" class="categoryLinkLabel_W154">System Architecture</span></a><button aria-label="Expand sidebar category &#x27;System Architecture&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/project-professional-group-one-llc/docs/category/api-specification"><span title="API Specification" class="categoryLinkLabel_W154">API Specification</span></a><button aria-label="Expand sidebar category &#x27;API Specification&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" href="/project-professional-group-one-llc/docs/category/test-procedures"><span title="Test Procedures" class="categoryLinkLabel_W154">Test Procedures</span></a><button aria-label="Collapse sidebar category &#x27;Test Procedures&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/project-professional-group-one-llc/docs/testing/unit-testing"><span title="Unit tests" class="linkLabel_WmDU">Unit tests</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/project-professional-group-one-llc/docs/testing/integration-testing"><span title="Integration tests" class="linkLabel_WmDU">Integration tests</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/project-professional-group-one-llc/docs/testing/acceptence-testing"><span title="Acceptance test" class="linkLabel_WmDU">Acceptance test</span></a></li></ul></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/project-professional-group-one-llc/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/project-professional-group-one-llc/docs/category/test-procedures"><span>Test Procedures</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Unit tests</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>Unit tests</h1></header>
 <p>For each method, one or more test cases.</p>
 <p>A test case consists of input parameter values and expected results.</p>
-<p>All external classes should be stubbed using mock objects.</p></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/Capstone-Projects-2026-spring/project-professional-group-one-llc/edit/main/documentation/docs/testing/unit-testing.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"><details><summary>Revision History</summary><table><thead><tr><th scope="row">Author</th><th scope="row">Revision</th><th scope="row">Date</th></tr></thead><tbody><tr><td colspan="3" style="text-align:center;font-style:italic;color:#666">Loading...</td></tr></tbody></table></details><span class="theme-last-updated">Last updated<!-- --> by <b>github-classroom[bot]</b></span></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/project-professional-group-one-llc/docs/category/test-procedures"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Test Procedures</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/project-professional-group-one-llc/docs/testing/integration-testing"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Integration tests</div></a></nav></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/project-professional-group-one-llc/docs/intro">Documentation</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Capstone-Projects-2026-spring/project-professional-group-one-llc" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a class="footer__link-item" href="/project-professional-group-one-llc/tutorial/open-source-usage">Template Contributors</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU"></div><div class="footer__copyright">Copyright © 2026 Project Professional Group One Llc, Inc. Built with Docusaurus.</div></div></div></footer></div>
+<p>All external classes should be stubbed using mock objects.</p>
+<h1>Unit Test Documentation</h1>
+<p>This document describes what each unit test file covers, how the mocks work, and what behaviors are being verified.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="movementsensortestjs"><code>movementSensor.test.js</code><a href="#movementsensortestjs" class="hash-link" aria-label="Direct link to movementsensortestjs" title="Direct link to movementsensortestjs" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="purpose">Purpose<a href="#purpose" class="hash-link" aria-label="Direct link to Purpose" title="Direct link to Purpose" translate="no">​</a></h3>
+<p>Tests the <code>movementSensor</code> module (imported from <code>../src/hooks/movementSensor</code>) that uses the Expo Accelerometer to:</p>
+<ul>
+<li class="">Register an accelerometer listener on module import</li>
+<li class="">Set the accelerometer update interval</li>
+<li class="">Track movement until a target travel distance is reached (arming a scan)</li>
+<li class="">Trigger a BLE scan only after the device becomes still for long enough</li>
+<li class="">Cancel a pending scan if movement resumes</li>
+<li class="">Clean up the accelerometer subscription via <code>stop()</code></li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-testing-techniques-used">Key Testing Techniques Used<a href="#key-testing-techniques-used" class="hash-link" aria-label="Direct link to Key Testing Techniques Used" title="Direct link to Key Testing Techniques Used" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="fake-timers">Fake Timers<a href="#fake-timers" class="hash-link" aria-label="Direct link to Fake Timers" title="Direct link to Fake Timers" translate="no">​</a></h4>
+<p>The file uses:</p>
+<ul>
+<li class=""><code>jest.useFakeTimers()</code> to control time-based behavior (e.g., stillness timeouts).</li>
+<li class=""><code>jest.advanceTimersByTime(ms)</code> to simulate time passing and trigger timer callbacks.</li>
+</ul>
+<p>This is essential because “stillness triggers scan after a timeout” is timer-driven behavior.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="mocking-expo-sensors">Mocking <code>expo-sensors</code><a href="#mocking-expo-sensors" class="hash-link" aria-label="Direct link to mocking-expo-sensors" title="Direct link to mocking-expo-sensors" translate="no">​</a></h4>
+<p>The test replaces <code>expo-sensors</code> with a mock implementation:</p>
+<ul>
+<li class="">
+<p><code>Accelerometer.addListener(cb)</code> is mocked to:</p>
+<ul>
+<li class="">Capture the callback (<code>capturedListener</code>) so tests can manually feed accelerometer samples.</li>
+<li class="">Return a subscription object with <code>{ remove: mockRemove }</code> so cleanup can be tested.</li>
+</ul>
+</li>
+<li class="">
+<p><code>Accelerometer.setUpdateInterval</code> is mocked so we can assert it was configured properly.</p>
+</li>
+</ul>
+<p>Mock variables:</p>
+<ul>
+<li class=""><code>mockAddListener</code>: spy for <code>addListener</code></li>
+<li class=""><code>mockSetUpdateInterval</code>: spy for <code>setUpdateInterval</code></li>
+<li class=""><code>mockRemove</code>: spy for <code>subscription.remove()</code></li>
+<li class=""><code>capturedListener</code>: stores the callback passed to <code>addListener</code></li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="loading-a-fresh-module-each-test">Loading a Fresh Module Each Test<a href="#loading-a-fresh-module-each-test" class="hash-link" aria-label="Direct link to Loading a Fresh Module Each Test" title="Direct link to Loading a Fresh Module Each Test" translate="no">​</a></h4>
+<p><code>movementSensor</code> has top-level side effects (it registers listeners on import), so each test uses a helper:</p>
+<ul>
+<li class=""><code>jest.resetModules()</code> to reset the Node module cache</li>
+<li class=""><code>jest.isolateModules()</code> to ensure the <code>require()</code> happens in an isolated registry</li>
+</ul>
+<p>This guarantees each test starts with a clean module state.</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-setup--teardown">Test Setup / Teardown<a href="#test-setup--teardown" class="hash-link" aria-label="Direct link to Test Setup / Teardown" title="Direct link to Test Setup / Teardown" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="beforeeach"><code>beforeEach</code><a href="#beforeeach" class="hash-link" aria-label="Direct link to beforeeach" title="Direct link to beforeeach" translate="no">​</a></h4>
+<ul>
+<li class="">Clears mocks</li>
+<li class="">Spies on <code>console.log</code> to verify logging behavior</li>
+<li class="">Imports the module fresh via <code>loadFreshModule()</code></li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="aftereach"><code>afterEach</code><a href="#aftereach" class="hash-link" aria-label="Direct link to aftereach" title="Direct link to aftereach" translate="no">​</a></h4>
+<ul>
+<li class="">Restores the <code>console.log</code> spy</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-cases">Test Cases<a href="#test-cases" class="hash-link" aria-label="Direct link to Test Cases" title="Direct link to Test Cases" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-registers-accelerometer-listener-and-sets-update-interval-on-import">1) Registers accelerometer listener and sets update interval on import<a href="#1-registers-accelerometer-listener-and-sets-update-interval-on-import" class="hash-link" aria-label="Direct link to 1) Registers accelerometer listener and sets update interval on import" title="Direct link to 1) Registers accelerometer listener and sets update interval on import" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>registers accelerometer listener and sets update interval on import</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Importing the module calls:<!-- -->
+<ul>
+<li class=""><code>Accelerometer.setUpdateInterval(100)</code></li>
+<li class=""><code>Accelerometer.addListener(...)</code></li>
+</ul>
+</li>
+<li class="">Ensures <code>capturedListener</code> is actually a function (the update callback).</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Confirms that the module’s top-level initialization is correct and consistent.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-stop-removes-the-accelerometer-subscription">2) <code>stop()</code> removes the accelerometer subscription<a href="#2-stop-removes-the-accelerometer-subscription" class="hash-link" aria-label="Direct link to 2-stop-removes-the-accelerometer-subscription" title="Direct link to 2-stop-removes-the-accelerometer-subscription" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>stop() removes the accelerometer subscription</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>mod.stop()</code> triggers <code>subscription.remove()</code> exactly once.</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Prevents memory leaks and duplicated listeners across app screens / lifecycle changes.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-does-not-scan-when-still-but-movement-was-never-armed">3) Does NOT scan when still but movement was never armed<a href="#3-does-not-scan-when-still-but-movement-was-never-armed" class="hash-link" aria-label="Direct link to 3) Does NOT scan when still but movement was never armed" title="Direct link to 3) Does NOT scan when still but movement was never armed" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>does NOT scan when the device is still but movement was never armed</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Feeding a “still” sample without ever reaching the target distance does not trigger scanning,
+even after enough time passes.</li>
+</ul>
+<p><strong>Signals used</strong></p>
+<ul>
+<li class="">Confirms <code>console.log</code> was <em>not</em> called with:<!-- -->
+<ul>
+<li class=""><code>[BLE] Scanning for nearby devices...</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Scanning should only happen after “arming” conditions are met (target distance reached).</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-after-being-armed-going-still-triggers-a-scan-after-the-stillness-timeout">4) After being armed, going still triggers a scan after the stillness timeout<a href="#4-after-being-armed-going-still-triggers-a-scan-after-the-stillness-timeout" class="hash-link" aria-label="Direct link to 4) After being armed, going still triggers a scan after the stillness timeout" title="Direct link to 4) After being armed, going still triggers a scan after the stillness timeout" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>after being armed, going still triggers a scan after the stillness timeout</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ol>
+<li class="">Movement samples accumulate enough distance to arm scanning.</li>
+<li class="">A log appears indicating arming:<!-- -->
+<ul>
+<li class=""><code>[Tracker] 5m reached — will scan when device stops.</code></li>
+</ul>
+</li>
+<li class="">A still sample starts the stillness timer.</li>
+<li class="">Before timeout: scan does not occur.</li>
+<li class="">After timeout: scan log appears:<!-- -->
+<ul>
+<li class=""><code>[BLE] Scanning for nearby devices...</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>How time is simulated</strong></p>
+<ul>
+<li class="">Mocks <code>Date.now()</code> so distance calculations have deterministic timestamps.</li>
+<li class="">Uses a loop that advances <code>now</code> by <code>200ms</code> per movement sample to simulate sustained movement.</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">This is the core expected behavior: “travel enough -&gt; wait until still -&gt; scan.”</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-if-movement-resumes-it-cancels-the-stillness-timer-no-scan">5) If movement resumes, it cancels the stillness timer (no scan)<a href="#5-if-movement-resumes-it-cancels-the-stillness-timer-no-scan" class="hash-link" aria-label="Direct link to 5) If movement resumes, it cancels the stillness timer (no scan)" title="Direct link to 5) If movement resumes, it cancels the stillness timer (no scan)" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>if movement resumes, it cancels the stillness timer (no scan)</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ol>
+<li class="">Arms scanning the same way as the previous test.</li>
+<li class="">Starts the stillness timer by going still.</li>
+<li class="">Sends a movement sample <em>before</em> the stillness timeout completes.</li>
+<li class="">Advances time beyond the timeout.</li>
+<li class="">Confirms scan did not occur.</li>
+</ol>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Prevents scanning while the device is moving again (correct “debounce” behavior).</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="notes--expectations-about-the-implementation">Notes / Expectations About the Implementation<a href="#notes--expectations-about-the-implementation" class="hash-link" aria-label="Direct link to Notes / Expectations About the Implementation" title="Direct link to Notes / Expectations About the Implementation" translate="no">​</a></h3>
+<p>These tests assume that <code>movementSensor</code>:</p>
+<ul>
+<li class="">Calls <code>Accelerometer.setUpdateInterval(100)</code> on import</li>
+<li class="">Calls <code>Accelerometer.addListener(cb)</code> on import</li>
+<li class="">Accumulates distance using time deltas (<code>Date.now()</code>) and acceleration magnitude</li>
+<li class="">Arms scanning at <code>5m</code> (target distance)</li>
+<li class="">Triggers scan only after <code>STILLNESS_TIMEOUT</code> elapses while “still”</li>
+<li class="">Cancels stillness timer if movement resumes before the timeout</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="usesentencebuildertestjs"><code>useSentenceBuilder.test.js</code><a href="#usesentencebuildertestjs" class="hash-link" aria-label="Direct link to usesentencebuildertestjs" title="Direct link to usesentencebuildertestjs" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="purpose-1">Purpose<a href="#purpose-1" class="hash-link" aria-label="Direct link to Purpose" title="Direct link to Purpose" translate="no">​</a></h3>
+<p>Tests the custom hook <code>useSentenceBuilder</code> (imported from <code>../src/hooks/useSentenceBuilder</code>) which manages a “sentence” as an array of words and exposes actions to:</p>
+<ul>
+<li class="">Add a word</li>
+<li class="">Remove the last word</li>
+<li class="">Clear the sentence</li>
+<li class="">Speak the sentence (implemented here as an <code>Alert.alert</code>)</li>
+<li class="">Optionally log user events via an <code>onLogPress</code> callback</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-testing-techniques-used-1">Key Testing Techniques Used<a href="#key-testing-techniques-used-1" class="hash-link" aria-label="Direct link to Key Testing Techniques Used" title="Direct link to Key Testing Techniques Used" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="hook-testing-with-renderhook">Hook Testing With <code>renderHook</code><a href="#hook-testing-with-renderhook" class="hash-link" aria-label="Direct link to hook-testing-with-renderhook" title="Direct link to hook-testing-with-renderhook" translate="no">​</a></h4>
+<p>The tests use <code>@testing-library/react-native</code>:</p>
+<ul>
+<li class=""><code>renderHook(() =&gt; useSentenceBuilder(...))</code> to run the hook in a test environment</li>
+<li class=""><code>act(() =&gt; ...)</code> to apply state updates safely and ensure React state settles before assertions</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="mocking-alertalert">Mocking <code>Alert.alert</code><a href="#mocking-alertalert" class="hash-link" aria-label="Direct link to mocking-alertalert" title="Direct link to mocking-alertalert" translate="no">​</a></h4>
+<p>When testing <code>speakSentence</code>, the tests spy on:</p>
+<ul>
+<li class=""><code>Alert.alert</code> to prevent UI popups and verify calls.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-setup">Test Setup<a href="#test-setup" class="hash-link" aria-label="Direct link to Test Setup" title="Direct link to Test Setup" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="beforeeach-1"><code>beforeEach</code><a href="#beforeeach-1" class="hash-link" aria-label="Direct link to beforeeach-1" title="Direct link to beforeeach-1" translate="no">​</a></h4>
+<ul>
+<li class=""><code>jest.clearAllMocks()</code> ensures each test starts clean and no previous call counts leak in.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-cases-1">Test Cases<a href="#test-cases-1" class="hash-link" aria-label="Direct link to Test Cases" title="Direct link to Test Cases" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-initial-sentence-is-empty">1) Initial sentence is empty<a href="#1-initial-sentence-is-empty" class="hash-link" aria-label="Direct link to 1) Initial sentence is empty" title="Direct link to 1) Initial sentence is empty" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>initial sentence is empty</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">On first render, <code>sentence</code> is <code>[]</code>.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-addword-appends-words-in-order">2) <code>addWord</code> appends words in order<a href="#2-addword-appends-words-in-order" class="hash-link" aria-label="Direct link to 2-addword-appends-words-in-order" title="Direct link to 2-addword-appends-words-in-order" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>addWord appends words in order</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Adding <code>&quot;hello&quot;</code>, then <code>&quot;world&quot;</code> results in:<!-- -->
+<ul>
+<li class=""><code>[&#x27;hello&#x27;, &#x27;world&#x27;]</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Sentence ordering must match selection order for accurate speech output.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-removelastword-removes-only-the-last-word">3) <code>removeLastWord</code> removes only the last word<a href="#3-removelastword-removes-only-the-last-word" class="hash-link" aria-label="Direct link to 3-removelastword-removes-only-the-last-word" title="Direct link to 3-removelastword-removes-only-the-last-word" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>removeLastWord removes only the last word</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Given <code>[&#x27;I&#x27;, &#x27;like&#x27;, &#x27;pizza&#x27;]</code>, removing last yields:<!-- -->
+<ul>
+<li class=""><code>[&#x27;I&#x27;, &#x27;like&#x27;]</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-removelastword-on-empty-sentence-stays-empty-no-crash">4) <code>removeLastWord</code> on empty sentence stays empty (no crash)<a href="#4-removelastword-on-empty-sentence-stays-empty-no-crash" class="hash-link" aria-label="Direct link to 4-removelastword-on-empty-sentence-stays-empty-no-crash" title="Direct link to 4-removelastword-on-empty-sentence-stays-empty-no-crash" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>removeLastWord on empty sentence stays empty (no crash)</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Removing last word on an empty sentence:<!-- -->
+<ul>
+<li class="">does not throw</li>
+<li class="">keeps <code>sentence</code> as <code>[]</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-clearsentence-resets-sentence-to-empty">5) <code>clearSentence</code> resets sentence to empty<a href="#5-clearsentence-resets-sentence-to-empty" class="hash-link" aria-label="Direct link to 5-clearsentence-resets-sentence-to-empty" title="Direct link to 5-clearsentence-resets-sentence-to-empty" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>clearSentence resets sentence to empty</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">After adding <code>&quot;test&quot;</code>, calling <code>clearSentence()</code> resets to <code>[]</code>.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-speaksentence-does-nothing-when-sentence-is-empty">6) <code>speakSentence</code> does nothing when sentence is empty<a href="#6-speaksentence-does-nothing-when-sentence-is-empty" class="hash-link" aria-label="Direct link to 6-speaksentence-does-nothing-when-sentence-is-empty" title="Direct link to 6-speaksentence-does-nothing-when-sentence-is-empty" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>speakSentence does nothing when sentence is empty</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">With an empty sentence, calling <code>speakSentence()</code>:<!-- -->
+<ul>
+<li class="">does <strong>not</strong> call <code>Alert.alert</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Avoids confusing UX (no “speaking” popup when nothing exists to speak).</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="7-speaksentence-alerts-joined-sentence-when-not-empty">7) <code>speakSentence</code> alerts joined sentence when not empty<a href="#7-speaksentence-alerts-joined-sentence-when-not-empty" class="hash-link" aria-label="Direct link to 7-speaksentence-alerts-joined-sentence-when-not-empty" title="Direct link to 7-speaksentence-alerts-joined-sentence-when-not-empty" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>speakSentence alerts joined sentence when not empty</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Adding <code>&quot;hello&quot;</code>, <code>&quot;there&quot;</code> then calling <code>speakSentence()</code> triggers:<!-- -->
+<ul>
+<li class=""><code>Alert.alert(&#x27;Speaking&#x27;, &#x27;hello there&#x27;)</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Confirms correct joining behavior and expected “speaking” output.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="8-calls-onlogpress-with-correct-event-names-and-payloads">8) Calls <code>onLogPress</code> with correct event names and payloads<a href="#8-calls-onlogpress-with-correct-event-names-and-payloads" class="hash-link" aria-label="Direct link to 8-calls-onlogpress-with-correct-event-names-and-payloads" title="Direct link to 8-calls-onlogpress-with-correct-event-names-and-payloads" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>calls onLogPress with correct event names and payloads</code></li>
+</ul>
+<p><strong>What it verifies</strong>
+When <code>useSentenceBuilder({ onLogPress })</code> is used:</p>
+<ul>
+<li class="">
+<p><code>addWord(&#x27;hi&#x27;)</code> logs:</p>
+<ul>
+<li class=""><code>onLogPress(&#x27;word_tile&#x27;, { word: &#x27;hi&#x27; })</code></li>
+</ul>
+</li>
+<li class="">
+<p><code>removeLastWord()</code> logs:</p>
+<ul>
+<li class=""><code>onLogPress(&#x27;remove_last_word&#x27;)</code></li>
+</ul>
+</li>
+<li class="">
+<p><code>clearSentence()</code> logs:</p>
+<ul>
+<li class=""><code>onLogPress(&#x27;clear_sentence&#x27;)</code></li>
+</ul>
+</li>
+<li class="">
+<p>After adding two words and calling <code>speakSentence()</code>, logs:</p>
+<ul>
+<li class=""><code>onLogPress(&#x27;speak_sentence&#x27;, { sentenceLength: 2 })</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Ensures analytics / logging hooks receive consistent event names and payload shapes.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="9-does-not-crash-if-onlogpress-is-not-provided">9) Does not crash if <code>onLogPress</code> is not provided<a href="#9-does-not-crash-if-onlogpress-is-not-provided" class="hash-link" aria-label="Direct link to 9-does-not-crash-if-onlogpress-is-not-provided" title="Direct link to 9-does-not-crash-if-onlogpress-is-not-provided" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>does not crash if onLogPress is not provided</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling all actions without an <code>onLogPress</code> callback:<!-- -->
+<ul>
+<li class="">does not throw any errors</li>
+</ul>
+</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Makes the hook safe to use in screens/components that do not provide logging.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="summary">Summary<a href="#summary" class="hash-link" aria-label="Direct link to Summary" title="Direct link to Summary" translate="no">​</a></h2>
+<ul>
+<li class=""><code>movementSensor.test.js</code> focuses on sensor lifecycle + movement/stillness logic, using mocked Expo Accelerometer and controlled timers.</li>
+<li class=""><code>useSentenceBuilder.test.js</code> focuses on sentence state management, speech output behavior (via <code>Alert.alert</code>), and optional event logging.</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/Capstone-Projects-2026-spring/project-professional-group-one-llc/edit/main/documentation/docs/testing/unit-testing.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"><details><summary>Revision History</summary><table><thead><tr><th scope="row">Author</th><th scope="row">Revision</th><th scope="row">Date</th></tr></thead><tbody><tr><td colspan="3" style="text-align:center;font-style:italic;color:#666">Loading...</td></tr></tbody></table></details><span class="theme-last-updated">Last updated<!-- --> by <b>jslootsky</b></span></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/project-professional-group-one-llc/docs/category/test-procedures"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Test Procedures</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/project-professional-group-one-llc/docs/testing/integration-testing"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Integration tests</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#movementsensortestjs" class="table-of-contents__link toc-highlight"><code>movementSensor.test.js</code></a><ul><li><a href="#purpose" class="table-of-contents__link toc-highlight">Purpose</a></li><li><a href="#key-testing-techniques-used" class="table-of-contents__link toc-highlight">Key Testing Techniques Used</a></li><li><a href="#test-setup--teardown" class="table-of-contents__link toc-highlight">Test Setup / Teardown</a></li><li><a href="#test-cases" class="table-of-contents__link toc-highlight">Test Cases</a></li><li><a href="#notes--expectations-about-the-implementation" class="table-of-contents__link toc-highlight">Notes / Expectations About the Implementation</a></li></ul></li><li><a href="#usesentencebuildertestjs" class="table-of-contents__link toc-highlight"><code>useSentenceBuilder.test.js</code></a><ul><li><a href="#purpose-1" class="table-of-contents__link toc-highlight">Purpose</a></li><li><a href="#key-testing-techniques-used-1" class="table-of-contents__link toc-highlight">Key Testing Techniques Used</a></li><li><a href="#test-setup" class="table-of-contents__link toc-highlight">Test Setup</a></li><li><a href="#test-cases-1" class="table-of-contents__link toc-highlight">Test Cases</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/project-professional-group-one-llc/docs/intro">Documentation</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Capstone-Projects-2026-spring/project-professional-group-one-llc" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a class="footer__link-item" href="/project-professional-group-one-llc/tutorial/open-source-usage">Template Contributors</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU"></div><div class="footer__copyright">Copyright © 2026 Project Professional Group One Llc, Inc. Built with Docusaurus.</div></div></div></footer></div>
 </body>
 </html>

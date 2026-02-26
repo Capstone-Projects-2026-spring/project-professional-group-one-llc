@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-api-specification/internal_contracts" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">AAC Beacon — Source Documentation | Project Professional Group One Llc</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/api-specification/internal_contracts"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="AAC Beacon — Source Documentation | Project Professional Group One Llc"><meta data-rh="true" name="description" content="---"><meta data-rh="true" property="og:description" content="---"><link data-rh="true" rel="icon" href="/project-professional-group-one-llc/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/api-specification/internal_contracts"><link data-rh="true" rel="alternate" href="https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/api-specification/internal_contracts" hreflang="en"><link data-rh="true" rel="alternate" href="https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/api-specification/internal_contracts" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"API Specification","item":"https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/category/api-specification"},{"@type":"ListItem","position":2,"name":"AAC Beacon — Source Documentation","item":"https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/api-specification/internal_contracts"}]}</script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><link rel="stylesheet" href="/project-professional-group-one-llc/assets/css/styles.7aa687c6.css">
+<script src="/project-professional-group-one-llc/assets/js/runtime~main.826e76f9.js" defer="defer"></script>
+<script src="/project-professional-group-one-llc/assets/js/main.d8241137.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/project-professional-group-one-llc/"><div class="navbar__logo"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Project Professional Group One Llc</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/project-professional-group-one-llc/docs/intro">Documentation</a><a class="navbar__item navbar__link" href="/project-professional-group-one-llc/tutorial/Intro">Docusaurus Tutorial</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/Capstone-Projects-2026-spring/project-professional-group-one-llc" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/project-professional-group-one-llc/docs/intro"><span title="Introduction" class="linkLabel_WmDU">Introduction</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/project-professional-group-one-llc/docs/category/requirements-specification"><span title="Requirements Specification" class="categoryLinkLabel_W154">Requirements Specification</span></a><button aria-label="Expand sidebar category &#x27;Requirements Specification&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/project-professional-group-one-llc/docs/category/system-architecture"><span title="System Architecture" class="categoryLinkLabel_W154">System Architecture</span></a><button aria-label="Expand sidebar category &#x27;System Architecture&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--active" href="/project-professional-group-one-llc/docs/category/api-specification"><span title="API Specification" class="categoryLinkLabel_W154">API Specification</span></a><button aria-label="Collapse sidebar category &#x27;API Specification&#x27;" aria-expanded="true" type="button" class="clean-btn menu__caret"></button></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/project-professional-group-one-llc/docs/api-specification/design-api-intro"><span title="Design Document - Part II API" class="linkLabel_WmDU">Design Document - Part II API</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/project-professional-group-one-llc/docs/api-specification/openapi-spec"><span title="API 1 - Location Aware AAC Device" class="linkLabel_WmDU">API 1 - Location Aware AAC Device</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/project-professional-group-one-llc/docs/api-specification/internal_contracts"><span title="AAC Beacon — Source Documentation" class="linkLabel_WmDU">AAC Beacon — Source Documentation</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist" href="/project-professional-group-one-llc/docs/category/test-procedures"><span title="Test Procedures" class="categoryLinkLabel_W154">Test Procedures</span></a><button aria-label="Expand sidebar category &#x27;Test Procedures&#x27;" aria-expanded="false" type="button" class="clean-btn menu__caret"></button></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/project-professional-group-one-llc/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link" href="/project-professional-group-one-llc/docs/category/api-specification"><span>API Specification</span></a></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">AAC Beacon — Source Documentation</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>AAC Beacon — Source Documentation</h1></header>
+<hr>
+<h1><code>tts.js</code></h1>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="speaktext"><code>speak(text)</code><a href="#speaktext" class="hash-link" aria-label="Direct link to speaktext" title="Direct link to speaktext" translate="no">​</a></h2>
+<p>Speaks the given text aloud using the device&#x27;s speech engine. Stops any currently playing speech before starting. Does nothing if <code>text</code> is empty or whitespace.</p>
+<ul>
+<li class=""><strong>Parameters:</strong> <code>text</code> — <code>string</code> representing the text to be spoken</li>
+<li class=""><strong>Options:</strong> language <code>en-US</code>, rate <code>0.9</code>, pitch <code>1.0</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="stop"><code>stop()</code><a href="#stop" class="hash-link" aria-label="Direct link to stop" title="Direct link to stop" translate="no">​</a></h2>
+<p>Stops any currently playing speech immediately.</p>
+<hr>
+<h1><code>WordGrid.js</code></h1>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="default-function-wordgrid-words-activecategorycolor-onaddword-"><code>default function WordGrid({ words, activeCategoryColor, onAddWord })</code><a href="#default-function-wordgrid-words-activecategorycolor-onaddword-" class="hash-link" aria-label="Direct link to default-function-wordgrid-words-activecategorycolor-onaddword-" title="Direct link to default-function-wordgrid-words-activecategorycolor-onaddword-" translate="no">​</a></h2>
+<p>A scrollable grid of word tiles. Each tile displays an emoji and a label and triggers a callback when pressed.</p>
+<ul>
+<li class=""><strong>Parameters:</strong>
+<ul>
+<li class=""><code>words</code> — <code>Array&lt;{ label: string, emoji: string }&gt;</code> list of words to display as tiles</li>
+<li class=""><code>activeCategoryColor</code> — <code>string</code> hex color used for tile background tint and border</li>
+<li class=""><code>onAddWord</code> — <code>(label: string) =&gt; void</code> callback invoked when a tile is pressed</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1><code>SentenceBar.js</code></h1>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="default-function-sentencebar-sentence-onremovelastword-onclearsentence-onspeaksentence-"><code>default function SentenceBar({ sentence, onRemoveLastWord, onClearSentence, onSpeakSentence })</code><a href="#default-function-sentencebar-sentence-onremovelastword-onclearsentence-onspeaksentence-" class="hash-link" aria-label="Direct link to default-function-sentencebar-sentence-onremovelastword-onclearsentence-onspeaksentence-" title="Direct link to default-function-sentencebar-sentence-onremovelastword-onclearsentence-onspeaksentence-" translate="no">​</a></h2>
+<p>A horizontal bar displaying the currently built sentence along with action buttons for editing and speaking it. Shows a placeholder message when the sentence is empty.</p>
+<ul>
+<li class=""><strong>Parameters:</strong>
+<ul>
+<li class=""><code>sentence</code> — <code>string[]</code> array of words making up the current sentence</li>
+<li class=""><code>onRemoveLastWord</code> — <code>() =&gt; void</code> callback to remove the last word in the sentence</li>
+<li class=""><code>onClearSentence</code> — <code>() =&gt; void</code> callback to clear all words from the sentence</li>
+<li class=""><code>onSpeakSentence</code> — <code>() =&gt; void</code> callback to speak the full sentence aloud</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1><code>RoomSelector.js</code></h1>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="default-function-roomselector-rooms-activeroomid-onselectroom-"><code>default function RoomSelector({ rooms, activeRoomId, onSelectRoom })</code><a href="#default-function-roomselector-rooms-activeroomid-onselectroom-" class="hash-link" aria-label="Direct link to default-function-roomselector-rooms-activeroomid-onselectroom-" title="Direct link to default-function-roomselector-rooms-activeroomid-onselectroom-" translate="no">​</a></h2>
+<p>A horizontally scrollable row of room &quot;chips&quot; that lets the user manually simulate entering a room. This component is a placeholder for automatic Bluetooth beacon detection. Once BLE is integrated, this selector can be hidden or shown only as a manual override / fallback.</p>
+<ul>
+<li class=""><strong>Parameters:</strong>
+<ul>
+<li class=""><code>rooms</code> — <code>Array&lt;{ id: string, label: string, emoji: string, color: string }&gt;</code> list of available rooms</li>
+<li class=""><code>activeRoomId</code> — <code>string | null</code> the ID of the currently selected room, or <code>null</code> for General</li>
+<li class=""><code>onSelectRoom</code> — <code>(roomId: string | null) =&gt; void</code> callback invoked when a chip is pressed</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1><code>InteractionLogModal.js</code></h1>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="formattimestampvalue"><code>formatTimestamp(value)</code><a href="#formattimestampvalue" class="hash-link" aria-label="Direct link to formattimestampvalue" title="Direct link to formattimestampvalue" translate="no">​</a></h2>
+<p>Converts a timestamp value to a human-readable locale string. Returns the original value if it cannot be parsed as a valid date.</p>
+<ul>
+<li class=""><strong>Parameters:</strong> <code>value</code> — a date string or timestamp</li>
+<li class=""><strong>Returns:</strong> <code>string</code> formatted locale date/time string</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="renderlogitem-item-index-"><code>renderLogItem({ item, index })</code><a href="#renderlogitem-item-index-" class="hash-link" aria-label="Direct link to renderlogitem-item-index-" title="Direct link to renderlogitem-item-index-" translate="no">​</a></h2>
+<p>Renders a single interaction log entry card. Displays button name, timestamp, room, device ID, and optional fields such as word, sentence length, and category.</p>
+<ul>
+<li class=""><strong>Parameters:</strong>
+<ul>
+<li class=""><code>item</code> — a log entry object</li>
+<li class=""><code>index</code> — <code>number</code> the position of the item in the list</li>
+</ul>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="default-function-interactionlogmodal-visible-logs-onclose-"><code>default function InteractionLogModal({ visible, logs, onClose })</code><a href="#default-function-interactionlogmodal-visible-logs-onclose-" class="hash-link" aria-label="Direct link to default-function-interactionlogmodal-visible-logs-onclose-" title="Direct link to default-function-interactionlogmodal-visible-logs-onclose-" translate="no">​</a></h2>
+<p>A full-screen modal that displays the interaction log history in reverse chronological order. Supports exporting all logs as a JSON file (download on web, native share sheet on mobile).</p>
+<ul>
+<li class=""><strong>Parameters:</strong>
+<ul>
+<li class=""><code>visible</code> — <code>boolean</code> controls modal visibility</li>
+<li class=""><code>logs</code> — <code>Array</code> of interaction log entry objects</li>
+<li class=""><code>onClose</code> — <code>() =&gt; void</code> callback to close the modal</li>
+</ul>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="handleexportjson"><code>handleExportJson()</code><a href="#handleexportjson" class="hash-link" aria-label="Direct link to handleexportjson" title="Direct link to handleexportjson" translate="no">​</a></h3>
+<p>Exports the current logs as a JSON payload. On web, triggers a file download. On native platforms, opens the system share sheet. Disables the export button while exporting is in progress.</p>
+<hr>
+<h1><code>CategoryTabs.js</code></h1>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="default-function-categorytabs-categories-activecategory-categorycolors-onselectcategory-"><code>default function CategoryTabs({ categories, activeCategory, categoryColors, onSelectCategory })</code><a href="#default-function-categorytabs-categories-activecategory-categorycolors-onselectcategory-" class="hash-link" aria-label="Direct link to default-function-categorytabs-categories-activecategory-categorycolors-onselectcategory-" title="Direct link to default-function-categorytabs-categories-activecategory-categorycolors-onselectcategory-" translate="no">​</a></h2>
+<p>Renders a row of category tab buttons. The active tab is highlighted with its assigned category color.</p>
+<ul>
+<li class=""><strong>Parameters:</strong>
+<ul>
+<li class=""><code>categories</code> — <code>object</code> whose keys are category name strings</li>
+<li class=""><code>activeCategory</code> — <code>string</code> the currently selected category key</li>
+<li class=""><code>categoryColors</code> — <code>object</code> mapping category keys to hex color strings</li>
+<li class=""><code>onSelectCategory</code> — <code>(category: string) =&gt; void</code> callback invoked when a tab is pressed</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1><code>AppHeader.js</code></h1>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="default-function-appheader-currentroom-onviewlogs-"><code>default function AppHeader({ currentRoom, onViewLogs })</code><a href="#default-function-appheader-currentroom-onviewlogs-" class="hash-link" aria-label="Direct link to default-function-appheader-currentroom-onviewlogs-" title="Direct link to default-function-appheader-currentroom-onviewlogs-" translate="no">​</a></h2>
+<p>Renders the top header bar showing the app title, the current room context, and a button to open the interaction logs modal.</p>
+<ul>
+<li class=""><strong>Parameters:</strong>
+<ul>
+<li class=""><code>currentRoom</code> — <code>{ emoji: string, label: string } | null</code> the active room object, or <code>null</code> for General</li>
+<li class=""><code>onViewLogs</code> — <code>() =&gt; void</code> callback invoked when the &quot;View Logs&quot; button is pressed</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1><code>useSpeech.js</code></h1>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="usespeech"><code>useSpeech()</code><a href="#usespeech" class="hash-link" aria-label="Direct link to usespeech" title="Direct link to usespeech" translate="no">​</a></h2>
+<p>Custom hook that exposes TTS controls to components.</p>
+<ul>
+<li class=""><strong>Returns:</strong>
+<ul>
+<li class=""><code>speakText(text: string) =&gt; void</code> — speaks the given text</li>
+<li class=""><code>stopSpeech() =&gt; void</code> — stops any currently playing speech</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1><code>useSentenceBuilder.js</code></h1>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="default-function-usesentencebuilder-onlogpress-"><code>default function useSentenceBuilder({ onLogPress })</code><a href="#default-function-usesentencebuilder-onlogpress-" class="hash-link" aria-label="Direct link to default-function-usesentencebuilder-onlogpress-" title="Direct link to default-function-usesentencebuilder-onlogpress-" translate="no">​</a></h2>
+<p>Custom hook that manages sentence state and logs all sentence-related user interactions. Intended as the primary sentence-building hook when interaction logging is needed.</p>
+<ul>
+<li class="">
+<p><strong>Parameters:</strong></p>
+<ul>
+<li class=""><code>onLogPress</code> — <code>(buttonName: string, metadata?: object) =&gt; void</code> optional callback used to log each action</li>
+</ul>
+</li>
+<li class="">
+<p><strong>Returns:</strong></p>
+<ul>
+<li class=""><code>sentence</code> — <code>string[]</code> the current array of words</li>
+<li class=""><code>addWord(word: string) =&gt; void</code> — appends a word to the sentence and logs a <code>word_tile</code> press</li>
+<li class=""><code>removeLastWord() =&gt; void</code> — removes the last word and logs a <code>remove_last_word</code> press</li>
+<li class=""><code>clearSentence() =&gt; void</code> — clears all words and logs a <code>clear_sentence</code> press</li>
+<li class=""><code>speakSentence() =&gt; void</code> — shows an alert with the full sentence and logs a <code>speak_sentence</code> press; no-op if sentence is empty</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1><code>useSentence.js</code></h1>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="usesentence"><code>useSentence()</code><a href="#usesentence" class="hash-link" aria-label="Direct link to usesentence" title="Direct link to usesentence" translate="no">​</a></h2>
+<p>Custom hook that manages sentence state with integrated TTS feedback. Speaks each word immediately when added and speaks the full sentence on demand.</p>
+<ul>
+<li class=""><strong>Returns:</strong>
+<ul>
+<li class=""><code>sentence</code> — <code>string[]</code> the current array of words</li>
+<li class=""><code>addWord(word: string) =&gt; void</code> — appends a word and immediately speaks it</li>
+<li class=""><code>speakSentence() =&gt; void</code> — speaks the entire sentence joined by spaces</li>
+<li class=""><code>clear() =&gt; void</code> — clears all words and stops any ongoing speech</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1><code>useLocationDetection.js</code></h1>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="default-function-uselocationdetection"><code>default function useLocationDetection()</code><a href="#default-function-uselocationdetection" class="hash-link" aria-label="Direct link to default-function-uselocationdetection" title="Direct link to default-function-uselocationdetection" translate="no">​</a></h2>
+<p>Abstraction layer for room / location detection. Currently supports manual room selection. Designed so that future Bluetooth beacon scanning can be swapped in without changing the hook&#x27;s return shape or the rest of the app.</p>
+<ul>
+<li class=""><strong>Returns:</strong>
+<ul>
+<li class=""><code>currentRoom</code> — <code>object | null</code> the active room context object</li>
+<li class=""><code>detectionMode</code> — <code>&#x27;manual&#x27; | &#x27;bluetooth&#x27;</code> the current detection strategy</li>
+<li class=""><code>setRoomManually(roomId: string | null) =&gt; void</code> — sets the active room by ID; pass <code>null</code> to clear</li>
+<li class=""><code>allRooms</code> — <code>Array</code> all available room definitions</li>
+</ul>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="setroommanuallyroomid"><code>setRoomManually(roomId)</code><a href="#setroommanuallyroomid" class="hash-link" aria-label="Direct link to setroommanuallyroomid" title="Direct link to setroommanuallyroomid" translate="no">​</a></h3>
+<p>Looks up a room by ID from the full room list and sets it as the current room. Clears the current room if <code>null</code> is passed.</p>
+<ul>
+<li class=""><strong>Parameters:</strong> <code>roomId</code> — <code>string | null</code></li>
+</ul>
+<hr>
+<h1><code>useInteractionLogger.js</code></h1>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="createdeviceid"><code>createDeviceId()</code><a href="#createdeviceid" class="hash-link" aria-label="Direct link to createdeviceid" title="Direct link to createdeviceid" translate="no">​</a></h2>
+<p>Generates a pseudo-unique device identifier string combining the platform OS, platform version, and a random alphanumeric suffix.</p>
+<ul>
+<li class=""><strong>Returns:</strong> <code>string</code> in the format <code>{os}-{version}-{randomSuffix}</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="default-function-useinteractionloggercurrentroom"><code>default function useInteractionLogger(currentRoom)</code><a href="#default-function-useinteractionloggercurrentroom" class="hash-link" aria-label="Direct link to default-function-useinteractionloggercurrentroom" title="Direct link to default-function-useinteractionloggercurrentroom" translate="no">​</a></h2>
+<p>Custom hook that maintains a log of user interaction events. Each entry captures the button name, timestamp, device ID, room context, and any additional metadata.</p>
+<ul>
+<li class="">
+<p><strong>Parameters:</strong> <code>currentRoom</code> — <code>object | null</code> the currently active room, used to attach location context to each log entry</p>
+</li>
+<li class="">
+<p><strong>Returns:</strong></p>
+<ul>
+<li class=""><code>deviceId</code> — <code>string</code> the stable pseudo-unique device identifier for this session</li>
+<li class=""><code>interactionLogs</code> — <code>Array</code> the full list of recorded log entries</li>
+<li class=""><code>logButtonPress(buttonName: string, metadata?: object) =&gt; void</code> — records a new interaction entry and prints it to the console</li>
+</ul>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="logbuttonpressbuttonname-metadata"><code>logButtonPress(buttonName, metadata)</code><a href="#logbuttonpressbuttonname-metadata" class="hash-link" aria-label="Direct link to logbuttonpressbuttonname-metadata" title="Direct link to logbuttonpressbuttonname-metadata" translate="no">​</a></h3>
+<p>Creates and appends a new log entry to <code>interactionLogs</code>. The entry includes device ID, button name, ISO timestamp, location (derived from <code>currentRoom</code>), and any extra fields provided in <code>metadata</code>.</p>
+<ul>
+<li class=""><strong>Parameters:</strong>
+<ul>
+<li class=""><code>buttonName</code> — <code>string</code> the identifier of the button or action that was triggered</li>
+<li class=""><code>metadata</code> — <code>object</code> optional additional fields to merge into the log entry (e.g. <code>{ word, sentenceLength, category }</code>)</li>
+</ul>
+</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/Capstone-Projects-2026-spring/project-professional-group-one-llc/edit/main/documentation/docs/api-specification/internal_contracts.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"><details><summary>Revision History</summary><table><thead><tr><th scope="row">Author</th><th scope="row">Revision</th><th scope="row">Date</th></tr></thead><tbody><tr><td colspan="3" style="text-align:center;font-style:italic;color:#666">Loading...</td></tr></tbody></table></details><span class="theme-last-updated">Last updated<!-- --> by <b>Walid Parsat</b></span></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/project-professional-group-one-llc/docs/api-specification/openapi-spec"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">API 1 - Location Aware AAC Device</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/project-professional-group-one-llc/docs/category/test-procedures"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Test Procedures</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#speaktext" class="table-of-contents__link toc-highlight"><code>speak(text)</code></a></li><li><a href="#stop" class="table-of-contents__link toc-highlight"><code>stop()</code></a></li><li><a href="#default-function-wordgrid-words-activecategorycolor-onaddword-" class="table-of-contents__link toc-highlight"><code>default function WordGrid({ words, activeCategoryColor, onAddWord })</code></a></li><li><a href="#default-function-sentencebar-sentence-onremovelastword-onclearsentence-onspeaksentence-" class="table-of-contents__link toc-highlight"><code>default function SentenceBar({ sentence, onRemoveLastWord, onClearSentence, onSpeakSentence })</code></a></li><li><a href="#default-function-roomselector-rooms-activeroomid-onselectroom-" class="table-of-contents__link toc-highlight"><code>default function RoomSelector({ rooms, activeRoomId, onSelectRoom })</code></a></li><li><a href="#formattimestampvalue" class="table-of-contents__link toc-highlight"><code>formatTimestamp(value)</code></a></li><li><a href="#renderlogitem-item-index-" class="table-of-contents__link toc-highlight"><code>renderLogItem({ item, index })</code></a></li><li><a href="#default-function-interactionlogmodal-visible-logs-onclose-" class="table-of-contents__link toc-highlight"><code>default function InteractionLogModal({ visible, logs, onClose })</code></a><ul><li><a href="#handleexportjson" class="table-of-contents__link toc-highlight"><code>handleExportJson()</code></a></li></ul></li><li><a href="#default-function-categorytabs-categories-activecategory-categorycolors-onselectcategory-" class="table-of-contents__link toc-highlight"><code>default function CategoryTabs({ categories, activeCategory, categoryColors, onSelectCategory })</code></a></li><li><a href="#default-function-appheader-currentroom-onviewlogs-" class="table-of-contents__link toc-highlight"><code>default function AppHeader({ currentRoom, onViewLogs })</code></a></li><li><a href="#usespeech" class="table-of-contents__link toc-highlight"><code>useSpeech()</code></a></li><li><a href="#default-function-usesentencebuilder-onlogpress-" class="table-of-contents__link toc-highlight"><code>default function useSentenceBuilder({ onLogPress })</code></a></li><li><a href="#usesentence" class="table-of-contents__link toc-highlight"><code>useSentence()</code></a></li><li><a href="#default-function-uselocationdetection" class="table-of-contents__link toc-highlight"><code>default function useLocationDetection()</code></a><ul><li><a href="#setroommanuallyroomid" class="table-of-contents__link toc-highlight"><code>setRoomManually(roomId)</code></a></li></ul></li><li><a href="#createdeviceid" class="table-of-contents__link toc-highlight"><code>createDeviceId()</code></a></li><li><a href="#default-function-useinteractionloggercurrentroom" class="table-of-contents__link toc-highlight"><code>default function useInteractionLogger(currentRoom)</code></a><ul><li><a href="#logbuttonpressbuttonname-metadata" class="table-of-contents__link toc-highlight"><code>logButtonPress(buttonName, metadata)</code></a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/project-professional-group-one-llc/docs/intro">Documentation</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Capstone-Projects-2026-spring/project-professional-group-one-llc" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a class="footer__link-item" href="/project-professional-group-one-llc/tutorial/open-source-usage">Template Contributors</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU"></div><div class="footer__copyright">Copyright © 2026 Project Professional Group One Llc, Inc. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>

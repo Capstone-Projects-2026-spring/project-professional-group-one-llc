@@ -1,818 +1,882 @@
 openapi: 3.0.2
 info:
-  title: Swagger Petstore - OpenAPI 3.0
+  title: AAC Beacon - Source Documentation
   description: >-
-    This is a sample Pet Store Server based on the OpenAPI 3.0 specification. 
-    You can find out more about
+    This document describes the functions, hooks, and components of the AAC
+    Beacon
 
-    Swagger at [http://swagger.io](http://swagger.io). In the third iteration of
-    the pet store, we've switched to the design first approach!
+    React Native application using the OpenAPI 3.0 specification format as a
 
-    You can now help us improve the API whether it's by making changes to the
-    definition itself or to the code.
-
-    That way, with time, we can improve the API in general, and expose some of
-    the new features in OAS3.
+    structured reference for all exported modules.
 
 
-    Some useful links:
+    Each tag corresponds to a source file. Each path corresponds to a callable
 
-    - [The Pet Store
-    repository](https://github.com/swagger-api/swagger-petstore)
+    function or hook. Parameters map to function arguments and responses map to
 
-    - [The source API definition for the Pet
-    Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
-  termsOfService: http://swagger.io/terms/
-  contact:
-    email: apiteam@swagger.io
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.11
-externalDocs:
-  description: Find out more about Swagger
-  url: http://swagger.io
-servers:
-  - url: /api/v3
+    return values or side effects.
+
+
+    Source files covered:
+
+    - tts.js
+
+    - WordGrid.js
+
+    - SentenceBar.js
+
+    - RoomSelector.js
+
+    - InteractionLogModal.js
+
+    - CategoryTabs.js
+
+    - AppHeader.js
+
+    - useSpeech.js
+
+    - useSentenceBuilder.js
+
+    - useSentence.js
+
+    - useLocationDetection.js
+
+    - useInteractionLogger.js
+  version: 1.0.0
 tags:
-  - name: pet
-    description: Everything about your Pets
-    externalDocs:
-      description: Find out more
-      url: http://swagger.io
-  - name: store
-    description: Access to Petstore orders
-    externalDocs:
-      description: Find out more about our store
-      url: http://swagger.io
-  - name: user
-    description: Operations about user
+  - name: tts
+    description: Text-to-speech service layer wrapping expo-speech
+  - name: WordGrid
+    description: Scrollable grid component for displaying and selecting word tiles
+  - name: SentenceBar
+    description: Horizontal bar component for displaying and managing the built sentence
+  - name: RoomSelector
+    description: Room chip selector component — manual BLE placeholder
+  - name: InteractionLogModal
+    description: Full-screen modal for viewing and exporting interaction logs
+  - name: CategoryTabs
+    description: Tab bar component for selecting word categories
+  - name: AppHeader
+    description: Top header bar component showing room context and log access
+  - name: useSpeech
+    description: Custom hook exposing TTS controls to components
+  - name: useSentenceBuilder
+    description: Custom hook for sentence state management with interaction logging
+  - name: useSentence
+    description: Custom hook for sentence state management with integrated TTS feedback
+  - name: useLocationDetection
+    description: Custom hook abstracting room/location detection with BLE upgrade path
+  - name: useInteractionLogger
+    description: Custom hook for recording and managing user interaction log entries
 paths:
-  /pet:
-    put:
-      tags:
-        - pet
-      summary: Update an existing pet
-      description: Update an existing pet by Id
-      operationId: updatePet
-      requestBody:
-        description: Update an existent pet in the store
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Pet'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Pet'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Pet'
-        required: true
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-        '405':
-          description: Validation exception
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
+  /tts/speak:
     post:
       tags:
-        - pet
-      summary: Add a new pet to the store
-      description: Add a new pet to the store
-      operationId: addPet
+        - tts
+      summary: Speak text aloud
+      description: |-
+        Speaks the given text using the device speech engine (expo-speech).
+        Stops any currently playing speech before starting a new utterance.
+        Does nothing if the text is empty or whitespace only.
+        Language is en-US, rate 0.9, pitch 1.0.
+      operationId: speak
       requestBody:
-        description: Create a new pet in the store
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Pet'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Pet'
-        required: true
+              type: object
+              required:
+                - text
+              properties:
+                text:
+                  type: string
+                  description: The text to be spoken aloud
+                  example: I want water
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'
-        '405':
-          description: Invalid input
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/findByStatus:
-    get:
+          description: Speech started successfully or skipped (empty input)
+        '204':
+          description: No content — text was empty or whitespace, speech skipped
+  /tts/stop:
+    post:
       tags:
-        - pet
-      summary: Finds Pets by status
-      description: Multiple status values can be provided with comma separated strings
-      operationId: findPetsByStatus
-      parameters:
-        - name: status
-          in: query
-          description: Status values that need to be considered for filter
-          required: false
-          explode: true
-          schema:
-            type: string
-            default: available
-            enum:
-              - available
-              - pending
-              - sold
+        - tts
+      summary: Stop current speech
+      description: Immediately stops any ongoing speech playback.
+      operationId: stop
       responses:
         '200':
-          description: successful operation
-          content:
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid status value
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/findByTags:
-    get:
+          description: Speech stopped successfully
+  /WordGrid/render:
+    post:
       tags:
-        - pet
-      summary: Finds Pets by tags
+        - WordGrid
+      summary: Render the word tile grid
       description: >-
-        Multiple tags can be provided with comma separated strings. Use tag1,
-        tag2, tag3 for testing.
-      operationId: findPetsByTags
-      parameters:
-        - name: tags
-          in: query
-          description: Tags to filter by
-          required: false
-          explode: true
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid tag value
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/{petId}:
-    get:
-      tags:
-        - pet
-      summary: Find pet by ID
-      description: Returns a single pet
-      operationId: getPetById
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet to return
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-      security:
-        - api_key: []
-        - petstore_auth:
-            - write:pets
-            - read:pets
-    post:
-      tags:
-        - pet
-      summary: Updates a pet in the store with form data
-      description: ''
-      operationId: updatePetWithForm
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet that needs to be updated
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: name
-          in: query
-          description: Name of pet that needs to be updated
-          schema:
-            type: string
-        - name: status
-          in: query
-          description: Status of pet that needs to be updated
-          schema:
-            type: string
-      responses:
-        '405':
-          description: Invalid input
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-    delete:
-      tags:
-        - pet
-      summary: Deletes a pet
-      description: ''
-      operationId: deletePet
-      parameters:
-        - name: api_key
-          in: header
-          description: ''
-          required: false
-          schema:
-            type: string
-        - name: petId
-          in: path
-          description: Pet id to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '400':
-          description: Invalid pet value
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/{petId}/uploadImage:
-    post:
-      tags:
-        - pet
-      summary: uploads an image
-      description: ''
-      operationId: uploadFile
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet to update
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: additionalMetadata
-          in: query
-          description: Additional Metadata
-          required: false
-          schema:
-            type: string
+        Renders a scrollable grid of word tiles. Each tile displays an emoji and
+
+        a label. Pressing a tile invokes the onAddWord callback with the word
+        label.
+
+        Tile background is tinted and bordered using the active category color.
+      operationId: renderWordGrid
       requestBody:
+        required: true
         content:
-          application/octet-stream:
+          application/json:
             schema:
-              type: string
-              format: binary
+              $ref: '#/components/schemas/WordGridProps'
       responses:
         '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /store/inventory:
+          description: Component rendered successfully
+        '400':
+          description: Missing or invalid props
+  /SentenceBar/render:
+    post:
+      tags:
+        - SentenceBar
+      summary: Render the sentence bar
+      description: |-
+        Renders a horizontal bar showing the current sentence as individual word
+        chips, along with backspace, clear, and speak action buttons.
+        Displays a placeholder when the sentence is empty.
+      operationId: renderSentenceBar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SentenceBarProps'
+      responses:
+        '200':
+          description: Component rendered successfully
+        '400':
+          description: Missing or invalid props
+  /RoomSelector/render:
+    post:
+      tags:
+        - RoomSelector
+      summary: Render the room selector chip row
+      description: >-
+        Renders a horizontally scrollable row of room chips for manually
+
+        simulating room entry. Includes a "General" chip to clear the room
+        context.
+
+        This component is a placeholder for Bluetooth beacon detection — once
+        BLE
+
+        is integrated it can be hidden or used as a manual override only.
+      operationId: renderRoomSelector
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomSelectorProps'
+      responses:
+        '200':
+          description: Component rendered successfully
+        '400':
+          description: Missing or invalid props
+  /InteractionLogModal/render:
+    post:
+      tags:
+        - InteractionLogModal
+      summary: Render the interaction log modal
+      description: >-
+        Renders a full-screen modal displaying all recorded interaction log
+        entries
+
+        in reverse chronological order. Includes an Export JSON button that
+
+        triggers a file download on web or the native share sheet on mobile.
+
+        The export button is disabled when there are no logs.
+      operationId: renderInteractionLogModal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InteractionLogModalProps'
+      responses:
+        '200':
+          description: Modal rendered successfully
+        '400':
+          description: Missing or invalid props
+  /InteractionLogModal/formatTimestamp:
     get:
       tags:
-        - store
-      summary: Returns pet inventories by status
-      description: Returns a map of status codes to quantities
-      operationId: getInventory
+        - InteractionLogModal
+      summary: Format a timestamp value to a locale string
+      description: >-
+        Converts a timestamp value to a human-readable locale date/time string.
+
+        Returns the original value unchanged if it cannot be parsed as a valid
+        Date.
+      operationId: formatTimestamp
+      parameters:
+        - name: value
+          in: query
+          required: true
+          description: An ISO date string or numeric timestamp to format
+          schema:
+            type: string
+            example: '2024-05-01T10:30:00.000Z'
       responses:
         '200':
-          description: successful operation
+          description: Formatted timestamp string returned
           content:
             application/json:
               schema:
                 type: object
-                additionalProperties:
-                  type: integer
-                  format: int32
-      security:
-        - api_key: []
-  /store/order:
+                properties:
+                  result:
+                    type: string
+                    example: 5/1/2024, 10:30:00 AM
+        '400':
+          description: Invalid or unparseable timestamp value
+  /InteractionLogModal/handleExportJson:
     post:
       tags:
-        - store
-      summary: Place an order for a pet
-      description: Place a new order in the store
-      operationId: placeOrder
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Order'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Order'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Order'
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
-        '405':
-          description: Invalid input
-  /store/order/{orderId}:
-    get:
-      tags:
-        - store
-      summary: Find purchase order by ID
+        - InteractionLogModal
+      summary: Export interaction logs as JSON
       description: >-
-        For valid response try integer IDs with value <= 5 or > 10. Other values
-        will generate exceptions.
-      operationId: getOrderById
-      parameters:
-        - name: orderId
-          in: path
-          description: ID of order that needs to be fetched
-          required: true
-          schema:
-            type: integer
-            format: int64
+        Serializes all log entries into a JSON payload with metadata
+        (exportedAt,
+
+        totalLogs). On web platforms, triggers a file download. On native
+        platforms,
+
+        opens the system share sheet. Disables itself while an export is in
+        progress.
+
+        No-op if there are no logs.
+      operationId: handleExportJson
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                logs:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/LogEntry'
       responses:
         '200':
-          description: successful operation
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Order'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Order not found
-    delete:
+          description: Export triggered successfully
+        '204':
+          description: No logs to export — operation skipped
+        '500':
+          description: Export failed — alert shown to user
+  /CategoryTabs/render:
+    post:
       tags:
-        - store
-      summary: Delete purchase order by ID
+        - CategoryTabs
+      summary: Render category tab buttons
       description: >-
-        For valid response try integer IDs with value < 1000. Anything above
-        1000 or nonintegers will generate API errors
-      operationId: deleteOrder
-      parameters:
-        - name: orderId
-          in: path
-          description: ID of the order that needs to be deleted
-          required: true
-          schema:
-            type: integer
-            format: int64
+        Renders a row of tappable category tabs. The active tab is highlighted
+
+        with its assigned category color. Pressing a tab invokes
+        onSelectCategory.
+      operationId: renderCategoryTabs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryTabsProps'
       responses:
+        '200':
+          description: Component rendered successfully
         '400':
-          description: Invalid ID supplied
-        '404':
-          description: Order not found
-  /user:
+          description: Missing or invalid props
+  /AppHeader/render:
     post:
       tags:
-        - user
-      summary: Create user
-      description: This can only be done by the logged in user.
-      operationId: createUser
+        - AppHeader
+      summary: Render the app header bar
+      description: |-
+        Renders the top header showing the AAC Beacon title, the current room
+        context (emoji + label, or "General" if no room is set), and a
+        "View Logs" button.
+      operationId: renderAppHeader
       requestBody:
-        description: Created user object
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/AppHeaderProps'
       responses:
-        default:
-          description: successful operation
+        '200':
+          description: Component rendered successfully
+        '400':
+          description: Missing or invalid props
+  /useSpeech:
+    get:
+      tags:
+        - useSpeech
+      summary: Initialize the speech hook
+      description: |-
+        Custom hook that wraps the TTS service and exposes speakText and
+        stopSpeech helpers to React components.
+      operationId: useSpeech
+      responses:
+        '200':
+          description: Hook initialized — returns TTS control functions
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
-  /user/createWithList:
+                $ref: '#/components/schemas/UseSpeechReturn'
+  /useSentenceBuilder:
     post:
       tags:
-        - user
-      summary: Creates list of users with given input array
-      description: Creates list of users with given input array
-      operationId: createUsersWithListInput
+        - useSentenceBuilder
+      summary: Initialize the sentence builder hook
+      description: >-
+        Custom hook that manages sentence state and logs every sentence-related
+
+        user action via the provided onLogPress callback. Intended as the
+        primary
+
+        sentence hook when interaction logging is required.
+      operationId: useSentenceBuilder
       requestBody:
+        required: false
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/User'
+              type: object
+              properties:
+                onLogPress:
+                  type: string
+                  description: Callback reference — (buttonName, metadata?) => void
+                  example: logButtonPress
       responses:
         '200':
-          description: Successful operation
+          description: Hook initialized — returns sentence state and action functions
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        default:
-          description: successful operation
-  /user/login:
-    get:
+                $ref: '#/components/schemas/UseSentenceBuilderReturn'
+  /useSentenceBuilder/addWord:
+    post:
       tags:
-        - user
-      summary: Logs user into the system
-      description: ''
-      operationId: loginUser
-      parameters:
-        - name: username
-          in: query
-          description: The user name for login
-          required: false
-          schema:
-            type: string
-        - name: password
-          in: query
-          description: The password for login in clear text
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: successful operation
-          headers:
-            X-Rate-Limit:
-              description: calls per hour allowed by the user
-              schema:
-                type: integer
-                format: int32
-            X-Expires-After:
-              description: date in UTC when token expires
-              schema:
-                type: string
-                format: date-time
-          content:
-            application/xml:
-              schema:
-                type: string
-            application/json:
-              schema:
-                type: string
-        '400':
-          description: Invalid username/password supplied
-  /user/logout:
-    get:
-      tags:
-        - user
-      summary: Logs out current logged in user session
-      description: ''
-      operationId: logoutUser
-      parameters: []
-      responses:
-        default:
-          description: successful operation
-  /user/{username}:
-    get:
-      tags:
-        - user
-      summary: Get user by user name
-      description: ''
-      operationId: getUserByName
-      parameters:
-        - name: username
-          in: path
-          description: 'The name that needs to be fetched. Use user1 for testing. '
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '400':
-          description: Invalid username supplied
-        '404':
-          description: User not found
-    put:
-      tags:
-        - user
-      summary: Update user
-      description: This can only be done by the logged in user.
-      operationId: updateUser
-      parameters:
-        - name: username
-          in: path
-          description: name that need to be deleted
-          required: true
-          schema:
-            type: string
+        - useSentenceBuilder
+      summary: Append a word to the sentence
+      description: >-
+        Appends a word to the current sentence array and logs a word_tile press
+        event.
+      operationId: addWord_builder
       requestBody:
-        description: Update an existent user in the store
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
+              type: object
+              required:
+                - word
+              properties:
+                word:
+                  type: string
+                  example: water
       responses:
-        default:
-          description: successful operation
-    delete:
+        '200':
+          description: Word appended and logged
+  /useSentenceBuilder/removeLastWord:
+    post:
       tags:
-        - user
-      summary: Delete user
-      description: This can only be done by the logged in user.
-      operationId: deleteUser
-      parameters:
-        - name: username
-          in: path
-          description: The name that needs to be deleted
-          required: true
-          schema:
-            type: string
+        - useSentenceBuilder
+      summary: Remove the last word from the sentence
+      description: >-
+        Removes the last word in the sentence array and logs a remove_last_word
+        event.
+      operationId: removeLastWord_builder
       responses:
-        '400':
-          description: Invalid username supplied
+        '200':
+          description: Last word removed and logged
+  /useSentenceBuilder/clearSentence:
+    post:
+      tags:
+        - useSentenceBuilder
+      summary: Clear the entire sentence
+      description: Resets the sentence array to empty and logs a clear_sentence event.
+      operationId: clearSentence_builder
+      responses:
+        '200':
+          description: Sentence cleared and logged
+  /useSentenceBuilder/speakSentence:
+    post:
+      tags:
+        - useSentenceBuilder
+      summary: Speak the full sentence
+      description: |-
+        Shows a native Alert with the full sentence joined by spaces and logs
+        a speak_sentence event. No-op if the sentence is empty.
+      operationId: speakSentence_builder
+      responses:
+        '200':
+          description: Sentence spoken (or skipped if empty)
+  /useSentence:
+    get:
+      tags:
+        - useSentence
+      summary: Initialize the sentence hook with TTS feedback
+      description: |-
+        Custom hook managing sentence state with immediate TTS feedback on each
+        word added. Also supports speaking the full sentence on demand and
+        clearing with speech stopped.
+      operationId: useSentence
+      responses:
+        '200':
+          description: Hook initialized — returns sentence state and action functions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UseSentenceReturn'
+  /useSentence/addWord:
+    post:
+      tags:
+        - useSentence
+      summary: Append a word and speak it immediately
+      description: >-
+        Appends a word to the sentence array and immediately speaks that word
+        via TTS.
+      operationId: addWord_sentence
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - word
+              properties:
+                word:
+                  type: string
+                  example: hungry
+      responses:
+        '200':
+          description: Word appended and spoken
+  /useSentence/speakSentence:
+    post:
+      tags:
+        - useSentence
+      summary: Speak the full sentence
+      description: >-
+        Joins all words with spaces and passes the result to the TTS speak
+        function.
+      operationId: speakSentence_sentence
+      responses:
+        '200':
+          description: Full sentence spoken via TTS
+  /useSentence/clear:
+    post:
+      tags:
+        - useSentence
+      summary: Clear sentence and stop speech
+      description: >-
+        Resets the sentence array to empty and calls TTS stop to halt any
+        ongoing speech.
+      operationId: clear_sentence
+      responses:
+        '200':
+          description: Sentence cleared and speech stopped
+  /useLocationDetection:
+    get:
+      tags:
+        - useLocationDetection
+      summary: Initialize the location detection hook
+      description: |-
+        Abstraction layer for room/location detection. Currently operates in
+        manual mode via setRoomManually. Designed so that Bluetooth beacon
+        scanning can replace the internals in the future without changing the
+        hook's return shape or any consuming components.
+      operationId: useLocationDetection
+      responses:
+        '200':
+          description: Hook initialized — returns room state and control functions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UseLocationDetectionReturn'
+  /useLocationDetection/setRoomManually:
+    post:
+      tags:
+        - useLocationDetection
+      summary: Manually set the active room by ID
+      description: |-
+        Looks up a room by ID from the full rooms list and sets it as the
+        current room. Pass null to clear the active room and revert to General.
+      operationId: setRoomManually
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roomId:
+                  type: string
+                  nullable: true
+                  description: The ID of the room to activate, or null to clear
+                  example: kitchen
+      responses:
+        '200':
+          description: Room updated successfully
         '404':
-          description: User not found
+          description: Room ID not found in the available rooms list
+  /useInteractionLogger:
+    post:
+      tags:
+        - useInteractionLogger
+      summary: Initialize the interaction logger hook
+      description: >-
+        Custom hook that maintains a session-scoped log of user interaction
+        events.
+
+        Generates a pseudo-unique device ID on mount combining platform OS,
+        version,
+
+        and a random suffix. Each logged entry captures the button name, ISO
+        timestamp,
+
+        device ID, room context, and any extra metadata fields.
+      operationId: useInteractionLogger
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currentRoom:
+                  $ref: '#/components/schemas/Room'
+      responses:
+        '200':
+          description: Hook initialized — returns device ID, logs array, and logButtonPress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UseInteractionLoggerReturn'
+  /useInteractionLogger/logButtonPress:
+    post:
+      tags:
+        - useInteractionLogger
+      summary: Record a new interaction log entry
+      description: |-
+        Creates and appends a new log entry to the interactionLogs array.
+        The entry merges deviceId, buttonName, pressedAt (ISO string), location
+        (derived from currentRoom), and any extra fields from metadata.
+        Also prints the entry to the console via JSON.stringify.
+      operationId: logButtonPress
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - buttonName
+              properties:
+                buttonName:
+                  type: string
+                  description: Identifier of the button or action triggered
+                  example: word_tile
+                metadata:
+                  type: object
+                  description: Optional additional fields merged into the log entry
+                  example:
+                    word: water
+                    sentenceLength: 3
+                    category: Drinks
+      responses:
+        '200':
+          description: Log entry recorded and printed to console
+  /useInteractionLogger/createDeviceId:
+    get:
+      tags:
+        - useInteractionLogger
+      summary: Generate a pseudo-unique device identifier
+      description: |-
+        Builds a device ID string in the format {os}-{version}-{randomSuffix}
+        using Platform.OS, Platform.Version, and a random base-36 suffix.
+        Called once on hook mount.
+      operationId: createDeviceId
+      responses:
+        '200':
+          description: Device ID string generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deviceId:
+                    type: string
+                    example: ios-17-x4f2a9b3
 components:
   schemas:
-    Order:
+    Room:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
-          example: 10
-        petId:
-          type: integer
-          format: int64
-          example: 198772
-        quantity:
-          type: integer
-          format: int32
-          example: 7
-        shipDate:
+          type: string
+          example: kitchen
+        label:
+          type: string
+          example: Kitchen
+        emoji:
+          type: string
+          example: 🍳
+        color:
+          type: string
+          example: '#FF6B6B'
+    Word:
+      type: object
+      required:
+        - label
+        - emoji
+      properties:
+        label:
+          type: string
+          example: water
+        emoji:
+          type: string
+          example: 💧
+    LogEntry:
+      type: object
+      properties:
+        deviceId:
+          type: string
+          example: android-33-ab12cd34
+        buttonName:
+          type: string
+          example: word_tile
+        pressedAt:
           type: string
           format: date-time
-        status:
+          example: '2024-05-01T10:30:00.000Z'
+        location:
+          type: object
+          properties:
+            id:
+              type: string
+              example: kitchen
+            label:
+              type: string
+              example: Kitchen
+        word:
           type: string
-          description: Order Status
-          example: approved
-          enum:
-            - placed
-            - approved
-            - delivered
-        complete:
-          type: boolean
-      xml:
-        name: order
-    Customer:
-      type: object
-      properties:
-        id:
+          example: water
+        sentenceLength:
           type: integer
-          format: int64
-          example: 100000
-        username:
-          type: string
-          example: fehguy
-        address:
-          type: array
-          xml:
-            name: addresses
-            wrapped: true
-          items:
-            $ref: '#/components/schemas/Address'
-      xml:
-        name: customer
-    Address:
-      type: object
-      properties:
-        street:
-          type: string
-          example: 437 Lytton
-        city:
-          type: string
-          example: Palo Alto
-        state:
-          type: string
-          example: CA
-        zip:
-          type: string
-          example: '94301'
-      xml:
-        name: address
-    Category:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 1
-        name:
-          type: string
-          example: Dogs
-      xml:
-        name: category
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        username:
-          type: string
-          example: theUser
-        firstName:
-          type: string
-          example: John
-        lastName:
-          type: string
-          example: James
-        email:
-          type: string
-          example: john@email.com
-        password:
-          type: string
-          example: '12345'
-        phone:
-          type: string
-          example: '12345'
-        userStatus:
-          type: integer
-          description: User Status
-          format: int32
-          example: 1
-      xml:
-        name: user
-    Tag:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-      xml:
-        name: tag
-    Pet:
-      required:
-        - name
-        - photoUrls
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        name:
-          type: string
-          example: doggie
+          example: 3
         category:
-          $ref: '#/components/schemas/Category'
-        photoUrls:
+          type: string
+          example: Drinks
+    WordGridProps:
+      type: object
+      required:
+        - words
+        - activeCategoryColor
+        - onAddWord
+      properties:
+        words:
           type: array
-          xml:
-            wrapped: true
+          items:
+            $ref: '#/components/schemas/Word'
+        activeCategoryColor:
+          type: string
+          description: Hex color string for tile tint and border
+          example: '#4CAF50'
+        onAddWord:
+          type: string
+          description: 'Callback reference — (label: string) => void'
+          example: addWord
+    SentenceBarProps:
+      type: object
+      required:
+        - sentence
+        - onRemoveLastWord
+        - onClearSentence
+        - onSpeakSentence
+      properties:
+        sentence:
+          type: array
           items:
             type: string
-            xml:
-              name: photoUrl
-        tags:
-          type: array
-          xml:
-            wrapped: true
-          items:
-            $ref: '#/components/schemas/Tag'
-        status:
+          example:
+            - I
+            - want
+            - water
+        onRemoveLastWord:
           type: string
-          description: pet status in the store
-          enum:
-            - available
-            - pending
-            - sold
-      xml:
-        name: pet
-    ApiResponse:
+          description: Callback reference — () => void
+        onClearSentence:
+          type: string
+          description: Callback reference — () => void
+        onSpeakSentence:
+          type: string
+          description: Callback reference — () => void
+    RoomSelectorProps:
+      type: object
+      required:
+        - rooms
+        - activeRoomId
+        - onSelectRoom
+      properties:
+        rooms:
+          type: array
+          items:
+            $ref: '#/components/schemas/Room'
+        activeRoomId:
+          type: string
+          nullable: true
+          example: kitchen
+        onSelectRoom:
+          type: string
+          description: 'Callback reference — (roomId: string | null) => void'
+    InteractionLogModalProps:
+      type: object
+      required:
+        - visible
+        - logs
+        - onClose
+      properties:
+        visible:
+          type: boolean
+          example: true
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        onClose:
+          type: string
+          description: Callback reference — () => void
+    CategoryTabsProps:
+      type: object
+      required:
+        - categories
+        - activeCategory
+        - categoryColors
+        - onSelectCategory
+      properties:
+        categories:
+          type: object
+          description: Object whose keys are category name strings
+          example:
+            Drinks: []
+            Food: []
+            Feelings: []
+        activeCategory:
+          type: string
+          example: Drinks
+        categoryColors:
+          type: object
+          description: Map of category keys to hex color strings
+          example:
+            Drinks: '#2196F3'
+            Food: '#4CAF50'
+        onSelectCategory:
+          type: string
+          description: 'Callback reference — (category: string) => void'
+    AppHeaderProps:
+      type: object
+      required:
+        - onViewLogs
+      properties:
+        currentRoom:
+          $ref: '#/components/schemas/Room'
+          nullable: true
+        onViewLogs:
+          type: string
+          description: Callback reference — () => void
+    UseSpeechReturn:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-        type:
+        speakText:
           type: string
-        message:
+          description: 'Function — (text: string) => void — speaks the given text'
+        stopSpeech:
           type: string
-      xml:
-        name: '##default'
-  requestBodies:
-    Pet:
-      description: Pet object that needs to be added to the store
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Pet'
-        application/xml:
-          schema:
-            $ref: '#/components/schemas/Pet'
-    UserArray:
-      description: List of user object
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/User'
-  securitySchemes:
-    petstore_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
-          scopes:
-            write:pets: modify pets in your account
-            read:pets: read your pets
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+          description: Function — () => void — stops any ongoing speech
+    UseSentenceBuilderReturn:
+      type: object
+      properties:
+        sentence:
+          type: array
+          items:
+            type: string
+          example:
+            - I
+            - want
+            - water
+        addWord:
+          type: string
+          description: 'Function — (word: string) => void'
+        removeLastWord:
+          type: string
+          description: Function — () => void
+        clearSentence:
+          type: string
+          description: Function — () => void
+        speakSentence:
+          type: string
+          description: Function — () => void
+    UseSentenceReturn:
+      type: object
+      properties:
+        sentence:
+          type: array
+          items:
+            type: string
+          example:
+            - I
+            - am
+            - hungry
+        addWord:
+          type: string
+          description: 'Function — (word: string) => void — appends and speaks word'
+        speakSentence:
+          type: string
+          description: Function — () => void — speaks full sentence
+        clear:
+          type: string
+          description: Function — () => void — clears sentence and stops speech
+    UseLocationDetectionReturn:
+      type: object
+      properties:
+        currentRoom:
+          $ref: '#/components/schemas/Room'
+          nullable: true
+        detectionMode:
+          type: string
+          enum:
+            - manual
+            - bluetooth
+          example: manual
+        setRoomManually:
+          type: string
+          description: 'Function — (roomId: string | null) => void'
+        allRooms:
+          type: array
+          items:
+            $ref: '#/components/schemas/Room'
+    UseInteractionLoggerReturn:
+      type: object
+      properties:
+        deviceId:
+          type: string
+          description: Stable pseudo-unique device identifier for this session
+          example: ios-17-x4f2a9b3
+        interactionLogs:
+          type: array
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        logButtonPress:
+          type: string
+          description: 'Function — (buttonName: string, metadata?: object) => void'
