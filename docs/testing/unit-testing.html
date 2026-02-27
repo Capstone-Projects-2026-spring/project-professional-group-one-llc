@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.9.2">
 <title data-rh="true">Unit tests | Project Professional Group One Llc</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/testing/unit-testing"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Unit tests | Project Professional Group One Llc"><meta data-rh="true" name="description" content="For each method, one or more test cases."><meta data-rh="true" property="og:description" content="For each method, one or more test cases."><link data-rh="true" rel="icon" href="/project-professional-group-one-llc/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/testing/unit-testing"><link data-rh="true" rel="alternate" href="https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/testing/unit-testing" hreflang="en"><link data-rh="true" rel="alternate" href="https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/testing/unit-testing" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Test Procedures","item":"https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/category/test-procedures"},{"@type":"ListItem","position":2,"name":"Unit tests","item":"https://Capstone-Projects-2026-spring.github.io/project-professional-group-one-llc/docs/testing/unit-testing"}]}</script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script><link rel="stylesheet" href="/project-professional-group-one-llc/assets/css/styles.7aa687c6.css">
-<script src="/project-professional-group-one-llc/assets/js/runtime~main.826e76f9.js" defer="defer"></script>
+<script src="/project-professional-group-one-llc/assets/js/runtime~main.2ec0aa3c.js" defer="defer"></script>
 <script src="/project-professional-group-one-llc/assets/js/main.d8241137.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -36,7 +36,7 @@
 <li class=""><code>jest.useFakeTimers()</code> to control time-based behavior (e.g., stillness timeouts).</li>
 <li class=""><code>jest.advanceTimersByTime(ms)</code> to simulate time passing and trigger timer callbacks.</li>
 </ul>
-<p>This is essential because “stillness triggers scan after a timeout” is timer-driven behavior.</p>
+<p>This is essential because &quot;stillness triggers scan after a timeout&quot; is timer-driven behavior.</p>
 <h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="mocking-expo-sensors">Mocking <code>expo-sensors</code><a href="#mocking-expo-sensors" class="hash-link" aria-label="Direct link to mocking-expo-sensors" title="Direct link to mocking-expo-sensors" translate="no">​</a></h4>
 <p>The test replaces <code>expo-sensors</code> with a mock implementation:</p>
 <ul>
@@ -96,7 +96,7 @@
 </ul>
 <p><strong>Why it matters</strong></p>
 <ul>
-<li class="">Confirms that the module’s top-level initialization is correct and consistent.</li>
+<li class="">Confirms that the module&#x27;s top-level initialization is correct and consistent.</li>
 </ul>
 <hr>
 <h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-stop-removes-the-accelerometer-subscription">2) <code>stop()</code> removes the accelerometer subscription<a href="#2-stop-removes-the-accelerometer-subscription" class="hash-link" aria-label="Direct link to 2-stop-removes-the-accelerometer-subscription" title="Direct link to 2-stop-removes-the-accelerometer-subscription" translate="no">​</a></h4>
@@ -120,7 +120,7 @@
 </ul>
 <p><strong>What it verifies</strong></p>
 <ul>
-<li class="">Feeding a “still” sample without ever reaching the target distance does not trigger scanning,
+<li class="">Feeding a &quot;still&quot; sample without ever reaching the target distance does not trigger scanning,
 even after enough time passes.</li>
 </ul>
 <p><strong>Signals used</strong></p>
@@ -133,7 +133,7 @@ even after enough time passes.</li>
 </ul>
 <p><strong>Why it matters</strong></p>
 <ul>
-<li class="">Scanning should only happen after “arming” conditions are met (target distance reached).</li>
+<li class="">Scanning should only happen after &quot;arming&quot; conditions are met (target distance reached).</li>
 </ul>
 <hr>
 <h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-after-being-armed-going-still-triggers-a-scan-after-the-stillness-timeout">4) After being armed, going still triggers a scan after the stillness timeout<a href="#4-after-being-armed-going-still-triggers-a-scan-after-the-stillness-timeout" class="hash-link" aria-label="Direct link to 4) After being armed, going still triggers a scan after the stillness timeout" title="Direct link to 4) After being armed, going still triggers a scan after the stillness timeout" translate="no">​</a></h4>
@@ -164,7 +164,7 @@ even after enough time passes.</li>
 </ul>
 <p><strong>Why it matters</strong></p>
 <ul>
-<li class="">This is the core expected behavior: “travel enough -&gt; wait until still -&gt; scan.”</li>
+<li class="">This is the core expected behavior: &quot;travel enough -&gt; wait until still -&gt; scan.&quot;</li>
 </ul>
 <hr>
 <h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-if-movement-resumes-it-cancels-the-stillness-timer-no-scan">5) If movement resumes, it cancels the stillness timer (no scan)<a href="#5-if-movement-resumes-it-cancels-the-stillness-timer-no-scan" class="hash-link" aria-label="Direct link to 5) If movement resumes, it cancels the stillness timer (no scan)" title="Direct link to 5) If movement resumes, it cancels the stillness timer (no scan)" translate="no">​</a></h4>
@@ -182,7 +182,7 @@ even after enough time passes.</li>
 </ol>
 <p><strong>Why it matters</strong></p>
 <ul>
-<li class="">Prevents scanning while the device is moving again (correct “debounce” behavior).</li>
+<li class="">Prevents scanning while the device is moving again (correct &quot;debounce&quot; behavior).</li>
 </ul>
 <hr>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="notes--expectations-about-the-implementation">Notes / Expectations About the Implementation<a href="#notes--expectations-about-the-implementation" class="hash-link" aria-label="Direct link to Notes / Expectations About the Implementation" title="Direct link to Notes / Expectations About the Implementation" translate="no">​</a></h3>
@@ -192,13 +192,13 @@ even after enough time passes.</li>
 <li class="">Calls <code>Accelerometer.addListener(cb)</code> on import</li>
 <li class="">Accumulates distance using time deltas (<code>Date.now()</code>) and acceleration magnitude</li>
 <li class="">Arms scanning at <code>5m</code> (target distance)</li>
-<li class="">Triggers scan only after <code>STILLNESS_TIMEOUT</code> elapses while “still”</li>
+<li class="">Triggers scan only after <code>STILLNESS_TIMEOUT</code> elapses while &quot;still&quot;</li>
 <li class="">Cancels stillness timer if movement resumes before the timeout</li>
 </ul>
 <hr>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="usesentencebuildertestjs"><code>useSentenceBuilder.test.js</code><a href="#usesentencebuildertestjs" class="hash-link" aria-label="Direct link to usesentencebuildertestjs" title="Direct link to usesentencebuildertestjs" translate="no">​</a></h2>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="purpose-1">Purpose<a href="#purpose-1" class="hash-link" aria-label="Direct link to Purpose" title="Direct link to Purpose" translate="no">​</a></h3>
-<p>Tests the custom hook <code>useSentenceBuilder</code> (imported from <code>../src/hooks/useSentenceBuilder</code>) which manages a “sentence” as an array of words and exposes actions to:</p>
+<p>Tests the custom hook <code>useSentenceBuilder</code> (imported from <code>../src/hooks/useSentenceBuilder</code>) which manages a &quot;sentence&quot; as an array of words and exposes actions to:</p>
 <ul>
 <li class="">Add a word</li>
 <li class="">Remove the last word</li>
@@ -308,7 +308,7 @@ even after enough time passes.</li>
 </ul>
 <p><strong>Why it matters</strong></p>
 <ul>
-<li class="">Avoids confusing UX (no “speaking” popup when nothing exists to speak).</li>
+<li class="">Avoids confusing UX (no &quot;speaking&quot; popup when nothing exists to speak).</li>
 </ul>
 <hr>
 <h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="7-speaksentence-alerts-joined-sentence-when-not-empty">7) <code>speakSentence</code> alerts joined sentence when not empty<a href="#7-speaksentence-alerts-joined-sentence-when-not-empty" class="hash-link" aria-label="Direct link to 7-speaksentence-alerts-joined-sentence-when-not-empty" title="Direct link to 7-speaksentence-alerts-joined-sentence-when-not-empty" translate="no">​</a></h4>
@@ -326,7 +326,7 @@ even after enough time passes.</li>
 </ul>
 <p><strong>Why it matters</strong></p>
 <ul>
-<li class="">Confirms correct joining behavior and expected “speaking” output.</li>
+<li class="">Confirms correct joining behavior and expected &quot;speaking&quot; output.</li>
 </ul>
 <hr>
 <h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="8-calls-onlogpress-with-correct-event-names-and-payloads">8) Calls <code>onLogPress</code> with correct event names and payloads<a href="#8-calls-onlogpress-with-correct-event-names-and-payloads" class="hash-link" aria-label="Direct link to 8-calls-onlogpress-with-correct-event-names-and-payloads" title="Direct link to 8-calls-onlogpress-with-correct-event-names-and-payloads" translate="no">​</a></h4>
@@ -385,10 +385,674 @@ When <code>useSentenceBuilder({ onLogPress })</code> is used:</p>
 <li class="">Makes the hook safe to use in screens/components that do not provide logging.</li>
 </ul>
 <hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="usespeechtestjs"><code>useSpeech.test.js</code><a href="#usespeechtestjs" class="hash-link" aria-label="Direct link to usespeechtestjs" title="Direct link to usespeechtestjs" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="purpose-2">Purpose<a href="#purpose-2" class="hash-link" aria-label="Direct link to Purpose" title="Direct link to Purpose" translate="no">​</a></h3>
+<p>Tests the <code>useSpeech</code> hook (imported from <code>../src/hooks/useSpeech</code>) which wraps the TTS (text-to-speech) service. The hook exposes two functions:</p>
+<ul>
+<li class=""><code>speakText(text)</code> — delegates to the <code>speak</code> function from <code>../services/tts</code></li>
+<li class=""><code>stopSpeech()</code> — delegates to the <code>stop</code> function from <code>../services/tts</code></li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-testing-techniques-used-2">Key Testing Techniques Used<a href="#key-testing-techniques-used-2" class="hash-link" aria-label="Direct link to Key Testing Techniques Used" title="Direct link to Key Testing Techniques Used" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="mocking-servicestts">Mocking <code>../services/tts</code><a href="#mocking-servicestts" class="hash-link" aria-label="Direct link to mocking-servicestts" title="Direct link to mocking-servicestts" translate="no">​</a></h4>
+<p>The test replaces the TTS service with mock functions:</p>
+<ul>
+<li class=""><code>speak</code> is mocked as a <code>jest.fn()</code> to intercept calls and verify arguments</li>
+<li class=""><code>stop</code> is mocked as a <code>jest.fn()</code> to intercept calls and verify invocation</li>
+</ul>
+<p>Mock variables:</p>
+<ul>
+<li class=""><code>mockSpeak</code>: spy for <code>speak</code></li>
+<li class=""><code>mockStop</code>: spy for <code>stop</code></li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="hook-testing-with-renderhook-1">Hook Testing With <code>renderHook</code><a href="#hook-testing-with-renderhook-1" class="hash-link" aria-label="Direct link to hook-testing-with-renderhook-1" title="Direct link to hook-testing-with-renderhook-1" translate="no">​</a></h4>
+<p>The tests use <code>@testing-library/react-native</code>:</p>
+<ul>
+<li class=""><code>renderHook(() =&gt; useSpeech())</code> to run the hook in a test environment</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-setup-1">Test Setup<a href="#test-setup-1" class="hash-link" aria-label="Direct link to Test Setup" title="Direct link to Test Setup" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="beforeeach-2"><code>beforeEach</code><a href="#beforeeach-2" class="hash-link" aria-label="Direct link to beforeeach-2" title="Direct link to beforeeach-2" translate="no">​</a></h4>
+<ul>
+<li class=""><code>jest.clearAllMocks()</code> resets call counts and recorded arguments before each test.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-cases-2">Test Cases<a href="#test-cases-2" class="hash-link" aria-label="Direct link to Test Cases" title="Direct link to Test Cases" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-speaktext-calls-speak-with-provided-text">1) <code>speakText</code> calls <code>speak</code> with provided text<a href="#1-speaktext-calls-speak-with-provided-text" class="hash-link" aria-label="Direct link to 1-speaktext-calls-speak-with-provided-text" title="Direct link to 1-speaktext-calls-speak-with-provided-text" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>speakText calls speak with provided text</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>speakText(&#x27;hello world&#x27;)</code> results in:<!-- -->
+<ul>
+<li class=""><code>speak(&#x27;hello world&#x27;)</code> being called exactly once with the correct argument.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Confirms <code>speakText</code> correctly passes through the text argument to the underlying TTS service without modification.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-stopspeech-calls-stop">2) <code>stopSpeech</code> calls <code>stop</code><a href="#2-stopspeech-calls-stop" class="hash-link" aria-label="Direct link to 2-stopspeech-calls-stop" title="Direct link to 2-stopspeech-calls-stop" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>stopSpeech calls stop</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>stopSpeech()</code> results in:<!-- -->
+<ul>
+<li class=""><code>stop()</code> being called exactly once.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Ensures the hook correctly delegates to the TTS service&#x27;s <code>stop</code> function to halt ongoing speech.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-speaktext-with-empty-string-still-calls-speak">3) <code>speakText</code> with empty string still calls <code>speak</code><a href="#3-speaktext-with-empty-string-still-calls-speak" class="hash-link" aria-label="Direct link to 3-speaktext-with-empty-string-still-calls-speak" title="Direct link to 3-speaktext-with-empty-string-still-calls-speak" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>speakText with empty string still calls speak</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>speakText(&#x27;&#x27;)</code> still calls <code>speak(&#x27;&#x27;)</code>.</li>
+<li class="">The hook does not guard against or swallow empty-string input.</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">The filtering responsibility belongs to the caller; the hook should not silently drop calls.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-speaktext-does-not-call-stop">4) <code>speakText</code> does not call <code>stop</code><a href="#4-speaktext-does-not-call-stop" class="hash-link" aria-label="Direct link to 4-speaktext-does-not-call-stop" title="Direct link to 4-speaktext-does-not-call-stop" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>speakText does not call stop</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>speakText</code> never inadvertently calls <code>stop</code>.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-stopspeech-does-not-call-speak">5) <code>stopSpeech</code> does not call <code>speak</code><a href="#5-stopspeech-does-not-call-speak" class="hash-link" aria-label="Direct link to 5-stopspeech-does-not-call-speak" title="Direct link to 5-stopspeech-does-not-call-speak" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>stopSpeech does not call speak</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>stopSpeech</code> never inadvertently calls <code>speak</code>.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="usesentencetestjs"><code>useSentence.test.js</code><a href="#usesentencetestjs" class="hash-link" aria-label="Direct link to usesentencetestjs" title="Direct link to usesentencetestjs" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="purpose-3">Purpose<a href="#purpose-3" class="hash-link" aria-label="Direct link to Purpose" title="Direct link to Purpose" translate="no">​</a></h3>
+<p>Tests the <code>useSentence</code> hook (imported from <code>../src/hooks/useSentence</code>) which manages a sentence as an array of words, provides immediate per-word speech feedback, and exposes actions to:</p>
+<ul>
+<li class="">Add a word (and immediately speak it)</li>
+<li class="">Speak the full sentence</li>
+<li class="">Clear the sentence (and stop any ongoing speech)</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-testing-techniques-used-3">Key Testing Techniques Used<a href="#key-testing-techniques-used-3" class="hash-link" aria-label="Direct link to Key Testing Techniques Used" title="Direct link to Key Testing Techniques Used" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="mocking-servicestts-1">Mocking <code>../services/tts</code><a href="#mocking-servicestts-1" class="hash-link" aria-label="Direct link to mocking-servicestts-1" title="Direct link to mocking-servicestts-1" translate="no">​</a></h4>
+<p>The test replaces the TTS service with mock functions:</p>
+<ul>
+<li class=""><code>speak</code> is mocked as a <code>jest.fn()</code> to capture calls and verify arguments</li>
+<li class=""><code>stop</code> is mocked as a <code>jest.fn()</code> to capture calls and verify invocation</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="hook-testing-with-renderhook-2">Hook Testing With <code>renderHook</code><a href="#hook-testing-with-renderhook-2" class="hash-link" aria-label="Direct link to hook-testing-with-renderhook-2" title="Direct link to hook-testing-with-renderhook-2" translate="no">​</a></h4>
+<p>The tests use <code>@testing-library/react-native</code>:</p>
+<ul>
+<li class=""><code>renderHook(() =&gt; useSentence())</code> to run the hook in a test environment</li>
+<li class=""><code>act(() =&gt; ...)</code> to safely apply state updates before assertions</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-setup-2">Test Setup<a href="#test-setup-2" class="hash-link" aria-label="Direct link to Test Setup" title="Direct link to Test Setup" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="beforeeach-3"><code>beforeEach</code><a href="#beforeeach-3" class="hash-link" aria-label="Direct link to beforeeach-3" title="Direct link to beforeeach-3" translate="no">​</a></h4>
+<ul>
+<li class=""><code>jest.clearAllMocks()</code> resets all mock state between tests.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-cases-3">Test Cases<a href="#test-cases-3" class="hash-link" aria-label="Direct link to Test Cases" title="Direct link to Test Cases" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-initial-sentence-is-empty-1">1) Initial sentence is empty<a href="#1-initial-sentence-is-empty-1" class="hash-link" aria-label="Direct link to 1) Initial sentence is empty" title="Direct link to 1) Initial sentence is empty" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>initial sentence is empty</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">On first render, <code>sentence</code> is <code>[]</code>.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-addword-appends-the-word-to-the-sentence">2) <code>addWord</code> appends the word to the sentence<a href="#2-addword-appends-the-word-to-the-sentence" class="hash-link" aria-label="Direct link to 2-addword-appends-the-word-to-the-sentence" title="Direct link to 2-addword-appends-the-word-to-the-sentence" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>addWord appends the word to the sentence</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>addWord(&#x27;hello&#x27;)</code> then <code>addWord(&#x27;world&#x27;)</code> results in:<!-- -->
+<ul>
+<li class=""><code>sentence</code> equal to <code>[&#x27;hello&#x27;, &#x27;world&#x27;]</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-addword-immediately-speaks-the-word">3) <code>addWord</code> immediately speaks the word<a href="#3-addword-immediately-speaks-the-word" class="hash-link" aria-label="Direct link to 3-addword-immediately-speaks-the-word" title="Direct link to 3-addword-immediately-speaks-the-word" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>addWord immediately speaks the word</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>addWord(&#x27;hi&#x27;)</code> triggers:<!-- -->
+<ul>
+<li class=""><code>speak(&#x27;hi&#x27;)</code> called exactly once with the correct argument.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Immediate speech feedback is a core accessibility feature; the hook must call <code>speak</code> on every <code>addWord</code> invocation.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-addword-speaks-each-word-independently-as-they-are-added">4) <code>addWord</code> speaks each word independently as they are added<a href="#4-addword-speaks-each-word-independently-as-they-are-added" class="hash-link" aria-label="Direct link to 4-addword-speaks-each-word-independently-as-they-are-added" title="Direct link to 4-addword-speaks-each-word-independently-as-they-are-added" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>addWord speaks each word independently as they are added</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Adding <code>&#x27;I&#x27;</code>, <code>&#x27;want&#x27;</code>, <code>&#x27;juice&#x27;</code> triggers <code>speak</code> three times with each individual word in order.</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Confirms per-word feedback rather than a single batched call.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-speaksentence-speaks-the-full-joined-sentence">5) <code>speakSentence</code> speaks the full joined sentence<a href="#5-speaksentence-speaks-the-full-joined-sentence" class="hash-link" aria-label="Direct link to 5-speaksentence-speaks-the-full-joined-sentence" title="Direct link to 5-speaksentence-speaks-the-full-joined-sentence" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>speakSentence speaks the full joined sentence</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">After adding <code>&quot;I&quot;</code>, <code>&quot;want&quot;</code>, <code>&quot;food&quot;</code>, calling <code>speakSentence()</code> triggers:<!-- -->
+<ul>
+<li class=""><code>speak(&#x27;I want food&#x27;)</code> called once.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Confirms that words are joined with spaces and the full sentence is passed as a single string to the TTS service.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-speaksentence-on-empty-sentence-calls-speak-with-empty-string">6) <code>speakSentence</code> on empty sentence calls <code>speak</code> with empty string<a href="#6-speaksentence-on-empty-sentence-calls-speak-with-empty-string" class="hash-link" aria-label="Direct link to 6-speaksentence-on-empty-sentence-calls-speak-with-empty-string" title="Direct link to 6-speaksentence-on-empty-sentence-calls-speak-with-empty-string" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>speakSentence on empty sentence calls speak with empty string</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>speakSentence()</code> when <code>sentence</code> is <code>[]</code> triggers:<!-- -->
+<ul>
+<li class=""><code>speak(&#x27;&#x27;)</code> (since <code>[].join(&#x27; &#x27;)</code> is <code>&#x27;&#x27;</code>).</li>
+</ul>
+</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Documents and confirms the behaviour for edge case calls on an empty sentence; the hook does not guard against this.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="7-clear-resets-the-sentence-to-empty">7) <code>clear</code> resets the sentence to empty<a href="#7-clear-resets-the-sentence-to-empty" class="hash-link" aria-label="Direct link to 7-clear-resets-the-sentence-to-empty" title="Direct link to 7-clear-resets-the-sentence-to-empty" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>clear resets the sentence to empty</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">After adding <code>&quot;test&quot;</code>, calling <code>clear()</code> resets <code>sentence</code> to <code>[]</code>.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="8-clear-calls-stop-to-halt-ongoing-speech">8) <code>clear</code> calls <code>stop</code> to halt ongoing speech<a href="#8-clear-calls-stop-to-halt-ongoing-speech" class="hash-link" aria-label="Direct link to 8-clear-calls-stop-to-halt-ongoing-speech" title="Direct link to 8-clear-calls-stop-to-halt-ongoing-speech" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>clear calls stop to halt ongoing speech</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>clear()</code> triggers <code>stop()</code> exactly once.</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Clearing a sentence while speech is in progress should immediately halt audio output to avoid confusion.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="9-clear-does-not-call-speak">9) <code>clear</code> does not call <code>speak</code><a href="#9-clear-does-not-call-speak" class="hash-link" aria-label="Direct link to 9-clear-does-not-call-speak" title="Direct link to 9-clear-does-not-call-speak" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>clear does not call speak</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>clear()</code> never produces new speech output.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="usepictogramtestjs"><code>usePictogram.test.js</code><a href="#usepictogramtestjs" class="hash-link" aria-label="Direct link to usepictogramtestjs" title="Direct link to usepictogramtestjs" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="purpose-4">Purpose<a href="#purpose-4" class="hash-link" aria-label="Direct link to Purpose" title="Direct link to Purpose" translate="no">​</a></h3>
+<p>Tests the <code>usePictogram</code> hook (imported from <code>../src/hooks/usePictogram</code>) which resolves a word or phrase label to an ARASAAC pictogram image URI. The hook:</p>
+<ul>
+<li class="">Accepts an optional <code>arasaacId</code> override for direct resolution without a network call</li>
+<li class="">Uses an in-memory cache to avoid redundant fetches</li>
+<li class="">Applies search aliases to improve ARASAAC API query results</li>
+<li class="">Falls back to the last word of the label if the primary search returns no results</li>
+<li class="">Returns <code>{ uri, loading, error }</code></li>
+</ul>
+<p>Also tests the exported helper <code>getPictogramUrl(id)</code>.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-testing-techniques-used-4">Key Testing Techniques Used<a href="#key-testing-techniques-used-4" class="hash-link" aria-label="Direct link to Key Testing Techniques Used" title="Direct link to Key Testing Techniques Used" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="mocking-fetch">Mocking <code>fetch</code><a href="#mocking-fetch" class="hash-link" aria-label="Direct link to mocking-fetch" title="Direct link to mocking-fetch" translate="no">​</a></h4>
+<p>The global <code>fetch</code> is replaced with a <code>jest.fn()</code> to:</p>
+<ul>
+<li class="">Return controlled JSON responses simulating ARASAAC API results</li>
+<li class="">Simulate network errors or empty result sets</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="hook-testing-with-renderhook-and-waitfor">Hook Testing With <code>renderHook</code> and <code>waitFor</code><a href="#hook-testing-with-renderhook-and-waitfor" class="hash-link" aria-label="Direct link to hook-testing-with-renderhook-and-waitfor" title="Direct link to hook-testing-with-renderhook-and-waitfor" translate="no">​</a></h4>
+<p>The tests use <code>@testing-library/react-native</code>:</p>
+<ul>
+<li class=""><code>renderHook(() =&gt; usePictogram(...))</code> to run the hook</li>
+<li class=""><code>waitFor()</code> to wait for async <code>useEffect</code> state updates to settle before assertions</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="cache-isolation">Cache Isolation<a href="#cache-isolation" class="hash-link" aria-label="Direct link to Cache Isolation" title="Direct link to Cache Isolation" translate="no">​</a></h4>
+<p>Because <code>usePictogram</code> uses a module-level in-memory cache, tests that check network calls use unique label strings to avoid hitting cached results from previous tests.</p>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-setup-3">Test Setup<a href="#test-setup-3" class="hash-link" aria-label="Direct link to Test Setup" title="Direct link to Test Setup" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="beforeeach-4"><code>beforeEach</code><a href="#beforeeach-4" class="hash-link" aria-label="Direct link to beforeeach-4" title="Direct link to beforeeach-4" translate="no">​</a></h4>
+<ul>
+<li class=""><code>jest.clearAllMocks()</code> resets fetch spy call records.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-cases-4">Test Cases<a href="#test-cases-4" class="hash-link" aria-label="Direct link to Test Cases" title="Direct link to Test Cases" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-getpictogramurl-builds-the-correct-url">1) <code>getPictogramUrl</code> builds the correct URL<a href="#1-getpictogramurl-builds-the-correct-url" class="hash-link" aria-label="Direct link to 1-getpictogramurl-builds-the-correct-url" title="Direct link to 1-getpictogramurl-builds-the-correct-url" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>getPictogramUrl builds the correct ARASAAC image URL</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class=""><code>getPictogramUrl(12345)</code> returns:<!-- -->
+<ul>
+<li class=""><code>&#x27;https://static.arasaac.org/pictograms/12345/12345_500.png&#x27;</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-returns-uri-immediately-when-arasaacid-is-provided-no-fetch">2) Returns URI immediately when <code>arasaacId</code> is provided (no fetch)<a href="#2-returns-uri-immediately-when-arasaacid-is-provided-no-fetch" class="hash-link" aria-label="Direct link to 2-returns-uri-immediately-when-arasaacid-is-provided-no-fetch" title="Direct link to 2-returns-uri-immediately-when-arasaacid-is-provided-no-fetch" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>returns URI immediately when arasaacId is provided (no fetch)</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">With <code>usePictogram(&#x27;anything&#x27;, 9999)</code>:<!-- -->
+<ul>
+<li class=""><code>loading</code> is <code>false</code> from the initial render</li>
+<li class=""><code>uri</code> equals <code>getPictogramUrl(9999)</code></li>
+<li class=""><code>fetch</code> is never called</li>
+</ul>
+</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">The <code>arasaacId</code> override path must be instant and free of network calls.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-starts-in-loading-state-for-an-uncached-label">3) Starts in loading state for an uncached label<a href="#3-starts-in-loading-state-for-an-uncached-label" class="hash-link" aria-label="Direct link to 3) Starts in loading state for an uncached label" title="Direct link to 3) Starts in loading state for an uncached label" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>starts in loading state for an uncached label</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Before the fetch resolves, <code>loading</code> is <code>true</code> and <code>uri</code> is <code>null</code>.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-fetches-and-resolves-uri-for-a-known-label">4) Fetches and resolves URI for a known label<a href="#4-fetches-and-resolves-uri-for-a-known-label" class="hash-link" aria-label="Direct link to 4) Fetches and resolves URI for a known label" title="Direct link to 4) Fetches and resolves URI for a known label" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>fetches and resolves URI for a known label</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">With a mocked fetch returning <code>[{ _id: 100, keywords: [{ keyword: &#x27;apple&#x27; }] }]</code>:<!-- -->
+<ul>
+<li class="">After resolution: <code>loading: false</code>, <code>uri</code> equals <code>getPictogramUrl(100)</code>, <code>error</code> is null</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-uses-search_aliases-to-transform-the-label-before-searching">5) Uses SEARCH_ALIASES to transform the label before searching<a href="#5-uses-search_aliases-to-transform-the-label-before-searching" class="hash-link" aria-label="Direct link to 5) Uses SEARCH_ALIASES to transform the label before searching" title="Direct link to 5) Uses SEARCH_ALIASES to transform the label before searching" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>uses SEARCH_ALIASES to transform the label before searching</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class=""><code>usePictogram(&#x27;eat&#x27;)</code> causes <code>fetch</code> to be called with a URL containing <code>&#x27;eating&#x27;</code> (the alias), not <code>&#x27;eat&#x27;</code>.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-falls-back-to-last-word-if-primary-search-fails">6) Falls back to last word if primary search fails<a href="#6-falls-back-to-last-word-if-primary-search-fails" class="hash-link" aria-label="Direct link to 6) Falls back to last word if primary search fails" title="Direct link to 6) Falls back to last word if primary search fails" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>falls back to the last word of the label if primary search fails</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">For a label like <code>&#x27;wash hands&#x27;</code>:<!-- -->
+<ul>
+<li class="">First fetch returns an empty array</li>
+<li class="">Second fetch is made with <code>&#x27;hands&#x27;</code> (last word of label)</li>
+<li class="">Final <code>uri</code> resolves from the fallback result</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="7-sets-error-state-when-all-fetches-fail">7) Sets error state when all fetches fail<a href="#7-sets-error-state-when-all-fetches-fail" class="hash-link" aria-label="Direct link to 7) Sets error state when all fetches fail" title="Direct link to 7) Sets error state when all fetches fail" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>sets error state when all fetches fail</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">When both the primary and fallback fetches fail:<!-- -->
+<ul>
+<li class=""><code>loading: false</code>, <code>uri: null</code>, <code>error</code> is a non-null string</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="8-caches-result-and-does-not-re-fetch-for-the-same-label">8) Caches result and does not re-fetch for the same label<a href="#8-caches-result-and-does-not-re-fetch-for-the-same-label" class="hash-link" aria-label="Direct link to 8) Caches result and does not re-fetch for the same label" title="Direct link to 8) Caches result and does not re-fetch for the same label" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>caches result and does not re-fetch for the same label</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Rendering <code>usePictogram(&#x27;banana&#x27;)</code> twice calls <code>fetch</code> only once (second render hits the cache).</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="9-sets-error-when-fetch-returns-a-non-ok-response">9) Sets error when fetch returns a non-ok response<a href="#9-sets-error-when-fetch-returns-a-non-ok-response" class="hash-link" aria-label="Direct link to 9) Sets error when fetch returns a non-ok response" title="Direct link to 9) Sets error when fetch returns a non-ok response" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>sets error when fetch returns a non-ok response</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">An HTTP error status results in <code>uri: null</code> and a non-null <code>error</code> string.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="uselocationdetectiontestjs"><code>useLocationDetection.test.js</code><a href="#uselocationdetectiontestjs" class="hash-link" aria-label="Direct link to uselocationdetectiontestjs" title="Direct link to uselocationdetectiontestjs" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="purpose-5">Purpose<a href="#purpose-5" class="hash-link" aria-label="Direct link to Purpose" title="Direct link to Purpose" translate="no">​</a></h3>
+<p>Tests the <code>useLocationDetection</code> hook (imported from <code>../src/hooks/useLocationDetection</code>) which provides an abstraction for room/location detection. Currently it supports manual room selection and is designed to be extended with Bluetooth beacon detection. The hook exposes:</p>
+<ul>
+<li class=""><code>currentRoom</code> — the currently active room object, or <code>null</code></li>
+<li class=""><code>detectionMode</code> — the string <code>&#x27;manual&#x27;</code></li>
+<li class=""><code>setRoomManually(roomId)</code> — selects a room by ID</li>
+<li class=""><code>allRooms</code> — the full list of available room definitions</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-testing-techniques-used-5">Key Testing Techniques Used<a href="#key-testing-techniques-used-5" class="hash-link" aria-label="Direct link to Key Testing Techniques Used" title="Direct link to Key Testing Techniques Used" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="mocking-dataroomcontexts">Mocking <code>../data/roomContexts</code><a href="#mocking-dataroomcontexts" class="hash-link" aria-label="Direct link to mocking-dataroomcontexts" title="Direct link to mocking-dataroomcontexts" translate="no">​</a></h4>
+<p>The test replaces the data layer with controlled mock data:</p>
+<ul>
+<li class=""><code>getAllRooms</code> is mocked to return a predictable array of room objects</li>
+<li class=""><code>getRoomByBeaconId</code> is mocked as a <code>jest.fn()</code> for future BLE use cases</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="hook-testing-with-renderhook-3">Hook Testing With <code>renderHook</code><a href="#hook-testing-with-renderhook-3" class="hash-link" aria-label="Direct link to hook-testing-with-renderhook-3" title="Direct link to hook-testing-with-renderhook-3" translate="no">​</a></h4>
+<p>The tests use <code>@testing-library/react-native</code>:</p>
+<ul>
+<li class=""><code>renderHook(() =&gt; useLocationDetection())</code> to run the hook</li>
+<li class=""><code>act(() =&gt; ...)</code> to apply state changes before assertions</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-setup-4">Test Setup<a href="#test-setup-4" class="hash-link" aria-label="Direct link to Test Setup" title="Direct link to Test Setup" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="beforeeach-5"><code>beforeEach</code><a href="#beforeeach-5" class="hash-link" aria-label="Direct link to beforeeach-5" title="Direct link to beforeeach-5" translate="no">​</a></h4>
+<ul>
+<li class=""><code>jest.clearAllMocks()</code> resets mock call records.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-cases-5">Test Cases<a href="#test-cases-5" class="hash-link" aria-label="Direct link to Test Cases" title="Direct link to Test Cases" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-initial-state-has-no-current-room">1) Initial state has no current room<a href="#1-initial-state-has-no-current-room" class="hash-link" aria-label="Direct link to 1) Initial state has no current room" title="Direct link to 1) Initial state has no current room" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>initial state has no current room</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">On first render, <code>currentRoom</code> is <code>null</code>.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-detectionmode-is-manual">2) <code>detectionMode</code> is <code>&#x27;manual&#x27;</code><a href="#2-detectionmode-is-manual" class="hash-link" aria-label="Direct link to 2-detectionmode-is-manual" title="Direct link to 2-detectionmode-is-manual" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>detectionMode is &quot;manual&quot;</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class=""><code>detectionMode</code> is <code>&#x27;manual&#x27;</code> (BLE is not yet wired).</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-allrooms-returns-all-room-definitions">3) <code>allRooms</code> returns all room definitions<a href="#3-allrooms-returns-all-room-definitions" class="hash-link" aria-label="Direct link to 3-allrooms-returns-all-room-definitions" title="Direct link to 3-allrooms-returns-all-room-definitions" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>allRooms returns all room definitions from the data layer</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class=""><code>allRooms</code> equals the array returned by the mocked <code>getAllRooms()</code>.</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Confirms the hook correctly exposes the full room list to consumers without modification.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-setroommanually-sets-the-current-room-by-matching-id">4) <code>setRoomManually</code> sets the current room by matching ID<a href="#4-setroommanually-sets-the-current-room-by-matching-id" class="hash-link" aria-label="Direct link to 4-setroommanually-sets-the-current-room-by-matching-id" title="Direct link to 4-setroommanually-sets-the-current-room-by-matching-id" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>setRoomManually sets the current room by matching ID</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>setRoomManually(&#x27;kitchen&#x27;)</code> updates <code>currentRoom</code> to <code>{ id: &#x27;kitchen&#x27;, label: &#x27;Kitchen&#x27; }</code>.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-setroommanually-switches-between-rooms-correctly">5) <code>setRoomManually</code> switches between rooms correctly<a href="#5-setroommanually-switches-between-rooms-correctly" class="hash-link" aria-label="Direct link to 5-setroommanually-switches-between-rooms-correctly" title="Direct link to 5-setroommanually-switches-between-rooms-correctly" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>setRoomManually switches between rooms correctly</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Moving from <code>&#x27;kitchen&#x27;</code> to <code>&#x27;bedroom&#x27;</code> updates <code>currentRoom</code> each time.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-setroommanually-with-unknown-id-sets-current-room-to-null">6) <code>setRoomManually</code> with unknown ID sets current room to null<a href="#6-setroommanually-with-unknown-id-sets-current-room-to-null" class="hash-link" aria-label="Direct link to 6-setroommanually-with-unknown-id-sets-current-room-to-null" title="Direct link to 6-setroommanually-with-unknown-id-sets-current-room-to-null" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>setRoomManually with an unknown ID sets currentRoom to null</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>setRoomManually(&#x27;nonexistent_room&#x27;)</code> results in <code>currentRoom</code> being <code>null</code>.</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Prevents a stale or incorrect room from being displayed when an unrecognised ID is provided.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="7-setroommanually-with-null-clears-the-current-room">7) <code>setRoomManually</code> with null clears the current room<a href="#7-setroommanually-with-null-clears-the-current-room" class="hash-link" aria-label="Direct link to 7-setroommanually-with-null-clears-the-current-room" title="Direct link to 7-setroommanually-with-null-clears-the-current-room" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>setRoomManually with null clears the current room</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">After setting a room, calling <code>setRoomManually(null)</code> resets <code>currentRoom</code> to <code>null</code>.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="8-setroommanually-does-not-throw-for-any-input">8) <code>setRoomManually</code> does not throw for any input<a href="#8-setroommanually-does-not-throw-for-any-input" class="hash-link" aria-label="Direct link to 8-setroommanually-does-not-throw-for-any-input" title="Direct link to 8-setroommanually-does-not-throw-for-any-input" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>setRoomManually does not throw for any input</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Passing <code>undefined</code>, <code>&#x27;&#x27;</code>, or <code>null</code> to <code>setRoomManually</code> never throws.</li>
+</ul>
+<p><strong>Why it matters</strong></p>
+<ul>
+<li class="">Defensive robustness against unexpected argument types from the BLE layer.</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="useinteractionloggertestjs"><code>useInteractionLogger.test.js</code><a href="#useinteractionloggertestjs" class="hash-link" aria-label="Direct link to useinteractionloggertestjs" title="Direct link to useinteractionloggertestjs" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="purpose-6">Purpose<a href="#purpose-6" class="hash-link" aria-label="Direct link to Purpose" title="Direct link to Purpose" translate="no">​</a></h3>
+<p>Tests the <code>useInteractionLogger</code> hook (imported from <code>../src/hooks/useInteractionLogger</code>) which records user interaction events with structured metadata. The hook:</p>
+<ul>
+<li class="">Generates a device ID on mount derived from <code>Platform.OS</code> and <code>Platform.Version</code></li>
+<li class="">Appends log entries to <code>interactionLogs</code> state on each <code>logButtonPress</code> call</li>
+<li class="">Associates each entry with a room location (from <code>currentRoom</code>) or falls back to <code>&#x27;general&#x27;</code></li>
+<li class="">Emits each entry to <code>console.log</code></li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-testing-techniques-used-6">Key Testing Techniques Used<a href="#key-testing-techniques-used-6" class="hash-link" aria-label="Direct link to Key Testing Techniques Used" title="Direct link to Key Testing Techniques Used" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="mocking-react-native">Mocking <code>react-native</code><a href="#mocking-react-native" class="hash-link" aria-label="Direct link to mocking-react-native" title="Direct link to mocking-react-native" translate="no">​</a></h4>
+<p>The test mocks <code>Platform</code> to control the device ID format:</p>
+<ul>
+<li class=""><code>Platform.OS</code> set to <code>&#x27;ios&#x27;</code></li>
+<li class=""><code>Platform.Version</code> set to <code>&#x27;16&#x27;</code></li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="mocking-consolelog">Mocking <code>console.log</code><a href="#mocking-consolelog" class="hash-link" aria-label="Direct link to mocking-consolelog" title="Direct link to mocking-consolelog" translate="no">​</a></h4>
+<p>A spy on <code>console.log</code> captures emitted log entries for assertion.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="hook-testing-with-renderhook-4">Hook Testing With <code>renderHook</code><a href="#hook-testing-with-renderhook-4" class="hash-link" aria-label="Direct link to hook-testing-with-renderhook-4" title="Direct link to hook-testing-with-renderhook-4" translate="no">​</a></h4>
+<p>The tests use <code>@testing-library/react-native</code>:</p>
+<ul>
+<li class=""><code>renderHook(() =&gt; useInteractionLogger(currentRoom))</code> with varying <code>currentRoom</code> values</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-setup-5">Test Setup<a href="#test-setup-5" class="hash-link" aria-label="Direct link to Test Setup" title="Direct link to Test Setup" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="beforeeach-6"><code>beforeEach</code><a href="#beforeeach-6" class="hash-link" aria-label="Direct link to beforeeach-6" title="Direct link to beforeeach-6" translate="no">​</a></h4>
+<ul>
+<li class=""><code>jest.clearAllMocks()</code> resets all spies.</li>
+<li class=""><code>logSpy</code> is set up on <code>console.log</code>.</li>
+</ul>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="aftereach-1"><code>afterEach</code><a href="#aftereach-1" class="hash-link" aria-label="Direct link to aftereach-1" title="Direct link to aftereach-1" translate="no">​</a></h4>
+<ul>
+<li class=""><code>logSpy.mockRestore()</code> restores the original <code>console.log</code>.</li>
+</ul>
+<hr>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-cases-6">Test Cases<a href="#test-cases-6" class="hash-link" aria-label="Direct link to Test Cases" title="Direct link to Test Cases" translate="no">​</a></h3>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-deviceid-is-generated-in-the-expected-format">1) <code>deviceId</code> is generated in the expected format<a href="#1-deviceid-is-generated-in-the-expected-format" class="hash-link" aria-label="Direct link to 1-deviceid-is-generated-in-the-expected-format" title="Direct link to 1-deviceid-is-generated-in-the-expected-format" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>deviceId is generated in the expected format</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class=""><code>deviceId</code> matches the pattern <code>&#x27;ios-16-&lt;random&gt;&#x27;</code>.</li>
+<li class="">Starts with <code>&#x27;ios-16-&#x27;</code> and has at least one additional character.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-interactionlogs-starts-empty">2) <code>interactionLogs</code> starts empty<a href="#2-interactionlogs-starts-empty" class="hash-link" aria-label="Direct link to 2-interactionlogs-starts-empty" title="Direct link to 2-interactionlogs-starts-empty" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>interactionLogs starts empty</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">On first render, <code>interactionLogs</code> is <code>[]</code>.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-logbuttonpress-appends-an-entry-with-the-correct-structure">3) <code>logButtonPress</code> appends an entry with the correct structure<a href="#3-logbuttonpress-appends-an-entry-with-the-correct-structure" class="hash-link" aria-label="Direct link to 3-logbuttonpress-appends-an-entry-with-the-correct-structure" title="Direct link to 3-logbuttonpress-appends-an-entry-with-the-correct-structure" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>logButtonPress appends an entry with the correct structure</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">One entry is appended containing <code>deviceId</code>, <code>buttonName</code>, a valid ISO 8601 <code>pressedAt</code>, and <code>location: { id: &#x27;general&#x27;, label: &#x27;General&#x27; }</code> (when <code>currentRoom</code> is null).</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-logbuttonpress-uses-room-location-when-currentroom-is-provided">4) <code>logButtonPress</code> uses room location when <code>currentRoom</code> is provided<a href="#4-logbuttonpress-uses-room-location-when-currentroom-is-provided" class="hash-link" aria-label="Direct link to 4-logbuttonpress-uses-room-location-when-currentroom-is-provided" title="Direct link to 4-logbuttonpress-uses-room-location-when-currentroom-is-provided" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>logButtonPress uses room location when currentRoom is provided</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">With <code>currentRoom = { id: &#x27;kitchen&#x27;, label: &#x27;Kitchen&#x27; }</code>, the entry&#x27;s <code>location</code> equals <code>{ id: &#x27;kitchen&#x27;, label: &#x27;Kitchen&#x27; }</code>.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-logbuttonpress-falls-back-to-general-when-currentroom-is-null">5) <code>logButtonPress</code> falls back to general when <code>currentRoom</code> is null<a href="#5-logbuttonpress-falls-back-to-general-when-currentroom-is-null" class="hash-link" aria-label="Direct link to 5-logbuttonpress-falls-back-to-general-when-currentroom-is-null" title="Direct link to 5-logbuttonpress-falls-back-to-general-when-currentroom-is-null" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>logButtonPress falls back to general location when currentRoom is null</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">With no room set, <code>location</code> equals <code>{ id: &#x27;general&#x27;, label: &#x27;General&#x27; }</code>.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-logbuttonpress-merges-additional-metadata-into-the-entry">6) <code>logButtonPress</code> merges additional metadata into the entry<a href="#6-logbuttonpress-merges-additional-metadata-into-the-entry" class="hash-link" aria-label="Direct link to 6-logbuttonpress-merges-additional-metadata-into-the-entry" title="Direct link to 6-logbuttonpress-merges-additional-metadata-into-the-entry" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>logButtonPress merges additional metadata into the entry</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>logButtonPress(&#x27;word_tile&#x27;, { word: &#x27;hello&#x27; })</code> produces an entry where <code>entry.word === &#x27;hello&#x27;</code>.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="7-logbuttonpress-emits-entry-to-consolelog">7) <code>logButtonPress</code> emits entry to <code>console.log</code><a href="#7-logbuttonpress-emits-entry-to-consolelog" class="hash-link" aria-label="Direct link to 7-logbuttonpress-emits-entry-to-consolelog" title="Direct link to 7-logbuttonpress-emits-entry-to-consolelog" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>logButtonPress emits entry to console.log</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class=""><code>console.log</code> is called with <code>&#x27;[InteractionLog]&#x27;</code> and a valid JSON string after each press.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="8-multiple-logbuttonpress-calls-accumulate-entries-in-order">8) Multiple <code>logButtonPress</code> calls accumulate entries in order<a href="#8-multiple-logbuttonpress-calls-accumulate-entries-in-order" class="hash-link" aria-label="Direct link to 8-multiple-logbuttonpress-calls-accumulate-entries-in-order" title="Direct link to 8-multiple-logbuttonpress-calls-accumulate-entries-in-order" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>multiple logButtonPress calls accumulate entries in order</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Three calls result in <code>interactionLogs.length === 3</code> with entries in call order.</li>
+</ul>
+<hr>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="9-logbuttonpress-with-no-metadata-does-not-crash">9) <code>logButtonPress</code> with no metadata does not crash<a href="#9-logbuttonpress-with-no-metadata-does-not-crash" class="hash-link" aria-label="Direct link to 9-logbuttonpress-with-no-metadata-does-not-crash" title="Direct link to 9-logbuttonpress-with-no-metadata-does-not-crash" translate="no">​</a></h4>
+<p><strong>Test name</strong></p>
+<ul>
+<li class=""><code>logButtonPress with no metadata does not crash</code></li>
+</ul>
+<p><strong>What it verifies</strong></p>
+<ul>
+<li class="">Calling <code>logButtonPress</code> with only a button name (no metadata) does not throw.</li>
+</ul>
+<hr>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="summary">Summary<a href="#summary" class="hash-link" aria-label="Direct link to Summary" title="Direct link to Summary" translate="no">​</a></h2>
 <ul>
-<li class=""><code>movementSensor.test.js</code> focuses on sensor lifecycle + movement/stillness logic, using mocked Expo Accelerometer and controlled timers.</li>
-<li class=""><code>useSentenceBuilder.test.js</code> focuses on sentence state management, speech output behavior (via <code>Alert.alert</code>), and optional event logging.</li>
-</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/Capstone-Projects-2026-spring/project-professional-group-one-llc/edit/main/documentation/docs/testing/unit-testing.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"><details><summary>Revision History</summary><table><thead><tr><th scope="row">Author</th><th scope="row">Revision</th><th scope="row">Date</th></tr></thead><tbody><tr><td colspan="3" style="text-align:center;font-style:italic;color:#666">Loading...</td></tr></tbody></table></details><span class="theme-last-updated">Last updated<!-- --> by <b>jslootsky</b></span></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/project-professional-group-one-llc/docs/category/test-procedures"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Test Procedures</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/project-professional-group-one-llc/docs/testing/integration-testing"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Integration tests</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#movementsensortestjs" class="table-of-contents__link toc-highlight"><code>movementSensor.test.js</code></a><ul><li><a href="#purpose" class="table-of-contents__link toc-highlight">Purpose</a></li><li><a href="#key-testing-techniques-used" class="table-of-contents__link toc-highlight">Key Testing Techniques Used</a></li><li><a href="#test-setup--teardown" class="table-of-contents__link toc-highlight">Test Setup / Teardown</a></li><li><a href="#test-cases" class="table-of-contents__link toc-highlight">Test Cases</a></li><li><a href="#notes--expectations-about-the-implementation" class="table-of-contents__link toc-highlight">Notes / Expectations About the Implementation</a></li></ul></li><li><a href="#usesentencebuildertestjs" class="table-of-contents__link toc-highlight"><code>useSentenceBuilder.test.js</code></a><ul><li><a href="#purpose-1" class="table-of-contents__link toc-highlight">Purpose</a></li><li><a href="#key-testing-techniques-used-1" class="table-of-contents__link toc-highlight">Key Testing Techniques Used</a></li><li><a href="#test-setup" class="table-of-contents__link toc-highlight">Test Setup</a></li><li><a href="#test-cases-1" class="table-of-contents__link toc-highlight">Test Cases</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/project-professional-group-one-llc/docs/intro">Documentation</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Capstone-Projects-2026-spring/project-professional-group-one-llc" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a class="footer__link-item" href="/project-professional-group-one-llc/tutorial/open-source-usage">Template Contributors</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU"></div><div class="footer__copyright">Copyright © 2026 Project Professional Group One Llc, Inc. Built with Docusaurus.</div></div></div></footer></div>
+<li class=""><code>movementSensor.test.js</code> — sensor lifecycle and movement/stillness logic, mocked Expo Accelerometer, controlled timers.</li>
+<li class=""><code>useSentenceBuilder.test.js</code> — sentence state management, speech output via <code>Alert.alert</code>, optional event logging.</li>
+<li class=""><code>useSpeech.test.js</code> — thin TTS wrapper, correct delegation of <code>speakText</code> and <code>stopSpeech</code>.</li>
+<li class=""><code>useSentence.test.js</code> — sentence state with immediate per-word feedback, <code>clear</code>/<code>stop</code> integration.</li>
+<li class=""><code>usePictogram.test.js</code> — pictogram resolution: <code>arasaacId</code> override, caching, alias lookup, fallback search, error states.</li>
+<li class=""><code>useLocationDetection.test.js</code> — manual room selection, null handling, correct exposure of room data.</li>
+<li class=""><code>useInteractionLogger.test.js</code> — log entry structure, device ID, room location association, metadata merging, <code>console.log</code> output.</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/Capstone-Projects-2026-spring/project-professional-group-one-llc/edit/main/documentation/docs/testing/unit-testing.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"><details><summary>Revision History</summary><table><thead><tr><th scope="row">Author</th><th scope="row">Revision</th><th scope="row">Date</th></tr></thead><tbody><tr><td colspan="3" style="text-align:center;font-style:italic;color:#666">Loading...</td></tr></tbody></table></details><span class="theme-last-updated">Last updated<!-- --> by <b>Walid Parsat</b></span></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/project-professional-group-one-llc/docs/category/test-procedures"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Test Procedures</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/project-professional-group-one-llc/docs/testing/integration-testing"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Integration tests</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#movementsensortestjs" class="table-of-contents__link toc-highlight"><code>movementSensor.test.js</code></a><ul><li><a href="#purpose" class="table-of-contents__link toc-highlight">Purpose</a></li><li><a href="#key-testing-techniques-used" class="table-of-contents__link toc-highlight">Key Testing Techniques Used</a></li><li><a href="#test-setup--teardown" class="table-of-contents__link toc-highlight">Test Setup / Teardown</a></li><li><a href="#test-cases" class="table-of-contents__link toc-highlight">Test Cases</a></li><li><a href="#notes--expectations-about-the-implementation" class="table-of-contents__link toc-highlight">Notes / Expectations About the Implementation</a></li></ul></li><li><a href="#usesentencebuildertestjs" class="table-of-contents__link toc-highlight"><code>useSentenceBuilder.test.js</code></a><ul><li><a href="#purpose-1" class="table-of-contents__link toc-highlight">Purpose</a></li><li><a href="#key-testing-techniques-used-1" class="table-of-contents__link toc-highlight">Key Testing Techniques Used</a></li><li><a href="#test-setup" class="table-of-contents__link toc-highlight">Test Setup</a></li><li><a href="#test-cases-1" class="table-of-contents__link toc-highlight">Test Cases</a></li></ul></li><li><a href="#usespeechtestjs" class="table-of-contents__link toc-highlight"><code>useSpeech.test.js</code></a><ul><li><a href="#purpose-2" class="table-of-contents__link toc-highlight">Purpose</a></li><li><a href="#key-testing-techniques-used-2" class="table-of-contents__link toc-highlight">Key Testing Techniques Used</a></li><li><a href="#test-setup-1" class="table-of-contents__link toc-highlight">Test Setup</a></li><li><a href="#test-cases-2" class="table-of-contents__link toc-highlight">Test Cases</a></li></ul></li><li><a href="#usesentencetestjs" class="table-of-contents__link toc-highlight"><code>useSentence.test.js</code></a><ul><li><a href="#purpose-3" class="table-of-contents__link toc-highlight">Purpose</a></li><li><a href="#key-testing-techniques-used-3" class="table-of-contents__link toc-highlight">Key Testing Techniques Used</a></li><li><a href="#test-setup-2" class="table-of-contents__link toc-highlight">Test Setup</a></li><li><a href="#test-cases-3" class="table-of-contents__link toc-highlight">Test Cases</a></li></ul></li><li><a href="#usepictogramtestjs" class="table-of-contents__link toc-highlight"><code>usePictogram.test.js</code></a><ul><li><a href="#purpose-4" class="table-of-contents__link toc-highlight">Purpose</a></li><li><a href="#key-testing-techniques-used-4" class="table-of-contents__link toc-highlight">Key Testing Techniques Used</a></li><li><a href="#test-setup-3" class="table-of-contents__link toc-highlight">Test Setup</a></li><li><a href="#test-cases-4" class="table-of-contents__link toc-highlight">Test Cases</a></li></ul></li><li><a href="#uselocationdetectiontestjs" class="table-of-contents__link toc-highlight"><code>useLocationDetection.test.js</code></a><ul><li><a href="#purpose-5" class="table-of-contents__link toc-highlight">Purpose</a></li><li><a href="#key-testing-techniques-used-5" class="table-of-contents__link toc-highlight">Key Testing Techniques Used</a></li><li><a href="#test-setup-4" class="table-of-contents__link toc-highlight">Test Setup</a></li><li><a href="#test-cases-5" class="table-of-contents__link toc-highlight">Test Cases</a></li></ul></li><li><a href="#useinteractionloggertestjs" class="table-of-contents__link toc-highlight"><code>useInteractionLogger.test.js</code></a><ul><li><a href="#purpose-6" class="table-of-contents__link toc-highlight">Purpose</a></li><li><a href="#key-testing-techniques-used-6" class="table-of-contents__link toc-highlight">Key Testing Techniques Used</a></li><li><a href="#test-setup-5" class="table-of-contents__link toc-highlight">Test Setup</a></li><li><a href="#test-cases-6" class="table-of-contents__link toc-highlight">Test Cases</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/project-professional-group-one-llc/docs/intro">Documentation</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/Capstone-Projects-2026-spring/project-professional-group-one-llc" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a class="footer__link-item" href="/project-professional-group-one-llc/tutorial/open-source-usage">Template Contributors</a></li></ul></div></div><div class="footer__bottom text--center"><div class="margin-bottom--sm"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="footer__logo themedComponent_mlkZ themedComponent--light_NVdE"><img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Temple_T_logo.svg" alt="My Site Logo" class="footer__logo themedComponent_mlkZ themedComponent--dark_xIcU"></div><div class="footer__copyright">Copyright © 2026 Project Professional Group One Llc, Inc. Built with Docusaurus.</div></div></div></footer></div>
 </body>
 </html>
