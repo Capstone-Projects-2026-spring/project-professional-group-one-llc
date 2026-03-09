@@ -1,46 +1,40 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+# Builds and deploys the Docusaurus documentation site to GitHub Pages.
+# Validation (docs build check + mobile checks) is handled by ci.yml.
 
 name: Deploy Docs
 
 on:
   push:
     branches: ["main"]
+
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          cache: 'npm'
-      - run: npm ci
-      - run: npm test
-      - run: npm run build
-  
   deploy:
-    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pages: write
       id-token: write
+
+    defaults:
+      run:
+        working-directory: documentation
+
     steps:
       - name: Checkout full history
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'yarn'
+          node-version: "20"
+          cache: "yarn"
           cache-dependency-path: documentation/yarn.lock
 
       - name: Create or verify gh-pages branch
+        working-directory: ${{ github.workspace }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -48,10 +42,8 @@ jobs:
             echo "gh-pages branch already exists."
           else
             echo "gh-pages branch does not exist. Creating it now."
-            # Create orphan branch and ensure clean state
             git checkout --orphan gh-pages
             git reset --hard
-            # Add a placeholder so the branch has at least one tracked file
             echo "Placeholder for gh-pages branch" > .gitkeep
             git add .gitkeep
             git commit -m "chore(gh-pages): initial gh-pages placeholder"
@@ -60,14 +52,21 @@ jobs:
           fi
 
       - name: Install Dependencies
-        run: cd documentation && yarn install
+        run: yarn install --frozen-lockfile
 
       - name: Generate Dependencies Page
         if: github.repository_owner == 'applebaumian'
-        run: node documentation/scripts/generate-dependencies.js
+        run: node scripts/generate-dependencies.js
+
+      - name: Build Docs
+        run: yarn build
 
       - name: Deploy to GitHub Pages
+        env:
+          ORG_NAME: ${{ github.repository_owner }}
+          PROJECT_NAME: ${{ github.event.repository.name }}
         run: |
-          export ORG_NAME=$(echo ${GITHUB_REPOSITORY%/*})
-          export PROJECT_NAME=$(echo ${GITHUB_REPOSITORY#*/})
-          cd documentation && NODE_ENV="production" GIT_USER="github-actions[bot]" GIT_PASS="${{ secrets.GITHUB_TOKEN }}" yarn deploy
+          NODE_ENV="production" \
+          GIT_USER="github-actions[bot]" \
+          GIT_PASS="${{ secrets.GITHUB_TOKEN }}" \
+          yarn deploy
