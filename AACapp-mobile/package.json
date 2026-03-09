@@ -28,6 +28,7 @@
   },
   "jest": {
     "preset": "jest-expo",
+    "passWithNoTests": true
     "testPathIgnorePatterns": [
       "/node_modules",
       "/.expo/"
