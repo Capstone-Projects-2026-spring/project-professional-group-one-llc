@@ -78,7 +78,7 @@ const ROOM_CONTEXTS = {
     label: 'Living Room',
     emoji: '🛋️',
     color: '#10AC84',
-    beaconId: 'beacon-livingroom-001',
+    beaconId: '6E4DF426-8278-4B65-94BA-EC2242693DAA',
     suggestions: [
       { label: 'Watch TV', emoji: '📺' },
       { label: 'Play', emoji: '🎮' },
