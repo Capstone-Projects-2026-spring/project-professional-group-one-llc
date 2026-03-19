@@ -1,30 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import { useState, useMemo, useCallback } from 'react';
-import { SafeAreaView } from 'react-native';
-import useLocationDetection from './src/hooks/useLocationDetection';
-import useSentenceBuilder from './src/hooks/useSentenceBuilder';
-import useInteractionLogger from './src/hooks/useInteractionLogger';
-import RoomSelector from './src/components/RoomSelector';
-import AppHeader from './src/components/AppHeader';
-import InteractionLogModal from './src/components/InteractionLogModal';
-import SentenceBar from './src/components/SentenceBar';
-import WordGrid from './src/components/WordGrid';
-import CategoryTabs from './src/components/CategoryTabs';
+import { StatusBar } from "expo-status-bar";
+import { useState, useMemo, useCallback } from "react";
+import { SafeAreaView } from "react-native";
+import useLocationDetection from "./src/hooks/useLocationDetection";
+import useBeaconDetection from "./src/hooks/useBeaconDetection";
+import useSentenceBuilder from "./src/hooks/useSentenceBuilder";
+import useInteractionLogger from "./src/hooks/useInteractionLogger";
+import RoomSelector from "./src/components/RoomSelector";
+import AppHeader from "./src/components/AppHeader";
+import InteractionLogModal from "./src/components/InteractionLogModal";
+import SentenceBar from "./src/components/SentenceBar";
+import WordGrid from "./src/components/WordGrid";
+import CategoryTabs from "./src/components/CategoryTabs";
 import {
   DEFAULT_SUGGESTIONS,
   CATEGORIES,
   CATEGORY_COLORS,
-} from './src/constants/aacVocabulary';
-import styles from './src/styles/appStyles';
+} from "./src/constants/aacVocabulary";
+import styles from "./src/styles/appStyles";
 
 export default function App() {
-  const [activeCategory, setActiveCategory] = useState('Suggested');
+  const [activeCategory, setActiveCategory] = useState("Suggested");
   const [isLogsVisible, setIsLogsVisible] = useState(false);
   const { currentRoom, allRooms, setRoomManually } = useLocationDetection();
   const { interactionLogs, logButtonPress } = useInteractionLogger(currentRoom);
 
+  useBeaconDetection({ setRoomManually });
+
   const handleOpenLogs = useCallback(() => {
-    logButtonPress('view_logs');
+    logButtonPress("view_logs");
     setIsLogsVisible(true);
   }, [logButtonPress]);
 
@@ -36,36 +39,31 @@ export default function App() {
     (roomId) => {
       setRoomManually(roomId);
       const selectedRoom = roomId
-        ? (allRooms.find((room) => room.id === roomId) ?? null)
+        ? allRooms.find((room) => room.id === roomId) ?? null
         : null;
-      const roomLabel = selectedRoom?.label ?? 'General';
-      logButtonPress('room_selector', {
-        selectedRoomId: roomId ?? 'general',
+      const roomLabel = selectedRoom?.label ?? "General";
+      logButtonPress("room_selector", {
+        selectedRoomId: roomId ?? "general",
         selectedRoomLabel: roomLabel,
         location: {
-          id: selectedRoom?.id ?? 'general',
+          id: selectedRoom?.id ?? "general",
           label: roomLabel,
         },
       });
     },
-    [allRooms, logButtonPress, setRoomManually],
+    [allRooms, logButtonPress, setRoomManually]
   );
 
   const handleSelectCategory = useCallback(
     (category) => {
       setActiveCategory(category);
-      logButtonPress('category_tab', { category });
+      logButtonPress("category_tab", { category });
     },
-    [logButtonPress],
+    [logButtonPress]
   );
 
-  const {
-    sentence,
-    addWord,
-    removeLastWord,
-    clearSentence,
-    speakSentence,
-  } = useSentenceBuilder({ onLogPress: logButtonPress });
+  const { sentence, addWord, removeLastWord, clearSentence, speakSentence } =
+    useSentenceBuilder({ onLogPress: logButtonPress });
 
   const categories = useMemo(() => {
     const suggested = currentRoom
@@ -74,13 +72,13 @@ export default function App() {
     return { Suggested: suggested, ...CATEGORIES };
   }, [currentRoom]);
 
-  const suggestedColor = currentRoom ? currentRoom.color : '#6C63FF';
+  const suggestedColor = currentRoom ? currentRoom.color : "#6C63FF";
   const words = categories[activeCategory] || [];
   const categoryColors = {
     ...CATEGORY_COLORS,
     Suggested: suggestedColor,
   };
-  const activeCategoryColor = categoryColors[activeCategory] || '#6C63FF';
+  const activeCategoryColor = categoryColors[activeCategory] || "#6C63FF";
 
   return (
     <SafeAreaView style={styles.safe}>
