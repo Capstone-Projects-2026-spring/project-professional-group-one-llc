@@ -1,21 +1,12 @@
 import { useCallback, useState } from 'react';
 import { Platform } from 'react-native';
+import { createInteractionLog } from '../services/interactionRepository';
 
-let insertInteractionLogRef = null;
-
-function getInsertInteractionLog() {
-  if (insertInteractionLogRef) {
-    return insertInteractionLogRef;
-  }
-
-  try {
-    insertInteractionLogRef = require('../services/interactionRepository').insertInteractionLog;
-    return insertInteractionLogRef;
-  } catch (error) {
-    return null;
-  }
-}
-
+/**
+ * createDeviceId
+ * --------------
+ * Generates a stable-ish identifier for the device based on platform and OS version.
+ */
 const createDeviceId = () => {
   const rawVersion =
     Platform.Version ??
@@ -28,44 +19,54 @@ const createDeviceId = () => {
   return `${Platform.OS}-${normalizedVersion}-${randomSuffix}`;
 };
 
-export default function useInteractionLogger(currentRoom) {
+/**
+ * useInteractionLogger
+ * --------------------
+ * Hook to record interaction events.
+ * Manages local state for immediate feedback and syncs asynchronously to Supabase.
+ */
+export default function useInteractionLogger(currentRoom, userId = null) {
   const [deviceId] = useState(createDeviceId);
   const [interactionLogs, setInteractionLogs] = useState([]);
 
   const logButtonPress = useCallback(
     (buttonName, metadata = {}) => {
+      // Determine the context location (room)
       const location = currentRoom
         ? { id: currentRoom.id, label: currentRoom.label }
         : { id: 'general', label: 'General' };
 
+      const pressedAt = new Date().toISOString();
+
+      // Create local log entry for UI/debugging
       const entry = {
         deviceId,
         buttonName,
-        pressedAt: new Date().toISOString(),
+        pressedAt,
         location,
         ...metadata,
       };
 
+      // 1. Update local state
       setInteractionLogs((prev) => [...prev, entry]);
+
+      // 2. Console mirror for development visibility
       console.log('[InteractionLog]', JSON.stringify(entry));
 
-      const insertInteractionLog = getInsertInteractionLog();
-      if (!insertInteractionLog) {
-        return;
-      }
-
-      void insertInteractionLog({
+      // 3. Fire-and-forget sync to Supabase (non-blocking)
+      void createInteractionLog({
+        userId,
         deviceId,
         buttonName,
-        pressedAt: entry.pressedAt,
+        pressedAt,
         roomId: location.id,
         roomLabel: location.label,
         metadata,
       }).catch((error) => {
-        console.warn('[InteractionLog] Supabase sync failed:', error.message);
+        console.warn('[InteractionLog] Sync failed:', error.message);
       });
     },
-    [currentRoom, deviceId],
+    [currentRoom, deviceId, userId],
   );
 
   return {

@@ -1,6 +1,12 @@
 import { supabase } from './supabaseClient';
 
-export async function insertInteractionLog({
+/**
+ * createInteractionLog
+ * --------------------
+ * Persists a new interaction event to the Supabase 'interaction_logs' table.
+ * Mapping camelCase arguments to snake_case DB columns.
+ */
+export async function createInteractionLog({
   userId = null,
   deviceId,
   buttonName,
@@ -30,4 +36,28 @@ export async function insertInteractionLog({
   }
 
   return true;
+}
+
+/**
+ * fetchInteractionLogs
+ * --------------------
+ * Retrieves the most recent interaction logs.
+ * Useful for debugging or displaying in-app audit trails.
+ */
+export async function fetchInteractionLogs(limit = 50) {
+  if (!supabase) {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from('interaction_logs')
+    .select('*')
+    .order('pressed_at', { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
 }

@@ -4,6 +4,7 @@
 
 import { renderHook, act } from '@testing-library/react-native';
 import useInteractionLogger from '../src/hooks/useInteractionLogger';
+import { createInteractionLog } from '../src/services/interactionRepository';
 
 // Mock Platform so the generated device ID is deterministic across environments
 jest.mock('react-native', () => {
@@ -12,6 +13,11 @@ jest.mock('react-native', () => {
   rn.Platform.Version = '16';
   return rn;
 });
+
+// Mock the repository to avoid real Supabase calls during tests
+jest.mock('../src/services/interactionRepository', () => ({
+  createInteractionLog: jest.fn(() => Promise.resolve(true)),
+}));
 
 describe('useInteractionLogger', () => {
   let logSpy;
@@ -124,5 +130,17 @@ describe('useInteractionLogger', () => {
     expect(() => {
       act(() => result.current.logButtonPress('safe_button'));
     }).not.toThrow();
+  });
+
+  test('logButtonPress passes userId to repository if provided', () => {
+    // Verification of userId context propagation
+    const userId = 'user-123';
+    const { result } = renderHook(() => useInteractionLogger(null, userId));
+
+    act(() => result.current.logButtonPress('test_button'));
+
+    expect(createInteractionLog).toHaveBeenCalledWith(
+      expect.objectContaining({ userId: 'user-123' })
+    );
   });
 });
