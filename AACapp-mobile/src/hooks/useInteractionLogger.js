@@ -44,10 +44,11 @@ export default function useInteractionLogger(currentRoom, userId = null) {
         buttonName,
         pressedAt,
         location,
+        synced: null, // null = pending, true = success, false = failed
         ...metadata,
       };
 
-      // 1. Update local state
+      // 1. Update local state immediately
       setInteractionLogs((prev) => [...prev, entry]);
 
       // 2. Console mirror for development visibility
@@ -62,9 +63,26 @@ export default function useInteractionLogger(currentRoom, userId = null) {
         roomId: location.id,
         roomLabel: location.label,
         metadata,
-      }).catch((error) => {
-        console.warn('[InteractionLog] Sync failed:', error.message);
-      });
+      })
+        .then(() => {
+          // Update status to success
+          setInteractionLogs((prev) =>
+            prev.map((log) =>
+              log.pressedAt === pressedAt ? { ...log, synced: true } : log,
+            ),
+          );
+        })
+        .catch((error) => {
+          console.warn('[InteractionLog] Sync failed:', error.message);
+          // Update status to failed
+          setInteractionLogs((prev) =>
+            prev.map((log) =>
+              log.pressedAt === pressedAt
+                ? { ...log, synced: false, syncError: error.message }
+                : log,
+            ),
+          );
+        });
     },
     [currentRoom, deviceId, userId],
   );

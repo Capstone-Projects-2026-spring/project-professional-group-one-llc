@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { supabase } from "./supabaseClient";
 
 /**
  * createInteractionLog
@@ -16,7 +16,9 @@ export async function createInteractionLog({
   metadata = {},
 }) {
   if (!supabase) {
-    return null;
+    throw new Error(
+      "Supabase client not initialized. Check your environment variables.",
+    );
   }
 
   const payload = {
@@ -29,7 +31,7 @@ export async function createInteractionLog({
     metadata,
   };
 
-  const { error } = await supabase.from('interaction_logs').insert(payload);
+  const { error } = await supabase.from("interaction_logs").insert(payload);
 
   if (error) {
     throw error;
@@ -50,9 +52,9 @@ export async function fetchInteractionLogs(limit = 50) {
   }
 
   const { data, error } = await supabase
-    .from('interaction_logs')
-    .select('*')
-    .order('pressed_at', { ascending: false })
+    .from("interaction_logs")
+    .select("*")
+    .order("pressed_at", { ascending: false })
     .limit(limit);
 
   if (error) {
