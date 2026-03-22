@@ -63,7 +63,9 @@ const ROOM_CONTEXTS = {
     label: 'Bedroom',
     emoji: '🛏️',
     color: '#5F27CD',
-    beaconId: 'beacon-bedroom-001',
+    beaconId: '76BD86D3-F85B-C47B-2F32-EA3B86D6AC22',
+    beaconMajor: 3838,
+    beaconMinor: 4949,
     suggestions: [
       { label: 'Tired' },
       { label: 'Drink', arasaacId: '6061' },
@@ -154,6 +156,55 @@ const ROOM_CONTEXTS = {
 export function getRoomByBeaconId(beaconId) {
   return (
     Object.values(ROOM_CONTEXTS).find((r) => r.beaconId === beaconId) || null
+  );
+}
+
+function normalizeBeaconText(value) {
+  return String(value || '').trim().toLowerCase();
+}
+
+function normalizeBeaconNumber(value) {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return value;
+  }
+
+  const parsed = Number.parseInt(String(value || ''), 10);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+/**
+ * Match a scanned BLE device to a room by beaconId (device ID or iBeacon UUID)
+ * and optional major/minor.
+ */
+export function getRoomByBeaconDevice(device) {
+  if (!device) return null;
+
+  const id = normalizeBeaconText(device.id);
+  const iBeaconId = normalizeBeaconText(device.iBeacon?.uuid || device.iBeaconUuid);
+  const iBeaconMajor = normalizeBeaconNumber(device.iBeacon?.major ?? device.iBeaconMajor);
+  const iBeaconMinor = normalizeBeaconNumber(device.iBeacon?.minor ?? device.iBeaconMinor);
+
+  return (
+    Object.values(ROOM_CONTEXTS).find((room) => {
+      const roomBeaconIdForIBeacon = normalizeBeaconText(room.beaconId);
+      const roomBeaconMajor = normalizeBeaconNumber(room.beaconMajor);
+      const roomBeaconMinor = normalizeBeaconNumber(room.beaconMinor);
+
+      if (roomBeaconIdForIBeacon && iBeaconId && roomBeaconIdForIBeacon === iBeaconId) {
+        const majorMatches = roomBeaconMajor == null || roomBeaconMajor === iBeaconMajor;
+        const minorMatches = roomBeaconMinor == null || roomBeaconMinor === iBeaconMinor;
+        if (majorMatches && minorMatches) {
+          return true;
+        }
+      }
+
+      const roomBeaconId = normalizeBeaconText(room.beaconId);
+      if (roomBeaconId && id && roomBeaconId === id) {
+        return true;
+      }
+
+      return false;
+    }) || null
   );
 }
 

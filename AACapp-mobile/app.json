@@ -13,7 +13,11 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSBluetoothAlwaysUsageDescription": "AAC Beacon needs Bluetooth to scan and verify nearby BlueCharm beacons.",
+        "NSBluetoothPeripheralUsageDescription": "AAC Beacon needs Bluetooth to scan and verify nearby BlueCharm beacons."
+      }
     },
     "android": {
       "adaptiveIcon": {
