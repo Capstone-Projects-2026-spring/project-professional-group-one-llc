@@ -1,5 +1,6 @@
-import { useState, useCallback } from 'react';
-import { getRoomByBeaconId, getAllRooms } from '../data/roomContexts';
+import { useState, useCallback, useEffect } from 'react';
+import { getAllRooms } from '../data/roomContexts';
+import { fetchRoomsWithSuggestions } from '../services/roomRepository';
 
 /**
  * useLocationDetection
@@ -25,17 +26,51 @@ import { getRoomByBeaconId, getAllRooms } from '../data/roomContexts';
  */
 export default function useLocationDetection() {
   const [currentRoom, setCurrentRoom] = useState(null);
+  const [allRooms, setAllRooms] = useState(getAllRooms);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadSupabaseRooms = async () => {
+      try {
+        const remoteRooms = await fetchRoomsWithSuggestions();
+        if (!isMounted || remoteRooms.length === 0) {
+          return;
+        }
+
+        setAllRooms(remoteRooms);
+        setCurrentRoom((previousRoom) => {
+          if (!previousRoom) {
+            return previousRoom;
+          }
+
+          return remoteRooms.find((room) => room.id === previousRoom.id) ?? null;
+        });
+      } catch (error) {
+        console.warn('[Rooms] Falling back to local room contexts:', error.message);
+      }
+    };
+
+    loadSupabaseRooms();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // ── Manual mode (placeholder for Bluetooth) ──────────────────────
-  const setRoomManually = useCallback((roomId) => {
-    if (!roomId) {
-      setCurrentRoom(null);
-      return;
-    }
-    const rooms = getAllRooms();
-    const match = rooms.find((r) => r.id === roomId) || null;
-    setCurrentRoom(match);
-  }, []);
+  const setRoomManually = useCallback(
+    (roomId) => {
+      if (!roomId) {
+        setCurrentRoom(null);
+        return;
+      }
+
+      const match = allRooms.find((room) => room.id === roomId) ?? null;
+      setCurrentRoom(match);
+    },
+    [allRooms],
+  );
 
   // ── Future: Bluetooth beacon scanning ────────────────────────────
   // When BLE is ready, add a useEffect here that:
@@ -57,6 +92,6 @@ export default function useLocationDetection() {
     currentRoom,
     detectionMode: 'manual', // change to 'bluetooth' once BLE is wired
     setRoomManually,
-    allRooms: getAllRooms(),
+    allRooms,
   };
 }
