@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import useLocationDetection from './src/hooks/useLocationDetection';
 import RoomSelector from './src/components/RoomSelector';
+import { NativeModules } from 'react-native';
+console.log('[TEST] BLEBeaconModule:', JSON.stringify(NativeModules.BLEBeaconModule));
 
 const DEFAULT_SUGGESTIONS = [
   { label: 'Hello', emoji: '👋' },

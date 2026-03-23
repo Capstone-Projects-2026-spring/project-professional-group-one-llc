@@ -37,7 +37,7 @@ const ROOM_CONTEXTS = {
     label: 'Bathroom',
     emoji: '🚿',
     color: '#54A0FF',
-    beaconId: 'beacon-bathroom-001',
+    beaconId: '7777772E-6B6B-6D63-6E2E-636F6D000002',
     suggestions: [
       { label: 'Toilet', emoji: '🚽' },
       { label: 'Wash hands', emoji: '🧼' },
@@ -56,7 +56,7 @@ const ROOM_CONTEXTS = {
     label: 'Bedroom',
     emoji: '🛏️',
     color: '#5F27CD',
-    beaconId: 'beacon-bedroom-001',
+    beaconId: '7777772E-6B6B-6D63-6E2E-636F6D000001',
     suggestions: [
       { label: 'Tired', emoji: '😩' },
       { label: 'Sleep', emoji: '😴' },
