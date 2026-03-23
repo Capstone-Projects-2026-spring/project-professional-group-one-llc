@@ -1,5 +1,6 @@
 import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import styles from '../styles/appStyles';
+import { logEvent } from "../utils/logger";
 
 export default function SentenceBar({
   sentence,
@@ -7,6 +8,15 @@ export default function SentenceBar({
   onClearSentence,
   onSpeakSentence,
 }) {
+const currentSentence = sentence.join(" ");
+
+if (sentence.length > 0) {
+  logEvent({
+    action: "SENTENCE_UPDATE",
+    label: currentSentence,
+    userId: "user123"
+  });
+}
   return (
     <View style={styles.sentenceBar}>
       <ScrollView

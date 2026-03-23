@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, ScrollView, Image, View, ActivityIndicator, StyleSheet } from 'react-native';
 import styles from '../styles/appStyles';
 import { usePictogram } from '../hooks/usePictogram';
-
+import { logEvent } from "../utils/logger";
 /**
  * PictogramTile
  * -------------
@@ -85,8 +85,15 @@ export default function WordGrid({ words, activeCategoryColor, onAddWord }) {
           label={word.label}
           arasaacId={word.arasaacId}
           color={activeCategoryColor}
-          onPress={() => onAddWord(word.label)}
-        />
+          onPress={() => {
+		onAddWord(word.label);
+		logEvent({
+		action: "Button_Click",
+		label: word.label,
+		userId: "user123"
+	});
+	}}
+	/>
       ))}
     </ScrollView>
   );
