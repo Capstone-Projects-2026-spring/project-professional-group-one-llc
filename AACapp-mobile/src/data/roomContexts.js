@@ -22,7 +22,7 @@ const ROOM_CONTEXTS = {
     label: 'Kitchen',
     emoji: '🍳',
     color: '#FF9F43',
-    beaconId: 'beacon-kitchen-001', // placeholder – replace with real UUID
+    beaconId: '76D7F666-AACE-885B-1380-B2AE724EA4A1', // placeholder – replace with real UUID
     suggestions: [
       { label: 'Hungry' },
       { label: 'Thirsty' },
@@ -44,7 +44,7 @@ const ROOM_CONTEXTS = {
     label: 'Bathroom',
     emoji: '🚿',
     color: '#54A0FF',
-    beaconId: 'beacon-bathroom-001',
+    beaconId: 'A5A71902-2CFC-47BA-4220-661DA2DFD3AC',
     suggestions: [
       { label: 'Toilet' },
       { label: 'Wash hands' },
