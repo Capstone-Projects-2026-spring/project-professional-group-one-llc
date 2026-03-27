@@ -116,12 +116,15 @@ export default function useBLEScanning() {
       const { rssis, source } = map[id];
       const avg  = rssis.reduce((a,b) => a+b, 0) / rssis.length;
       const room = getRoomByBeaconId(id);
+      const threshold = room?.rssiThreshold ?? MIN_RSSI;
+      const qualifies = room && avg >= threshold;//beacon only wins if threshold met
       console.log(
         `[BLE] ${room ? `✅ ${room.label}` : '❓ unknown'} | id=${id}` +
-        ` avg=${avg.toFixed(1)}dBm n=${rssis.length} src=${source}`
+        ` avg=${avg.toFixed(1)}dBm n=${rssis.length} src=${source}` +
+        (room ? ` thresh=${threshold} ${qualifies ? '✔' : '✖'}` : '')
       );
       if (!room) console.log(`[BLE]   ↳ Add to roomContexts.js if this is your beacon`);
-      if (room && avg > bestRSSI) { bestRSSI = avg; bestId = id; }
+      if (qualifies && avg > bestRSSI) { bestRSSI = avg; bestId = id; }
     });
 
     if (bestId) {
