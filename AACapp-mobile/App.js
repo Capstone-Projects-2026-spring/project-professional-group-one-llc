@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { SafeAreaView } from 'react-native';
+import { supabase } from './src/services/supabaseClient';
 import useLocationDetection from './src/hooks/useLocationDetection';
 import useSentenceBuilder from './src/hooks/useSentenceBuilder';
 import useInteractionLogger from './src/hooks/useInteractionLogger';
@@ -20,8 +21,19 @@ import styles from './src/styles/appStyles';
 export default function App() {
   const [activeCategory, setActiveCategory] = useState('Suggested');
   const [isLogsVisible, setIsLogsVisible] = useState(false);
+  const [userId, setUserId] = useState(null);
+
+  // Fetch current user ID on mount for logging context
+  useEffect(() => {
+    if (supabase) {
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (user) setUserId(user.id);
+      });
+    }
+  }, []);
+
   const { currentRoom, allRooms, setRoomManually } = useLocationDetection();
-  const { interactionLogs, logButtonPress } = useInteractionLogger(currentRoom);
+  const { interactionLogs, logButtonPress } = useInteractionLogger(currentRoom, userId);
 
   const handleOpenLogs = useCallback(() => {
     logButtonPress('view_logs');
@@ -101,6 +113,7 @@ export default function App() {
         words={words}
         activeCategoryColor={activeCategoryColor}
         onAddWord={addWord}
+        onLogPress={logButtonPress}
       />
       <CategoryTabs
         categories={categories}

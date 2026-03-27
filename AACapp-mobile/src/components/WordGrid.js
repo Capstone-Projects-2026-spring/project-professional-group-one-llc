@@ -76,7 +76,7 @@ const picStyles = StyleSheet.create({
   },
 });
 
-export default function WordGrid({ words, activeCategoryColor, onAddWord }) {
+export default function WordGrid({ words, activeCategoryColor, onAddWord, onLogPress }) {
   return (
     <ScrollView style={styles.gridScroll} contentContainerStyle={styles.grid}>
       {words.map((word, index) => (
@@ -85,7 +85,10 @@ export default function WordGrid({ words, activeCategoryColor, onAddWord }) {
           label={word.label}
           arasaacId={word.arasaacId}
           color={activeCategoryColor}
-          onPress={() => onAddWord(word.label)}
+          onPress={() => {
+            onLogPress?.('word_tile', { word: word.label });
+            onAddWord(word.label);
+          }}
         />
       ))}
     </ScrollView>
