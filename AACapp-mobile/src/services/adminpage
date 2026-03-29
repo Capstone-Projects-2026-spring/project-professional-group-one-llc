@@ -1,0 +1,179 @@
+// src/screens/AdminPage.js
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  ScrollView,
+} from "react-native";
+
+export default function AdminPage({ onSwitchToUser }) {
+  const [beaconId, setBeaconId] = useState("");
+  const [beaconName, setBeaconName] = useState("");
+
+  const [newUserName, setNewUserName] = useState("");
+  const [newUserEmail, setNewUserEmail] = useState("");
+  const [newUserPassword, setNewUserPassword] = useState("");
+
+  const handleConnectBeacon = () => {
+    if (!beaconId || !beaconName) {
+      Alert.alert("Missing Info", "Please enter both beacon ID and beacon name.");
+      return;
+    }
+
+    // Replace with real beacon connection logic later
+    Alert.alert("Beacon Connected", `Beacon "${beaconName}" connected successfully.`);
+    setBeaconId("");
+    setBeaconName("");
+  };
+
+  const handleCreateUser = () => {
+    if (!newUserName || !newUserEmail || !newUserPassword) {
+      Alert.alert("Missing Info", "Please fill out all user account fields.");
+      return;
+    }
+
+    // Replace with real signup / database logic later
+    Alert.alert("User Created", `Account created for ${newUserName}.`);
+    setNewUserName("");
+    setNewUserEmail("");
+    setNewUserPassword("");
+  };
+
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>Administration Page</Text>
+      <Text style={styles.subtitle}>
+        Manage beacon connections and create user accounts.
+      </Text>
+
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>Connect to Beacon</Text>
+
+        <TextInput
+          style={styles.input}
+          placeholder="Beacon ID"
+          value={beaconId}
+          onChangeText={setBeaconId}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Beacon Name"
+          value={beaconName}
+          onChangeText={setBeaconName}
+        />
+
+        <TouchableOpacity style={styles.button} onPress={handleConnectBeacon}>
+          <Text style={styles.buttonText}>Connect Beacon</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>Create User Account</Text>
+
+        <TextInput
+          style={styles.input}
+          placeholder="Full Name"
+          value={newUserName}
+          onChangeText={setNewUserName}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={newUserEmail}
+          onChangeText={setNewUserEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={newUserPassword}
+          onChangeText={setNewUserPassword}
+          secureTextEntry
+        />
+
+        <TouchableOpacity style={styles.button} onPress={handleCreateUser}>
+          <Text style={styles.buttonText}>Create User</Text>
+        </TouchableOpacity>
+      </View>
+
+      <TouchableOpacity style={styles.switchButton} onPress={onSwitchToUser}>
+        <Text style={styles.switchButtonText}>Switch to User Page</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    backgroundColor: "#f5f7fb",
+    padding: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "700",
+    color: "#1f2937",
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 15,
+    color: "#6b7280",
+    marginBottom: 20,
+  },
+  card: {
+    backgroundColor: "#fff",
+    padding: 18,
+    borderRadius: 14,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    marginBottom: 14,
+    color: "#111827",
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#d1d5db",
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 12,
+    backgroundColor: "#fff",
+  },
+  button: {
+    backgroundColor: "#2563eb",
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "600",
+    fontSize: 16,
+  },
+  switchButton: {
+    backgroundColor: "#111827",
+    paddingVertical: 15,
+    borderRadius: 12,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  switchButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+});
