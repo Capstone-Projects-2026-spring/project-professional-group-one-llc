@@ -1,5 +1,5 @@
 /**
- * Room-specific AAC word/phrase suggestions.
+ * Room-specific AAC word/phrase suconst GENERAL_ROOM_ARASAAC_ID = 12345;const GENERAL_ROOM_ARASAAC_ID = 12345;gestions.
  *
  * Each key is a room identifier that will eventually map to a
  * Bluetooth beacon UUID.  The `beaconId` field is a placeholder
@@ -13,7 +13,8 @@
  * using each suggestion's `label` as the search keyword.
  * See: hooks/usePictogram.js
  *
- * Room-level `emoji` is kept because RoomSelector still uses it for chips.
+ * Room-level `arasaacId` can be set to pin a specific pictogram in RoomSelector.
+ * If omitted, RoomSelector falls back to searching by room label.
  */
 
 const ROOM_CONTEXTS = {
@@ -21,6 +22,7 @@ const ROOM_CONTEXTS = {
     id: 'kitchen',
     label: 'Kitchen',
     emoji: '🍳',
+    arasaacId: 33070,
     color: '#FF9F43',
     beaconId: 'beacon-kitchen-001', // placeholder – replace with real UUID
     suggestions: [
@@ -43,6 +45,7 @@ const ROOM_CONTEXTS = {
     id: 'bathroom',
     label: 'Bathroom',
     emoji: '🚿',
+    arasaacId: 15905,
     color: '#54A0FF',
     beaconId: 'beacon-bathroom-001',
     suggestions: [
@@ -62,6 +65,7 @@ const ROOM_CONTEXTS = {
     id: 'bedroom',
     label: 'Bedroom',
     emoji: '🛏️',
+    arasaacId: 33068,
     color: '#5F27CD',
     beaconId: 'beacon-bedroom-001',
     suggestions: [
@@ -84,6 +88,7 @@ const ROOM_CONTEXTS = {
     id: 'livingRoom',
     label: 'Living Room',
     emoji: '🛋️',
+    arasaacId: 33074,
     color: '#10AC84',
     beaconId: 'beacon-livingroom-001',
     suggestions: [
@@ -106,6 +111,7 @@ const ROOM_CONTEXTS = {
     id: 'classroom',
     label: 'Classroom',
     emoji: '🏫',
+    arasaacId: 33072,
     color: '#EE5A24',
     beaconId: 'beacon-classroom-001',
     suggestions: [
@@ -128,6 +134,7 @@ const ROOM_CONTEXTS = {
     id: 'outside',
     label: 'Outside',
     emoji: '🌳',
+    arasaacId: 33064,
     color: '#2ECC71',
     beaconId: 'beacon-outside-001',
     suggestions: [
