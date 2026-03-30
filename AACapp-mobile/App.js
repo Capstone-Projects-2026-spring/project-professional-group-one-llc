@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState, useMemo, useCallback, useEffect } from 'react';
-import { SafeAreaView } from 'react-native';
-import { supabase } from './src/services/supabaseClient';
+import { useState, useMemo, useCallback } from 'react';
+import { SafeAreaView, View, useWindowDimensions } from 'react-native';
 import useLocationDetection from './src/hooks/useLocationDetection';
 import useSentenceBuilder from './src/hooks/useSentenceBuilder';
 import useInteractionLogger from './src/hooks/useInteractionLogger';
@@ -54,19 +53,8 @@ export default function App() {
     scrollable: false,
   });
   const { width, height } = useWindowDimensions();
-  const [userId, setUserId] = useState(null);
-
-  // Fetch current user ID on mount for logging context
-  useEffect(() => {
-    if (supabase) {
-      supabase.auth.getUser().then(({ data: { user } }) => {
-        if (user) setUserId(user.id);
-      });
-    }
-  }, []);
-
   const { currentRoom, allRooms, setRoomManually } = useLocationDetection();
-  const { interactionLogs, logButtonPress } = useInteractionLogger(currentRoom, userId);
+  const { interactionLogs, logButtonPress } = useInteractionLogger(currentRoom);
 
   const smallestSide = Math.min(width, height);
   const uiScale = Math.max(0.85, Math.min(1.35, smallestSide / 390));
