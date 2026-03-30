@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
   settingsIconText: {
     color: '#1a1a2e',
     fontWeight: '700',
-    lineHeight: 22,
   },
   settingsBackdrop: {
     flex: 1,
