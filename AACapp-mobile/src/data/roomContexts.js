@@ -1,5 +1,5 @@
 /**
- * Room-specific AAC word/phrase suconst GENERAL_ROOM_ARASAAC_ID = 12345;const GENERAL_ROOM_ARASAAC_ID = 12345;gestions.
+ * Room-specific AAC word/phrase suggestions.
  *
  * Each key is a room identifier that will eventually map to a
  * Bluetooth beacon UUID.  The `beaconId` field is a placeholder

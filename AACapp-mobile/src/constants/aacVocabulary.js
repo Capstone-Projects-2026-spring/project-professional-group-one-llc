@@ -37,7 +37,7 @@ export const CORE_WORDS = [
   { label: 'Not' },
   { label: 'Here' },
   { label: 'There', arasaacId: '5375' },
-  { label: 'In',arasaacId: '7034' },
+  { label: 'In', arasaacId: '7034' },
   { label: 'On', arasaacId: '21818' },
   { label: 'That' },
   { label: 'Mine' },
