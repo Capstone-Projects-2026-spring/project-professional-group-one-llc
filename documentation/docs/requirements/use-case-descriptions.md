@@ -4,16 +4,11 @@ sidebar_position: 5
 
 # Use-Case Descriptions
 
-### Use Case 1 - User needs to access 
+### Use Case 1 - Locations in school
 
-<i>As a user, it is important that I can create an account so that I can store and access my personalized communication preferences.</i>
+<i>The app can adjust adjust contextually for students in school</i>
 
-1. Upon accessing the AAC Beacon web application for the first time, the user is directed to a landing page with options to register or log in.
-2. The user selects the 'Register' button to access the account registration form.
-3. The user inputs their username, email address, password, chooses if it's an admin or child account, and any optional accessibility preferences, then selects the 'Sign Up' button.
-4. If the information is valid, the user receives confirmation that their account was successfully created.
-5. The user selects the 'Sign In' link and enters their credentials.
-6. The user is redirected to the home page.
+* The app will show different food items based 
 
 ---
 
