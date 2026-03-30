@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Use-Case Descriptions
 
-### Use Case 1 - Account Creation
+### Use Case 1 - User needs to access 
 
 <i>As a user, it is important that I can create an account so that I can store and access my personalized communication preferences.</i>
 
