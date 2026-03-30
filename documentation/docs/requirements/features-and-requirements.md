@@ -25,16 +25,18 @@ sidebar_position: 4
     * This includes the user's usage analytics and their favorite words  
 
 -- ADMINISTRATIVE FUNCTIONALITY --
-* Main Administrator can create additional Administrator accounts for other users to access administrative functions
-    * Additional Administrator accounts are also linked to their own email addresses
-* Administrator accounts can create individual User accounts
-    * All Administrator accounts can access all User accounts once verified by the Main Administrator
-    * User accounts are not attached to an email
-    * An Admin must sign into the app first, who selects a User account to enter communication mode
-* Main Administrator must create an account and specify an organization/location name
-    * A verification email will be sent when the Main Administrator registers the device for the first time.
-    * This email address will be used as a security email address in case authentication issues
+* Must sign up on the app to create an account
+* Must designate an institution that they belong to
+* Capable of creating other Admin and User accounts
+* Capable of adding or removing location specific icons
+* Capable of adding or removing locations
+* Administrators should download the app for users and sign in for them
+* Administrators will be able to download logging information
 
+
+-- USER FUNCTIONALITY --
+* Users can select icons to construct sentences
+* Data about the user's actions on the app will be uploaded
 
 
 ## Nonfunctional Requirements
