@@ -20,6 +20,29 @@ export const DEFAULT_SUGGESTIONS = [
   { label: 'Go' },
 ];
 
+export const CORE_WORDS = [
+  { label: 'I' },
+  { label: 'You' },
+  { label: 'It', arasaacId: '31670' },
+  { label: 'Want', arasaacId: '5441' },
+  { label: 'Need' },
+  { label: 'Like', arasaacId: '37826' },
+  { label: 'Go' },
+  { label: 'Stop' },
+  { label: 'Help' },
+  { label: 'More' },
+  { label: 'All done' },
+  { label: 'Yes' },
+  { label: 'No', arasaacId: '5526' },
+  { label: 'Not' },
+  { label: 'Here' },
+  { label: 'There', arasaacId: '5375' },
+  { label: 'In',arasaacId: '7034' },
+  { label: 'On', arasaacId: '21818' },
+  { label: 'That' },
+  { label: 'Mine' },
+];
+
 export const CATEGORIES = {
   People: [
     { label: 'I', arasaacId: '6632' },

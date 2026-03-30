@@ -1,48 +1,115 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState, useMemo, useCallback, useEffect } from 'react';
-import { SafeAreaView } from 'react-native';
-import { supabase } from './src/services/supabaseClient';
+import { useState, useMemo, useCallback } from 'react';
+import { SafeAreaView, View, useWindowDimensions } from 'react-native';
 import useLocationDetection from './src/hooks/useLocationDetection';
 import useSentenceBuilder from './src/hooks/useSentenceBuilder';
 import useInteractionLogger from './src/hooks/useInteractionLogger';
 import RoomSelector from './src/components/RoomSelector';
 import AppHeader from './src/components/AppHeader';
+import SettingsMenuOverlay from './src/components/SettingsMenuOverlay';
 import InteractionLogModal from './src/components/InteractionLogModal';
 import SentenceBar from './src/components/SentenceBar';
 import WordGrid from './src/components/WordGrid';
-import CategoryTabs from './src/components/CategoryTabs';
-import {
-  DEFAULT_SUGGESTIONS,
-  CATEGORIES,
-  CATEGORY_COLORS,
-} from './src/constants/aacVocabulary';
+import { DEFAULT_SUGGESTIONS, CORE_WORDS } from './src/constants/aacVocabulary';
 import styles from './src/styles/appStyles';
 
+function mergeUniqueWords(primaryWords, secondaryWords) {
+  const seen = new Set();
+  const merged = [];
+
+  for (const word of [...primaryWords, ...secondaryWords]) {
+    const key = word.label.toLowerCase().trim();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    merged.push(word);
+  }
+
+  return merged;
+}
+
+function hexToRgba(hex, alpha) {
+  const normalized = hex.replace('#', '').trim();
+  const full = normalized.length === 3
+    ? normalized.split('').map((char) => char + char).join('')
+    : normalized;
+
+  if (full.length !== 6) {
+    return `rgba(46, 204, 113, ${alpha})`;
+  }
+
+  const r = parseInt(full.slice(0, 2), 16);
+  const g = parseInt(full.slice(2, 4), 16);
+  const b = parseInt(full.slice(4, 6), 16);
+
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 export default function App() {
-  const [activeCategory, setActiveCategory] = useState('Suggested');
   const [isLogsVisible, setIsLogsVisible] = useState(false);
-  const [userId, setUserId] = useState(null);
-
-  // Fetch current user ID on mount for logging context
-  useEffect(() => {
-    if (supabase) {
-      supabase.auth.getUser().then(({ data: { user } }) => {
-        if (user) setUserId(user.id);
-      });
-    }
-  }, []);
-
+  const [isSettingsVisible, setIsSettingsVisible] = useState(false);
+  const [gridScroll, setGridScroll] = useState({
+    progress: 0,
+    thumbRatio: 1,
+    scrollable: false,
+  });
+  const { width, height } = useWindowDimensions();
   const { currentRoom, allRooms, setRoomManually } = useLocationDetection();
-  const { interactionLogs, logButtonPress } = useInteractionLogger(currentRoom, userId);
+  const { interactionLogs, logButtonPress } = useInteractionLogger(currentRoom);
+
+  const smallestSide = Math.min(width, height);
+  const uiScale = Math.max(0.85, Math.min(1.35, smallestSide / 390));
+  const isTablet = smallestSide >= 768;
+  const roomRailWidth = Math.round((isTablet ? 102 : 78) * uiScale);
+  const indicatorWidth = Math.max(4, Math.round(4 * uiScale));
 
   const handleOpenLogs = useCallback(() => {
     logButtonPress('view_logs');
     setIsLogsVisible(true);
   }, [logButtonPress]);
 
+  const handleOpenSettings = useCallback(() => {
+    logButtonPress('open_settings');
+    setIsSettingsVisible(true);
+  }, [logButtonPress]);
+
+  const handleCloseSettings = useCallback(() => {
+    setIsSettingsVisible(false);
+  }, []);
+
+  const handleOpenLogsFromSettings = useCallback(() => {
+    setIsSettingsVisible(false);
+    handleOpenLogs();
+  }, [handleOpenLogs]);
+
   const handleCloseLogs = useCallback(() => {
     setIsLogsVisible(false);
   }, []);
+
+  const handleGridScrollMetrics = useCallback(
+    ({ offsetY, contentHeight, viewportHeight }) => {
+      const maxOffset = Math.max(0, contentHeight - viewportHeight);
+      const scrollable = maxOffset > 0;
+      const progress = scrollable
+        ? Math.max(0, Math.min(1, offsetY / maxOffset))
+        : 0;
+      const ratio = scrollable
+        ? Math.max(0.2, Math.min(1, viewportHeight / contentHeight))
+        : 1;
+
+      setGridScroll((prev) => {
+        if (
+          prev.progress === progress
+          && prev.thumbRatio === ratio
+          && prev.scrollable === scrollable
+        ) {
+          return prev;
+        }
+
+        return { progress, thumbRatio: ratio, scrollable };
+      });
+    },
+    [],
+  );
 
   const handleSelectRoom = useCallback(
     (roomId) => {
@@ -63,14 +130,6 @@ export default function App() {
     [allRooms, logButtonPress, setRoomManually],
   );
 
-  const handleSelectCategory = useCallback(
-    (category) => {
-      setActiveCategory(category);
-      logButtonPress('category_tab', { category });
-    },
-    [logButtonPress],
-  );
-
   const {
     sentence,
     addWord,
@@ -79,52 +138,77 @@ export default function App() {
     speakSentence,
   } = useSentenceBuilder({ onLogPress: logButtonPress });
 
-  const categories = useMemo(() => {
-    const suggested = currentRoom
-      ? currentRoom.suggestions
-      : DEFAULT_SUGGESTIONS;
-    return { Suggested: suggested, ...CATEGORIES };
+  const words = useMemo(() => {
+    const roomWords = currentRoom ? currentRoom.suggestions : DEFAULT_SUGGESTIONS;
+    return mergeUniqueWords(CORE_WORDS, roomWords);
   }, [currentRoom]);
-
   const suggestedColor = currentRoom ? currentRoom.color : '#6C63FF';
-  const words = categories[activeCategory] || [];
-  const categoryColors = {
-    ...CATEGORY_COLORS,
-    Suggested: suggestedColor,
-  };
-  const activeCategoryColor = categoryColors[activeCategory] || '#6C63FF';
+  const activeCategoryColor = suggestedColor;
+  const indicatorTrackColor = hexToRgba(activeCategoryColor, 0.24);
+  const indicatorThumbColor = activeCategoryColor;
 
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar style="dark" />
-      <AppHeader currentRoom={currentRoom} onViewLogs={handleOpenLogs} />
-      <RoomSelector
-        rooms={allRooms}
-        activeRoomId={currentRoom?.id ?? null}
-        onSelectRoom={handleSelectRoom}
-      />
+      <AppHeader onOpenSettings={handleOpenSettings} uiScale={uiScale} />
       <SentenceBar
         sentence={sentence}
         onRemoveLastWord={removeLastWord}
         onClearSentence={clearSentence}
         onSpeakSentence={speakSentence}
+        uiScale={uiScale}
       />
-      <WordGrid
-        words={words}
-        activeCategoryColor={activeCategoryColor}
-        onAddWord={addWord}
-        onLogPress={logButtonPress}
-      />
-      <CategoryTabs
-        categories={categories}
-        activeCategory={activeCategory}
-        categoryColors={categoryColors}
-        onSelectCategory={handleSelectCategory}
-      />
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+        <WordGrid
+          words={words}
+          activeCategoryColor={activeCategoryColor}
+          onAddWord={addWord}
+          uiScale={uiScale}
+          onScrollMetricsChange={handleGridScrollMetrics}
+        />
+        {gridScroll.scrollable ? (
+          <View
+            style={{
+              width: indicatorWidth,
+              marginRight: Math.round(4 * uiScale),
+              marginTop: Math.round(12 * uiScale),
+              marginBottom: Math.round(12 * uiScale),
+              borderRadius: 999,
+              backgroundColor: indicatorTrackColor,
+              overflow: 'hidden',
+            }}
+          >
+            <View
+              style={{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: `${gridScroll.progress * (1 - gridScroll.thumbRatio) * 100}%`,
+                height: `${gridScroll.thumbRatio * 100}%`,
+                borderRadius: 999,
+                backgroundColor: indicatorThumbColor,
+              }}
+            />
+          </View>
+        ) : null}
+        <RoomSelector
+          rooms={allRooms}
+          activeRoomId={currentRoom?.id ?? null}
+          onSelectRoom={handleSelectRoom}
+          uiScale={uiScale}
+          railWidth={roomRailWidth}
+        />
+      </View>
       <InteractionLogModal
         visible={isLogsVisible}
         logs={interactionLogs}
         onClose={handleCloseLogs}
+      />
+      <SettingsMenuOverlay
+        visible={isSettingsVisible}
+        onClose={handleCloseSettings}
+        onViewLogs={handleOpenLogsFromSettings}
+        uiScale={uiScale}
       />
     </SafeAreaView>
   );
