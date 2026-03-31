@@ -8,7 +8,10 @@ sidebar_position: 5
 
 <i>The app can adjust adjust contextually for students in school</i>
 
-* The app will show different food items based 
+* The app will show different food items based on the Cafeteria location.
+* The app could show different food items based on the Cafeteria's food schedule.
+* The food options should be managed by administrators.
+* 
 
 ---
 
