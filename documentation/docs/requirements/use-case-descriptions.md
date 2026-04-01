@@ -4,14 +4,16 @@ sidebar_position: 5
 
 # Use-Case Descriptions
 
-### Use Case 1 - Locations in school
+### Use Case 1 - Transitioning between locations in a School
 
 <i>The app can adjust adjust contextually for students in school</i>
 
-* The app will show different food items based on the Cafeteria location.
+* With the Cafeteria location the app could show the lunch menu items for the day
 * The app could show different food items based on the Cafeteria's food schedule.
 * The food options should be managed by administrators.
-* 
+* With the Library location the app could show specific actions such as maybe needing to print something, check out a book, or wanting to use a computer.
+* If the student gets hurt and goes the nurse's office the app should load body parts to show where the injury is. 
+
 
 ---
 
