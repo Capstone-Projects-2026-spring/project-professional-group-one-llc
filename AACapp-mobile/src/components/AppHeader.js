@@ -1,44 +1,76 @@
-import { Pressable, Text, View } from 'react-native';
-import styles from '../styles/appStyles';
+import { ActivityIndicator, Image, Pressable, View } from "react-native";
+import styles from "../styles/appStyles";
+import { usePictogram } from "../hooks/usePictogram";
 
-export default function AppHeader({ currentRoom, onViewLogs, isAutoBeaconEnabled, onToggleAutoBeacon, onLogout, userRole }) {
+function SettingsPictogram({ size }) {
+  const { uri, loading } = usePictogram("configuration button", 39466);
+
+  if (loading) {
+    return <ActivityIndicator size="small" color="#1a1a2e" />;
+  }
+
+  if (!uri) {
+    return null;
+  }
+
   return (
-    <View style={styles.header}>
-      <View>
-        <Text style={styles.headerTitle}>AAC Beacon</Text>
-        <Text style={styles.headerSubtitle}>
-          {currentRoom ? `📍 ${currentRoom.emoji} ${currentRoom.label}` : '📍 General'}
-        </Text>
-        {userRole && (
-          <Text style={styles.headerRole}>
-            Role: {userRole === 'admin' ? 'Admin' : 'User'}
-          </Text>
-        )}
-      </View>
-      <View style={styles.headerActions}>
-        <Pressable
-          style={[
-            styles.autoBeaconButton,
-            isAutoBeaconEnabled && styles.autoBeaconButtonEnabled,
-          ]}
-          onPress={onToggleAutoBeacon}
-        >
-          <Text
-            style={[
-              styles.autoBeaconButtonText,
-              isAutoBeaconEnabled && styles.autoBeaconButtonTextEnabled,
-            ]}
-          >
-            {isAutoBeaconEnabled ? 'Auto Beacon: ON' : 'Auto Beacon: OFF'}
-          </Text>
-        </Pressable>
-        <Pressable style={styles.viewLogsButton} onPress={onViewLogs}>
-          <Text style={styles.viewLogsButtonText}>View Logs</Text>
-        </Pressable>
-        <Pressable style={styles.logoutButton} onPress={onLogout}>
-          <Text style={styles.logoutButtonText}>Logout</Text>
-        </Pressable>
-      </View>
+    <Image
+      source={{ uri }}
+      style={{
+        width: Math.round(size * 0.62),
+        height: Math.round(size * 0.62),
+      }}
+      resizeMode="contain"
+      accessibilityLabel="Open settings"
+    />
+  );
+}
+
+export default function AppHeader({
+  // Settings (new)
+  onOpenSettings,
+  uiScale = 1,
+  // Room / beacon / auth (existing)
+  currentRoom,
+  onViewLogs,
+  isAutoBeaconEnabled,
+  onToggleAutoBeacon,
+  onLogout,
+  userRole,
+}) {
+  const horizontalPadding = Math.round(Math.min(24, 20 * uiScale));
+  const headerTopPadding = Math.round(Math.min(12, 10 * uiScale));
+  const headerBottomPadding = Math.round(Math.min(10, 8 * uiScale));
+  const iconButtonSize = Math.round(Math.min(44, 40 * uiScale));
+
+  return (
+    <View
+      style={[
+        styles.header,
+        {
+          paddingHorizontal: horizontalPadding,
+          paddingTop: headerTopPadding,
+          paddingBottom: headerBottomPadding,
+        },
+      ]}
+    >
+      <View style={{ flex: 1 }} />
+
+      <Pressable
+        style={[
+          styles.settingsIconButton,
+          {
+            width: iconButtonSize,
+            height: iconButtonSize,
+            borderRadius: Math.round(10 * uiScale),
+          },
+        ]}
+        onPress={onOpenSettings}
+        accessibilityRole="button"
+        accessibilityLabel="Open settings"
+      >
+        <SettingsPictogram size={iconButtonSize} />
+      </Pressable>
     </View>
   );
 }
