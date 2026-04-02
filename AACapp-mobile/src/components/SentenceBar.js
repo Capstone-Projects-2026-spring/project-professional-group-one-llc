@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import styles from '../styles/appStyles';
 
 export default function SentenceBar({
@@ -20,17 +20,8 @@ export default function SentenceBar({
         },
       ]}
     >
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.sentenceScroll}
-        contentContainerStyle={styles.sentenceContent}
-      >
-        {sentence.length === 0 ? (
-          <Text style={[styles.sentencePlaceholder, { fontSize: Math.round(16 * uiScale) }]}>
-            Tap words below to build a sentence...
-          </Text>
-        ) : (
+      <View style={styles.sentenceContent}>
+        {sentence.length === 0 ? null : (
           sentence.map((word, index) => (
             <View
               key={`${word}-${index}`}
@@ -47,7 +38,7 @@ export default function SentenceBar({
             </View>
           ))
         )}
-      </ScrollView>
+      </View>
       <View style={styles.sentenceActions}>
         <TouchableOpacity
           onPress={onRemoveLastWord}
