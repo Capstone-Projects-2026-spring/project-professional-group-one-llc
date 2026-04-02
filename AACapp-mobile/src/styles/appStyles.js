@@ -113,11 +113,15 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   sentenceScroll: {
-    maxHeight: 40,
+    paddingVertical: 6,
   },
   sentenceContent: {
     alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 6,
+    rowGap: 6,
+    columnGap: 6,
   },
   sentencePlaceholder: {
     color: '#aaa',
