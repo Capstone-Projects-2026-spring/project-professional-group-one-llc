@@ -12,12 +12,11 @@ sidebar_position: 5
 * The app could show different food items based on the Cafeteria's food schedule.
 * The food options should be managed by administrators.
 * With the Library location the app could show specific actions such as maybe needing to print something, check out a book, or wanting to use a computer.
-* If the student gets hurt and goes the nurse's office the app should load body parts to show where the injury is. 
-
+* If the student gets hurt and goes the nurse's office the app should load body parts to help the user display where they got hurt or if they need special medication for their condition.
 
 ---
 
-### Use Case 2 - Signing In
+### Use Case 2 - Transitioning between location in a Daycare
 
 <i>As a user, I want to log into my account so that I can access my personalized communication vocabulary.</i>
 
