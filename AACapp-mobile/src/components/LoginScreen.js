@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,18 +7,18 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
-} from 'react-native';
-import { useAuth } from '../contexts/AuthContext';
+} from "react-native";
+import { useAuth } from "../contexts/AuthContext";
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert("Error", "Please fill in all fields");
       return;
     }
 
@@ -27,7 +27,7 @@ const LoginScreen = ({ navigation }) => {
       await signIn(email, password);
       // Navigation will be handled by auth state change
     } catch (error) {
-      Alert.alert('Login Error', error.message);
+      Alert.alert("Login Error", error.message);
     } finally {
       setLoading(false);
     }
@@ -68,9 +68,17 @@ const LoginScreen = ({ navigation }) => {
 
       <TouchableOpacity
         style={styles.link}
-        onPress={() => navigation.navigate('Register')}
+        onPress={() => navigation.navigate("Register")}
       >
         <Text style={styles.linkText}>Don't have an account? Register</Text>
+      </TouchableOpacity>
+
+      {/* 🚧 DEV ONLY — remove before production */}
+      <TouchableOpacity
+        style={styles.devSkipLink}
+        onPress={() => navigation.replace("Main")}
+      >
+        <Text style={styles.devSkipText}>⚙ Skip login (dev)</Text>
       </TouchableOpacity>
     </View>
   );
@@ -79,42 +87,50 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 30,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     padding: 15,
     marginBottom: 15,
     borderRadius: 5,
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#6C63FF',
+    backgroundColor: "#6C63FF",
     padding: 15,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 15,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   link: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   linkText: {
-    color: '#6C63FF',
+    color: "#6C63FF",
     fontSize: 16,
+  },
+  devSkipLink: {
+    alignItems: "center",
+    marginTop: 30,
+  },
+  devSkipText: {
+    color: "#aaa",
+    fontSize: 13,
   },
 });
 

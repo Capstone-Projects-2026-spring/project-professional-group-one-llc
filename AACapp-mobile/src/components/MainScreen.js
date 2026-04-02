@@ -1,33 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
-import useLocationDetection from '../hooks/useLocationDetection';
-import useSentenceBuilder from '../hooks/useSentenceBuilder';
-import useInteractionLogger from '../hooks/useInteractionLogger';
-import useBeaconScanner from '../hooks/useBeaconScanner';
-import RoomSelector from './RoomSelector';
-import AppHeader from './AppHeader';
-import InteractionLogModal from './InteractionLogModal';
-import SentenceBar from './SentenceBar';
-import WordGrid from './WordGrid';
-import CategoryTabs from './CategoryTabs';
-import BeaconScannerPanel from './BeaconScannerPanel';
-import { getRoomByBeaconDevice } from '../data/roomContexts';
+import { StatusBar } from "expo-status-bar";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
+import { SafeAreaView, Text, View } from "react-native";
+import useLocationDetection from "../hooks/useLocationDetection";
+import useSentenceBuilder from "../hooks/useSentenceBuilder";
+import useInteractionLogger from "../hooks/useInteractionLogger";
+import useBeaconScanner from "../hooks/useBeaconScanner";
+import RoomSelector from "./RoomSelector";
+import AppHeader from "./AppHeader";
+import InteractionLogModal from "./InteractionLogModal";
+import SentenceBar from "./SentenceBar";
+import WordGrid from "./WordGrid";
+import CategoryTabs from "./CategoryTabs";
+import BeaconScannerPanel from "./BeaconScannerPanel";
+import { getRoomByBeaconDevice } from "../data/roomContexts";
 import {
   DEFAULT_SUGGESTIONS,
   CATEGORIES,
   CATEGORY_COLORS,
-} from '../constants/aacVocabulary';
-import styles from '../styles/appStyles';
-import { useAuth } from '../contexts/AuthContext';
+} from "../constants/aacVocabulary";
+import styles from "../styles/appStyles";
+import { useAuth } from "../contexts/AuthContext";
 
-const BEACON_SCAN_TAB = 'Beacon Scan';
+const BEACON_SCAN_TAB = "Beacon Scan";
 
-export default function MainScreen() {
-  const [activeCategory, setActiveCategory] = useState('Suggested');
+export default function MainScreen({ navigation }) {
+  const [activeCategory, setActiveCategory] = useState("Suggested");
   const [isLogsVisible, setIsLogsVisible] = useState(false);
   const [isAutoBeaconEnabled, setIsAutoBeaconEnabled] = useState(false);
-  const [roomSwitchNotice, setRoomSwitchNotice] = useState('');
+  const [roomSwitchNotice, setRoomSwitchNotice] = useState("");
   const roomNoticeTimerRef = useRef(null);
   const { currentRoom, allRooms, setRoomManually } = useLocationDetection();
   const { interactionLogs, logButtonPress } = useInteractionLogger(currentRoom);
@@ -61,17 +61,19 @@ export default function MainScreen() {
 
     if (currentRoom?.id !== matchedRoom.id) {
       setRoomManually(matchedRoom.id);
-      setRoomSwitchNotice(`Switched to ${matchedRoom.emoji || ''} ${matchedRoom.label}`.trim());
+      setRoomSwitchNotice(
+        `Switched to ${matchedRoom.emoji || ""} ${matchedRoom.label}`.trim()
+      );
       if (roomNoticeTimerRef.current) {
         clearTimeout(roomNoticeTimerRef.current);
       }
       roomNoticeTimerRef.current = setTimeout(() => {
-        setRoomSwitchNotice('');
+        setRoomSwitchNotice("");
         roomNoticeTimerRef.current = null;
       }, 2200);
-      logButtonPress('beacon_room_detected', {
+      logButtonPress("beacon_room_detected", {
         beaconDeviceId: bestMatch.id,
-        beaconDeviceName: bestMatch.name || bestMatch.localName || 'unknown',
+        beaconDeviceName: bestMatch.name || bestMatch.localName || "unknown",
         beaconRssi: bestMatch.rssi,
         detectedRoomId: matchedRoom.id,
         detectedRoomLabel: matchedRoom.label,
@@ -94,7 +96,7 @@ export default function MainScreen() {
   }, []);
 
   const handleOpenLogs = useCallback(() => {
-    logButtonPress('view_logs');
+    logButtonPress("view_logs");
     setIsLogsVisible(true);
   }, [logButtonPress]);
 
@@ -106,27 +108,27 @@ export default function MainScreen() {
     (roomId) => {
       setRoomManually(roomId);
       const selectedRoom = roomId
-        ? (allRooms.find((room) => room.id === roomId) ?? null)
+        ? allRooms.find((room) => room.id === roomId) ?? null
         : null;
-      const roomLabel = selectedRoom?.label ?? 'General';
-      logButtonPress('room_selector', {
-        selectedRoomId: roomId ?? 'general',
+      const roomLabel = selectedRoom?.label ?? "General";
+      logButtonPress("room_selector", {
+        selectedRoomId: roomId ?? "general",
         selectedRoomLabel: roomLabel,
         location: {
-          id: selectedRoom?.id ?? 'general',
+          id: selectedRoom?.id ?? "general",
           label: roomLabel,
         },
       });
     },
-    [allRooms, logButtonPress, setRoomManually],
+    [allRooms, logButtonPress, setRoomManually]
   );
 
   const handleSelectCategory = useCallback(
     (category) => {
       setActiveCategory(category);
-      logButtonPress('category_tab', { category });
+      logButtonPress("category_tab", { category });
     },
-    [logButtonPress],
+    [logButtonPress]
   );
 
   const handleToggleAutoBeacon = useCallback(() => {
@@ -134,10 +136,10 @@ export default function MainScreen() {
       const next = !prev;
       if (next) {
         startBeaconScan();
-        logButtonPress('auto_beacon_toggle', { enabled: true });
+        logButtonPress("auto_beacon_toggle", { enabled: true });
       } else {
         stopBeaconScan();
-        logButtonPress('auto_beacon_toggle', { enabled: false });
+        logButtonPress("auto_beacon_toggle", { enabled: false });
       }
       return next;
     });
@@ -145,15 +147,11 @@ export default function MainScreen() {
 
   const handleLogout = useCallback(async () => {
     await signOut();
-  }, [signOut]);
+    navigation.replace("Login");
+  }, [signOut, navigation]);
 
-  const {
-    sentence,
-    addWord,
-    removeLastWord,
-    clearSentence,
-    speakSentence,
-  } = useSentenceBuilder({ onLogPress: logButtonPress });
+  const { sentence, addWord, removeLastWord, clearSentence, speakSentence } =
+    useSentenceBuilder({ onLogPress: logButtonPress });
 
   const categories = useMemo(() => {
     const suggested = currentRoom
@@ -162,14 +160,14 @@ export default function MainScreen() {
     return { Suggested: suggested, ...CATEGORIES, [BEACON_SCAN_TAB]: [] };
   }, [currentRoom]);
 
-  const suggestedColor = currentRoom ? currentRoom.color : '#6C63FF';
+  const suggestedColor = currentRoom ? currentRoom.color : "#6C63FF";
   const words = categories[activeCategory] || [];
   const categoryColors = {
     ...CATEGORY_COLORS,
     Suggested: suggestedColor,
-    [BEACON_SCAN_TAB]: '#1a1a2e',
+    [BEACON_SCAN_TAB]: "#1a1a2e",
   };
-  const activeCategoryColor = categoryColors[activeCategory] || '#6C63FF';
+  const activeCategoryColor = categoryColors[activeCategory] || "#6C63FF";
 
   return (
     <SafeAreaView style={styles.safe}>
