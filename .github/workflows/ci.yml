@@ -42,5 +42,5 @@ jobs:
           cache-dependency-path: AACapp-mobile/package-lock.json
 
       - run: npm ci
-
+      - run: npx expo prebuild --clean
       - run: npm run ci
