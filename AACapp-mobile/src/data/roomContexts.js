@@ -13,7 +13,8 @@
  * using each suggestion's `label` as the search keyword.
  * See: hooks/usePictogram.js
  *
- * Room-level `emoji` is kept because RoomSelector still uses it for chips.
+ * Room-level `arasaacId` can be set to pin a specific pictogram in RoomSelector.
+ * If omitted, RoomSelector falls back to searching by room label.
  */
 
 const ROOM_CONTEXTS = {
@@ -21,6 +22,7 @@ const ROOM_CONTEXTS = {
     id: 'kitchen',
     label: 'Kitchen',
     emoji: '🍳',
+    arasaacId: 33070,
     color: '#FF9F43',
     beaconId: '76D7F666-AACE-885B-1380-B2AE724EA4A1', // placeholder – replace with real UUID
     suggestions: [
@@ -43,6 +45,7 @@ const ROOM_CONTEXTS = {
     id: 'bathroom',
     label: 'Bathroom',
     emoji: '🚿',
+    arasaacId: 15905,
     color: '#54A0FF',
     beaconId: 'A5A71902-2CFC-47BA-4220-661DA2DFD3AC',
     suggestions: [
@@ -62,6 +65,7 @@ const ROOM_CONTEXTS = {
     id: 'bedroom',
     label: 'Bedroom',
     emoji: '🛏️',
+    arasaacId: 33068,
     color: '#5F27CD',
     beaconId: '76BD86D3-F85B-C47B-2F32-EA3B86D6AC22',
     beaconMajor: 3838,
@@ -86,6 +90,7 @@ const ROOM_CONTEXTS = {
     id: 'livingRoom',
     label: 'Living Room',
     emoji: '🛋️',
+    arasaacId: 33074,
     color: '#10AC84',
     beaconId: 'beacon-livingroom-001',
     suggestions: [
@@ -108,6 +113,7 @@ const ROOM_CONTEXTS = {
     id: 'classroom',
     label: 'Classroom',
     emoji: '🏫',
+    arasaacId: 33072,
     color: '#EE5A24',
     beaconId: 'beacon-classroom-001',
     suggestions: [
@@ -130,6 +136,7 @@ const ROOM_CONTEXTS = {
     id: 'outside',
     label: 'Outside',
     emoji: '🌳',
+    arasaacId: 33064,
     color: '#2ECC71',
     beaconId: 'beacon-outside-001',
     suggestions: [
