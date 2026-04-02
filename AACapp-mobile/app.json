@@ -17,7 +17,8 @@
       "infoPlist": {
         "NSBluetoothAlwaysUsageDescription": "AAC Beacon needs Bluetooth to scan and verify nearby BlueCharm beacons.",
         "NSBluetoothPeripheralUsageDescription": "AAC Beacon needs Bluetooth to scan and verify nearby BlueCharm beacons."
-      }
+      },
+      "bundleIdentifier": "com.dagt03.AACapp-mobile"
     },
     "android": {
       "adaptiveIcon": {

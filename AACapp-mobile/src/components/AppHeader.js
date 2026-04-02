@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from 'react-native';
 import styles from '../styles/appStyles';
 
-export default function AppHeader({ currentRoom, onViewLogs, isAutoBeaconEnabled, onToggleAutoBeacon }) {
+export default function AppHeader({ currentRoom, onViewLogs, isAutoBeaconEnabled, onToggleAutoBeacon, onLogout, userRole }) {
   return (
     <View style={styles.header}>
       <View>
@@ -9,6 +9,11 @@ export default function AppHeader({ currentRoom, onViewLogs, isAutoBeaconEnabled
         <Text style={styles.headerSubtitle}>
           {currentRoom ? `📍 ${currentRoom.emoji} ${currentRoom.label}` : '📍 General'}
         </Text>
+        {userRole && (
+          <Text style={styles.headerRole}>
+            Role: {userRole === 'admin' ? 'Admin' : 'User'}
+          </Text>
+        )}
       </View>
       <View style={styles.headerActions}>
         <Pressable
@@ -29,6 +34,9 @@ export default function AppHeader({ currentRoom, onViewLogs, isAutoBeaconEnabled
         </Pressable>
         <Pressable style={styles.viewLogsButton} onPress={onViewLogs}>
           <Text style={styles.viewLogsButtonText}>View Logs</Text>
+        </Pressable>
+        <Pressable style={styles.logoutButton} onPress={onLogout}>
+          <Text style={styles.logoutButtonText}>Logout</Text>
         </Pressable>
       </View>
     </View>

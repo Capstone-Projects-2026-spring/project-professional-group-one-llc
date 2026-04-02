@@ -27,7 +27,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>com.anonymous.AACapp-mobile</string>
+          <string>com.dagt03.AACapp-mobile</string>
         </array>
       </dict>
     </array>
@@ -48,6 +48,8 @@
     <string>AAC Beacon needs Bluetooth to scan and verify nearby BlueCharm beacons.</string>
     <key>NSBluetoothPeripheralUsageDescription</key>
     <string>AAC Beacon needs Bluetooth to scan and verify nearby BlueCharm beacons.</string>
+    <key>NSMotionUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your device motion</string>
     <key>RCTNewArchEnabled</key>
     <true/>
     <key>UILaunchStoryboardName</key>
