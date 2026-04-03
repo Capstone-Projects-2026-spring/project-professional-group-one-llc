@@ -1,9 +1,9 @@
-import { ActivityIndicator, Image, Pressable, View } from 'react-native';
-import styles from '../styles/appStyles';
-import { usePictogram } from '../hooks/usePictogram';
+import { ActivityIndicator, Image, Pressable, View } from "react-native";
+import styles from "../styles/appStyles";
+import { usePictogram } from "../hooks/usePictogram";
 
 function SettingsPictogram({ size }) {
-  const { uri, loading } = usePictogram('configuration button', 39466);
+  const { uri, loading } = usePictogram("configuration button", 39466);
 
   if (loading) {
     return <ActivityIndicator size="small" color="#1a1a2e" />;
@@ -16,14 +16,28 @@ function SettingsPictogram({ size }) {
   return (
     <Image
       source={{ uri }}
-      style={{ width: Math.round(size * 0.62), height: Math.round(size * 0.62) }}
+      style={{
+        width: Math.round(size * 0.62),
+        height: Math.round(size * 0.62),
+      }}
       resizeMode="contain"
       accessibilityLabel="Open settings"
     />
   );
 }
 
-export default function AppHeader({ onOpenSettings, uiScale = 1 }) {
+export default function AppHeader({
+  // Settings (new)
+  onOpenSettings,
+  uiScale = 1,
+  // Room / beacon / auth (existing)
+  currentRoom,
+  onViewLogs,
+  isAutoBeaconEnabled,
+  onToggleAutoBeacon,
+  onLogout,
+  userRole,
+}) {
   const horizontalPadding = Math.round(Math.min(24, 20 * uiScale));
   const headerTopPadding = Math.round(Math.min(12, 10 * uiScale));
   const headerBottomPadding = Math.round(Math.min(10, 8 * uiScale));
@@ -41,6 +55,7 @@ export default function AppHeader({ onOpenSettings, uiScale = 1 }) {
       ]}
     >
       <View style={{ flex: 1 }} />
+
       <Pressable
         style={[
           styles.settingsIconButton,
