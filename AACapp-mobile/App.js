@@ -18,6 +18,7 @@ import useInteractionLogger from "./src/hooks/useInteractionLogger";
 import RoomSelector from "./src/components/RoomSelector";
 import AppHeader from "./src/components/AppHeader";
 import InteractionLogModal from "./src/components/InteractionLogModal";
+import SettingsMenuOverlay from "./src/components/SettingsMenuOverlay"; // Added back
 import SentenceBar from "./src/components/SentenceBar";
 import WordGrid from "./src/components/WordGrid";
 
@@ -41,10 +42,11 @@ function mergeUniqueWords(primaryWords, secondaryWords) {
   return merged;
 }
 
-// --- Main Application Content (The Authenticated UI) ---
+// --- Main Application Content ---
 
 function MainContent({ navigation }) {
   const [isLogsVisible, setIsLogsVisible] = useState(false);
+  const [isSettingsVisible, setIsSettingsVisible] = useState(false); // Added state
   const { width, height } = useWindowDimensions();
 
   const { currentRoom, allRooms, setRoomManually } = useLocationDetection();
@@ -61,6 +63,18 @@ function MainContent({ navigation }) {
     await signOut();
     navigation.replace("Login");
   }, [signOut, navigation]);
+
+  // Open the settings menu
+  const handleOpenSettings = useCallback(() => {
+    logButtonPress("open_settings");
+    setIsSettingsVisible(true);
+  }, [logButtonPress]);
+
+  // Close settings and open logs
+  const handleViewLogsFromSettings = useCallback(() => {
+    setIsSettingsVisible(false);
+    setIsLogsVisible(true);
+  }, []);
 
   const handleSelectRoom = useCallback(
     (roomId) => {
@@ -80,7 +94,6 @@ function MainContent({ navigation }) {
 
   // --- Memos ---
 
-  // Combines "Core" words with words suggested by the current room
   const words = useMemo(() => {
     const roomWords = currentRoom
       ? currentRoom.suggestions
@@ -96,11 +109,10 @@ function MainContent({ navigation }) {
 
       <AppHeader
         currentRoom={currentRoom}
-        onViewLogs={() => setIsLogsVisible(true)}
+        onOpenSettings={handleOpenSettings} // Changed from onViewLogs
         onLogout={handleLogout}
         userRole={profile?.role}
         uiScale={uiScale}
-        // Removed beacon-related props
       />
 
       <SentenceBar
@@ -127,6 +139,15 @@ function MainContent({ navigation }) {
         />
       </View>
 
+      {/* Settings Menu Modal */}
+      <SettingsMenuOverlay
+        visible={isSettingsVisible}
+        onClose={() => setIsSettingsVisible(false)}
+        onViewLogs={handleViewLogsFromSettings}
+        uiScale={uiScale}
+      />
+
+      {/* Logs Modal */}
       <InteractionLogModal
         visible={isLogsVisible}
         logs={interactionLogs}
@@ -152,7 +173,6 @@ function AppNavigator() {
           <>
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
-            {/* Dev skip fallback */}
             <Stack.Screen name="Main" component={MainContent} />
           </>
         )}
