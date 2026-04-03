@@ -4,6 +4,7 @@ import styles from '../styles/appStyles';
 export default function SettingsMenuOverlay({
   visible,
   onClose,
+  onOpenAdminAnalytics,
   onViewLogs,
   uiScale = 1,
 }) {
@@ -58,6 +59,25 @@ export default function SettingsMenuOverlay({
             accessibilityLabel="View interaction logs"
           >
             <Text style={[styles.settingsMenuOptionText, { fontSize: Math.round(16 * uiScale) }]}>View Logs</Text>
+          </Pressable>
+
+          <Pressable
+            style={[
+              styles.settingsMenuOption,
+              styles.settingsMenuOptionSpaced,
+              {
+                borderRadius: Math.round(12 * uiScale),
+                paddingHorizontal: Math.round(14 * uiScale),
+                paddingVertical: Math.round(12 * uiScale),
+              },
+            ]}
+            onPress={onOpenAdminAnalytics}
+            accessibilityRole="button"
+            accessibilityLabel="Open admin analytics"
+          >
+            <Text style={[styles.settingsMenuOptionText, { fontSize: Math.round(16 * uiScale) }]}>
+              Admin Analytics
+            </Text>
           </Pressable>
         </View>
       </View>

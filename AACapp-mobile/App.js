@@ -1,9 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState, useMemo, useCallback } from 'react';
 import { SafeAreaView, View, useWindowDimensions } from 'react-native';
+import useAdminAnalytics from './src/hooks/useAdminAnalytics';
 import useLocationDetection from './src/hooks/useLocationDetection';
 import useSentenceBuilder from './src/hooks/useSentenceBuilder';
 import useInteractionLogger from './src/hooks/useInteractionLogger';
+import AdminAccessModal from './src/components/AdminAccessModal';
+import AdminAnalyticsModal from './src/components/AdminAnalyticsModal';
 import RoomSelector from './src/components/RoomSelector';
 import AppHeader from './src/components/AppHeader';
 import SettingsMenuOverlay from './src/components/SettingsMenuOverlay';
@@ -45,6 +48,9 @@ function hexToRgba(hex, alpha) {
 }
 
 export default function App() {
+  const [adminAccessCode, setAdminAccessCode] = useState('');
+  const [isAdminAccessVisible, setIsAdminAccessVisible] = useState(false);
+  const [isAdminAnalyticsVisible, setIsAdminAnalyticsVisible] = useState(false);
   const [isLogsVisible, setIsLogsVisible] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const [gridScroll, setGridScroll] = useState({
@@ -54,6 +60,14 @@ export default function App() {
   });
   const { width, height } = useWindowDimensions();
   const { currentRoom, allRooms, setRoomManually } = useLocationDetection();
+  const {
+    analytics,
+    clearAdminSession,
+    errorMessage: adminAnalyticsError,
+    isLoading: isAdminAnalyticsLoading,
+    loadAnalytics,
+    refreshAnalytics,
+  } = useAdminAnalytics();
   const { interactionLogs, logButtonPress } = useInteractionLogger(currentRoom);
 
   const smallestSide = Math.min(width, height);
@@ -75,6 +89,40 @@ export default function App() {
   const handleCloseSettings = useCallback(() => {
     setIsSettingsVisible(false);
   }, []);
+
+  const handleOpenAdminAnalytics = useCallback(() => {
+    setIsSettingsVisible(false);
+    setIsAdminAccessVisible(true);
+  }, []);
+
+  const handleCloseAdminAccess = useCallback(() => {
+    clearAdminSession();
+    setIsAdminAccessVisible(false);
+    setAdminAccessCode('');
+  }, [clearAdminSession]);
+
+  const handleAdminAccessCodeChange = useCallback((value) => {
+    setAdminAccessCode(value);
+  }, []);
+
+  const handleSubmitAdminAccess = useCallback(async () => {
+    const didUnlock = await loadAnalytics(adminAccessCode);
+
+    if (!didUnlock) {
+      return;
+    }
+
+    logButtonPress('open_admin_analytics');
+    setIsAdminAccessVisible(false);
+    setIsAdminAnalyticsVisible(true);
+    setAdminAccessCode('');
+  }, [adminAccessCode, loadAnalytics, logButtonPress]);
+
+  const handleCloseAdminAnalytics = useCallback(() => {
+    clearAdminSession();
+    setIsAdminAnalyticsVisible(false);
+    setAdminAccessCode('');
+  }, [clearAdminSession]);
 
   const handleOpenLogsFromSettings = useCallback(() => {
     setIsSettingsVisible(false);
@@ -204,9 +252,30 @@ export default function App() {
         logs={interactionLogs}
         onClose={handleCloseLogs}
       />
+      <AdminAnalyticsModal
+        visible={isAdminAnalyticsVisible}
+        analytics={analytics}
+        errorMessage={adminAnalyticsError}
+        isLoading={isAdminAnalyticsLoading}
+        onRefresh={() => {
+          void refreshAnalytics();
+        }}
+        onClose={handleCloseAdminAnalytics}
+      />
+      <AdminAccessModal
+        visible={isAdminAccessVisible}
+        accessCode={adminAccessCode}
+        errorMessage={adminAnalyticsError}
+        isSubmitting={isAdminAnalyticsLoading}
+        onChangeAccessCode={handleAdminAccessCodeChange}
+        onClose={handleCloseAdminAccess}
+        onSubmit={handleSubmitAdminAccess}
+        uiScale={uiScale}
+      />
       <SettingsMenuOverlay
         visible={isSettingsVisible}
         onClose={handleCloseSettings}
+        onOpenAdminAnalytics={handleOpenAdminAnalytics}
         onViewLogs={handleOpenLogsFromSettings}
         uiScale={uiScale}
       />
