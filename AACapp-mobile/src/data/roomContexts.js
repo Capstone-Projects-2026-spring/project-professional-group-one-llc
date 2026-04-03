@@ -7,6 +7,11 @@
  *
  * When Bluetooth is wired up, the app will detect a beacon,
  * look up the matching room by `beaconId`, and load its suggestions.
+ *
+ * Each room may also include an optional `rssiThreshold`.
+ * A more negative threshold means the room claims a larger effective
+ * detection radius; a less negative threshold means the user must be
+ * closer to that beacon before it takes over.
  */
 
 const ROOM_CONTEXTS = {
@@ -16,6 +21,7 @@ const ROOM_CONTEXTS = {
     emoji: '🍳',
     color: '#FF9F43',
     beaconId: '426C7565-4368-6172-6D42-6561636F6E73', // placeholder – replace with real UUID
+    rssiThreshold: -70, //added threshold to each room
     suggestions: [
       { label: 'Hungry', emoji: '🤤' },
       { label: 'Thirsty', emoji: '💧' },
@@ -38,6 +44,7 @@ const ROOM_CONTEXTS = {
     emoji: '🚿',
     color: '#54A0FF',
     beaconId: '7777772E-6B6B-6D63-6E2E-636F6D000002',
+    rssiThreshold: -60,
     suggestions: [
       { label: 'Toilet', emoji: '🚽' },
       { label: 'Wash hands', emoji: '🧼' },
@@ -57,6 +64,7 @@ const ROOM_CONTEXTS = {
     emoji: '🛏️',
     color: '#5F27CD',
     beaconId: '7777772E-6B6B-6D63-6E2E-636F6D000001',
+    rssiThreshold: -65,
     suggestions: [
       { label: 'Tired', emoji: '😩' },
       { label: 'Sleep', emoji: '😴' },
@@ -79,6 +87,7 @@ const ROOM_CONTEXTS = {
     emoji: '🛋️',
     color: '#10AC84',
     beaconId: '6E4DF426-8278-4B65-94BA-EC2242693DAA',
+    rssiThreshold: -72,
     suggestions: [
       { label: 'Watch TV', emoji: '📺' },
       { label: 'Play', emoji: '🎮' },
@@ -101,6 +110,7 @@ const ROOM_CONTEXTS = {
     emoji: '🏫',
     color: '#EE5A24',
     beaconId: 'DD:88:00:00:14:22',
+    rssiThreshold: -68,
     suggestions: [
       { label: 'Teacher', emoji: '👩‍🏫' },
       { label: 'Question', emoji: '❓' },
@@ -123,6 +133,7 @@ const ROOM_CONTEXTS = {
     emoji: '🌳',
     color: '#2ECC71',
     beaconId: '426C7565-4368-6172-6D42-6561636F6E73',
+    rssiThreshold: -80,
     suggestions: [
       { label: 'Walk', emoji: '🚶' },
       { label: 'Run', emoji: '🏃' },
