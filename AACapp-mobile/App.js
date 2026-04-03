@@ -46,12 +46,13 @@ function mergeUniqueWords(primaryWords, secondaryWords) {
 
 function MainContent({ navigation }) {
   const [isLogsVisible, setIsLogsVisible] = useState(false);
-  const [isSettingsVisible, setIsSettingsVisible] = useState(false); // Added state
+  const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const { width, height } = useWindowDimensions();
+  const { signOut, profile } = useAuth();
+  const isAdmin = profile?.role === "admin";
 
   const { currentRoom, allRooms, setRoomManually } = useLocationDetection();
   const { interactionLogs, logButtonPress } = useInteractionLogger(currentRoom);
-  const { signOut, profile } = useAuth();
 
   // Dynamic UI Scaling
   const smallestSide = Math.min(width, height);
@@ -109,9 +110,10 @@ function MainContent({ navigation }) {
 
       <AppHeader
         currentRoom={currentRoom}
-        onOpenSettings={handleOpenSettings} // Changed from onViewLogs
+        onOpenSettings={handleOpenSettings}
         onLogout={handleLogout}
         userRole={profile?.role}
+        showSettings={isAdmin}
         uiScale={uiScale}
       />
 

@@ -33,9 +33,43 @@ create table if not exists public.room_word_labels (
 create table if not exists public.user_profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   display_name text,
+  role text not null default 'user' check (role in ('user', 'admin')),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.user_profiles
+  add column if not exists role text not null default 'user' check (role in ('user', 'admin'));
+
+create or replace function public.handle_new_auth_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into public.user_profiles (id, display_name, role)
+  values (
+    new.id,
+    coalesce(new.raw_user_meta_data ->> 'display_name', split_part(new.email, '@', 1), 'User'),
+    case
+      when new.raw_user_meta_data ->> 'role' = 'admin' then 'admin'
+      else 'user'
+    end
+  )
+  on conflict (id) do update
+    set display_name = excluded.display_name,
+        role = excluded.role,
+        updated_at = now();
+
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_auth_user();
 
 create table if not exists public.interaction_logs (
   id bigint generated always as identity primary key,
