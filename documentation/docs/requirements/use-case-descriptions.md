@@ -18,24 +18,25 @@ sidebar_position: 5
 
 ### Use Case 2 - Transitioning between location in a Daycare
 
-<i>As a user, I want to log into my account so that I can access my personalized communication vocabulary.</i>
+<i>The app can adjust contextually for children in a daycare</i>
 
-1. The user accesses the AAC Beacon application.
-2. The user selects the 'Login' button to access the sign-in page.
-3. The user enters their email address and password.
-4. If the credentials are valid, the user is redirected to the home page.
-5. If credentials are invalid, the user receives an error notification and is prompted to try again.
+* With the Nap Room location the app could show words or phrases such as tired, blanket, sleep, or rest time.
+* With the Play Area location the app could show toys, games, and actions like swing, slide, share, or my turn.
+* With the Snack Area location the app could show food and drink options such as crackers, juice, water, or more please.
+* The daycare vocabulary should be simple, visual, and easy for young children to understand.
+* The words and phrases available in each daycare location should be managed by daycare staff or administrators.
 
 ---
 
-### Use Case 3 - Connecting to a Beacon
+### Use Case 3 - Transitioning between locations in a Medical facility
 
-<i>As a child user, I want to connect to a beacon in a room so that I can quickly access vocabulary tailored to that location.</i>
+<i>The app can adjust contextually for patients in a medical facility</i>
 
-1. The user enters a room containing an AAC Beacon device.
-2. The user opens the AAC Beacon mobile or web application.
-3. The application detects the nearby beacon and connects to the device. 
-4. The application loads and displays the personalized set of frequently used words associated with that room.
+* With the Waiting Room location the app could show phrases such as I am waiting, I feel nervous, when is my turn, or I need my parent.
+* With the Examination Room location the app could show body parts, pain levels, and phrases such as my stomach hurts, my head hurts, or I feel sick.
+* With the Pharmacy or Medication area the app could show words related to medicine, allergies, dosage, or questions about side effects.
+* The app should help patients communicate symptoms, discomfort, and medical needs quickly and clearly.
+* The medical vocabulary available at each location should be customizable by healthcare staff or administrators.
 
 ---
 
