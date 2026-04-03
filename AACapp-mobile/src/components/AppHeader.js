@@ -1,17 +1,75 @@
-import { Pressable, Text, View } from 'react-native';
-import styles from '../styles/appStyles';
+import { ActivityIndicator, Image, Pressable, View } from "react-native";
+import styles from "../styles/appStyles";
+import { usePictogram } from "../hooks/usePictogram";
 
-export default function AppHeader({ currentRoom, onViewLogs }) {
+function SettingsPictogram({ size }) {
+  const { uri, loading } = usePictogram("configuration button", 39466);
+
+  if (loading) {
+    return <ActivityIndicator size="small" color="#1a1a2e" />;
+  }
+
+  if (!uri) {
+    return null;
+  }
+
   return (
-    <View style={styles.header}>
-      <View>
-        <Text style={styles.headerTitle}>AAC Beacon</Text>
-        <Text style={styles.headerSubtitle}>
-          {currentRoom ? `📍 ${currentRoom.emoji} ${currentRoom.label}` : '📍 General'}
-        </Text>
-      </View>
-      <Pressable style={styles.viewLogsButton} onPress={onViewLogs}>
-        <Text style={styles.viewLogsButtonText}>View Logs</Text>
+    <Image
+      source={{ uri }}
+      style={{
+        width: Math.round(size * 0.62),
+        height: Math.round(size * 0.62),
+      }}
+      resizeMode="contain"
+      accessibilityLabel="Open settings"
+    />
+  );
+}
+
+export default function AppHeader({
+  // Settings (new)
+  onOpenSettings,
+  uiScale = 1,
+  // Room / beacon / auth (existing)
+  currentRoom,
+  onViewLogs,
+  isAutoBeaconEnabled,
+  onToggleAutoBeacon,
+  onLogout,
+  userRole,
+}) {
+  const horizontalPadding = Math.round(Math.min(24, 20 * uiScale));
+  const headerTopPadding = Math.round(Math.min(12, 10 * uiScale));
+  const headerBottomPadding = Math.round(Math.min(10, 8 * uiScale));
+  const iconButtonSize = Math.round(Math.min(44, 40 * uiScale));
+
+  return (
+    <View
+      style={[
+        styles.header,
+        {
+          paddingHorizontal: horizontalPadding,
+          paddingTop: headerTopPadding,
+          paddingBottom: headerBottomPadding,
+        },
+      ]}
+    >
+      <View style={{ flex: 1 }} />
+
+      <Pressable
+        style={[
+          styles.settingsIconButton,
+          {
+            width: iconButtonSize,
+            height: iconButtonSize,
+            borderRadius: Math.round(10 * uiScale),
+          },
+        ]}
+        onPress={onOpenSettings}
+        accessibilityRole="button"
+        accessibilityLabel="Open settings"
+      >
+        <SettingsPictogram size={iconButtonSize} />
       </Pressable>
     </View>
   );

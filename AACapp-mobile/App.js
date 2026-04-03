@@ -1,118 +1,190 @@
-import { StatusBar } from 'expo-status-bar';
-import { useState, useMemo, useCallback } from 'react';
-import { SafeAreaView } from 'react-native';
-import useLocationDetection from './src/hooks/useLocationDetection';
-import useSentenceBuilder from './src/hooks/useSentenceBuilder';
-import useInteractionLogger from './src/hooks/useInteractionLogger';
-import RoomSelector from './src/components/RoomSelector';
-import AppHeader from './src/components/AppHeader';
-import InteractionLogModal from './src/components/InteractionLogModal';
-import SentenceBar from './src/components/SentenceBar';
-import WordGrid from './src/components/WordGrid';
-import CategoryTabs from './src/components/CategoryTabs';
-import {
-  DEFAULT_SUGGESTIONS,
-  CATEGORIES,
-  CATEGORY_COLORS,
-} from './src/constants/aacVocabulary';
-import styles from './src/styles/appStyles';
+import React, { useState, useMemo, useCallback } from "react";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaView, View, useWindowDimensions } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-export default function App() {
-  const [activeCategory, setActiveCategory] = useState('Suggested');
+// Contexts
+import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
+import LoginScreen from "./src/components/LoginScreen";
+import RegisterScreen from "./src/components/RegisterScreen";
+
+// Hooks
+import useLocationDetection from "./src/hooks/useLocationDetection";
+import useSentenceBuilder from "./src/hooks/useSentenceBuilder";
+import useInteractionLogger from "./src/hooks/useInteractionLogger";
+
+// Components
+import RoomSelector from "./src/components/RoomSelector";
+import AppHeader from "./src/components/AppHeader";
+import InteractionLogModal from "./src/components/InteractionLogModal";
+import SettingsMenuOverlay from "./src/components/SettingsMenuOverlay"; // Added back
+import SentenceBar from "./src/components/SentenceBar";
+import WordGrid from "./src/components/WordGrid";
+
+// Constants & Styles
+import { DEFAULT_SUGGESTIONS, CORE_WORDS } from "./src/constants/aacVocabulary";
+import styles from "./src/styles/appStyles";
+
+const Stack = createNativeStackNavigator();
+
+// --- Utility Functions ---
+
+function mergeUniqueWords(primaryWords, secondaryWords) {
+  const seen = new Set();
+  const merged = [];
+  for (const word of [...primaryWords, ...secondaryWords]) {
+    const key = word.label.toLowerCase().trim();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    merged.push(word);
+  }
+  return merged;
+}
+
+// --- Main Application Content ---
+
+function MainContent({ navigation }) {
   const [isLogsVisible, setIsLogsVisible] = useState(false);
+  const [isSettingsVisible, setIsSettingsVisible] = useState(false); // Added state
+  const { width, height } = useWindowDimensions();
+
   const { currentRoom, allRooms, setRoomManually } = useLocationDetection();
   const { interactionLogs, logButtonPress } = useInteractionLogger(currentRoom);
+  const { signOut, profile } = useAuth();
 
-  const handleOpenLogs = useCallback(() => {
-    logButtonPress('view_logs');
-    setIsLogsVisible(true);
+  // Dynamic UI Scaling
+  const smallestSide = Math.min(width, height);
+  const uiScale = Math.max(0.85, Math.min(1.35, smallestSide / 390));
+
+  // --- Handlers ---
+
+  const handleLogout = useCallback(async () => {
+    await signOut();
+    navigation.replace("Login");
+  }, [signOut, navigation]);
+
+  // Open the settings menu
+  const handleOpenSettings = useCallback(() => {
+    logButtonPress("open_settings");
+    setIsSettingsVisible(true);
   }, [logButtonPress]);
 
-  const handleCloseLogs = useCallback(() => {
-    setIsLogsVisible(false);
+  // Close settings and open logs
+  const handleViewLogsFromSettings = useCallback(() => {
+    setIsSettingsVisible(false);
+    setIsLogsVisible(true);
   }, []);
 
   const handleSelectRoom = useCallback(
     (roomId) => {
       setRoomManually(roomId);
-      const selectedRoom = roomId
-        ? (allRooms.find((room) => room.id === roomId) ?? null)
-        : null;
-      const roomLabel = selectedRoom?.label ?? 'General';
-      logButtonPress('room_selector', {
-        selectedRoomId: roomId ?? 'general',
+      const roomLabel =
+        allRooms.find((r) => r.id === roomId)?.label ?? "General";
+      logButtonPress("room_selector", {
+        selectedRoomId: roomId || "general",
         selectedRoomLabel: roomLabel,
-        location: {
-          id: selectedRoom?.id ?? 'general',
-          label: roomLabel,
-        },
       });
     },
-    [allRooms, logButtonPress, setRoomManually],
+    [allRooms, logButtonPress, setRoomManually]
   );
 
-  const handleSelectCategory = useCallback(
-    (category) => {
-      setActiveCategory(category);
-      logButtonPress('category_tab', { category });
-    },
-    [logButtonPress],
-  );
+  const { sentence, addWord, removeLastWord, clearSentence, speakSentence } =
+    useSentenceBuilder({ onLogPress: logButtonPress });
 
-  const {
-    sentence,
-    addWord,
-    removeLastWord,
-    clearSentence,
-    speakSentence,
-  } = useSentenceBuilder({ onLogPress: logButtonPress });
+  // --- Memos ---
 
-  const categories = useMemo(() => {
-    const suggested = currentRoom
+  const words = useMemo(() => {
+    const roomWords = currentRoom
       ? currentRoom.suggestions
       : DEFAULT_SUGGESTIONS;
-    return { Suggested: suggested, ...CATEGORIES };
+    return mergeUniqueWords(CORE_WORDS, roomWords);
   }, [currentRoom]);
 
-  const suggestedColor = currentRoom ? currentRoom.color : '#6C63FF';
-  const words = categories[activeCategory] || [];
-  const categoryColors = {
-    ...CATEGORY_COLORS,
-    Suggested: suggestedColor,
-  };
-  const activeCategoryColor = categoryColors[activeCategory] || '#6C63FF';
+  const activeCategoryColor = currentRoom ? currentRoom.color : "#6C63FF";
 
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar style="dark" />
-      <AppHeader currentRoom={currentRoom} onViewLogs={handleOpenLogs} />
-      <RoomSelector
-        rooms={allRooms}
-        activeRoomId={currentRoom?.id ?? null}
-        onSelectRoom={handleSelectRoom}
+
+      <AppHeader
+        currentRoom={currentRoom}
+        onOpenSettings={handleOpenSettings} // Changed from onViewLogs
+        onLogout={handleLogout}
+        userRole={profile?.role}
+        uiScale={uiScale}
       />
+
       <SentenceBar
         sentence={sentence}
         onRemoveLastWord={removeLastWord}
         onClearSentence={clearSentence}
         onSpeakSentence={speakSentence}
+        uiScale={uiScale}
       />
-      <WordGrid
-        words={words}
-        activeCategoryColor={activeCategoryColor}
-        onAddWord={addWord}
+
+      <View style={{ flex: 1, flexDirection: "row" }}>
+        <WordGrid
+          words={words}
+          activeCategoryColor={activeCategoryColor}
+          onAddWord={addWord}
+          uiScale={uiScale}
+        />
+
+        <RoomSelector
+          rooms={allRooms}
+          activeRoomId={currentRoom?.id ?? null}
+          onSelectRoom={handleSelectRoom}
+          uiScale={uiScale}
+        />
+      </View>
+
+      {/* Settings Menu Modal */}
+      <SettingsMenuOverlay
+        visible={isSettingsVisible}
+        onClose={() => setIsSettingsVisible(false)}
+        onViewLogs={handleViewLogsFromSettings}
+        uiScale={uiScale}
       />
-      <CategoryTabs
-        categories={categories}
-        activeCategory={activeCategory}
-        categoryColors={categoryColors}
-        onSelectCategory={handleSelectCategory}
-      />
+
+      {/* Logs Modal */}
       <InteractionLogModal
         visible={isLogsVisible}
         logs={interactionLogs}
-        onClose={handleCloseLogs}
+        onClose={() => setIsLogsVisible(false)}
       />
     </SafeAreaView>
+  );
+}
+
+// --- Navigation Wrapper ---
+
+function AppNavigator() {
+  const { user, loading } = useAuth();
+
+  if (loading) return null;
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {user ? (
+          <Stack.Screen name="Main" component={MainContent} />
+        ) : (
+          <>
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="Main" component={MainContent} />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppNavigator />
+    </AuthProvider>
   );
 }

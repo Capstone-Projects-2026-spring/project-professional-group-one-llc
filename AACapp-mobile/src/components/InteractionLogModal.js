@@ -21,7 +21,20 @@ const formatTimestamp = (value) => {
 
 const renderLogItem = ({ item, index }) => (
   <View style={styles.logEntryCard}>
-    <Text style={styles.logEntryTitle}>{`${index + 1}. ${item.buttonName}`}</Text>
+    <View style={styles.logEntryHeader}>
+      <Text style={styles.logEntryTitle}>{`${index + 1}. ${item.buttonName}`}</Text>
+      <View style={styles.syncBadge}>
+        {item.synced === true && (
+          <Text style={[styles.syncText, { color: '#4CAF50' }]}>✓ Synced</Text>
+        )}
+        {item.synced === false && (
+          <Text style={[styles.syncText, { color: '#F44336' }]}>⚠ Sync Failed</Text>
+        )}
+        {item.synced === null && (
+          <Text style={[styles.syncText, { color: '#FF9800' }]}>● Syncing...</Text>
+        )}
+      </View>
+    </View>
     <Text style={styles.logEntryLine}>{`Time: ${formatTimestamp(item.pressedAt)}`}</Text>
     <Text style={styles.logEntryLine}>{`Room: ${item.location?.label ?? 'General'}`}</Text>
     <Text style={styles.logEntryLine}>{`Device: ${item.deviceId}`}</Text>
@@ -30,6 +43,9 @@ const renderLogItem = ({ item, index }) => (
       <Text style={styles.logEntryLine}>{`Sentence length: ${item.sentenceLength}`}</Text>
     ) : null}
     {item.category ? <Text style={styles.logEntryLine}>{`Category: ${item.category}`}</Text> : null}
+    {item.syncError ? (
+      <Text style={[styles.logEntryLine, { color: '#F44336', fontSize: 11 }]}>{`Error: ${item.syncError}`}</Text>
+    ) : null}
   </View>
 );
 

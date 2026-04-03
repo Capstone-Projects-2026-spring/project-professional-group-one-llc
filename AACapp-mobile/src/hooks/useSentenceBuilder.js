@@ -6,8 +6,6 @@ export default function useSentenceBuilder({ onLogPress } = {}) {
   const [sentence, setSentence] = useState([]);
 
   const addWord = (word) => {
-    onLogPress?.('word_tile', { word });
-
     speak(word); //providing immediate feedback by speaking the word when it's added
 
     setSentence((prev) => {
