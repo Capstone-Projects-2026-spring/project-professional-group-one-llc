@@ -1,9 +1,64 @@
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
+import { usePictogram } from '../hooks/usePictogram';
+
+const GENERAL_ROOM_ARASAAC_ID = 27798;
+
+function RoomPictogram({ label, arasaacId, color, isActive, uiScale }) {
+  const { uri, loading, error } = usePictogram(label, arasaacId);
+  const iconSize = Math.round(Math.max(30, Math.min(56, 42 * uiScale)));
+  const fallbackSize = Math.round(Math.max(30, Math.min(52, 40 * uiScale)));
+
+  if (loading) {
+    return <ActivityIndicator size="small" color={isActive ? '#fff' : color} />;
+  }
+
+  if (uri && !error) {
+    return (
+      <Image
+        source={{ uri }}
+        style={[styles.chipPictogram, { width: iconSize, height: iconSize }]}
+        resizeMode="contain"
+        accessibilityLabel={label}
+      />
+    );
+  }
+
+  return (
+    <View
+      style={[
+        styles.chipFallback,
+        {
+          width: fallbackSize,
+          height: fallbackSize,
+          borderRadius: Math.round(10 * uiScale),
+          borderColor: isActive ? '#fff' : color,
+        },
+      ]}
+    >
+      <Text
+        style={[
+          styles.chipFallbackText,
+          { color: isActive ? '#fff' : color, fontSize: Math.round(20 * uiScale) },
+        ]}
+      >
+        {label.charAt(0).toUpperCase()}
+      </Text>
+    </View>
+  );
+}
 
 /**
  * RoomSelector
  * ------------
- * A horizontally scrollable row of room "chips" that lets the user
+ * A vertically scrollable rail of room "chips" that lets the user
  * manually simulate entering a room.
  *
  * This component is the placeholder for automatic Bluetooth beacon
@@ -12,35 +67,53 @@ import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-nati
  *
  * Props
  * -----
- * rooms        : Array<{ id, label, emoji, color }>
+ * rooms        : Array<{ id, label, color, arasaacId?: string | number }>
  * activeRoomId : string | null
  * onSelectRoom : (roomId: string | null) => void
  */
-export default function RoomSelector({ rooms, activeRoomId, onSelectRoom }) {
+export default function RoomSelector({
+  rooms,
+  activeRoomId,
+  onSelectRoom,
+  uiScale = 1,
+  railWidth = 78,
+}) {
+  const chipSize = Math.round(Math.max(56, Math.min(96, 72 * uiScale)));
+
   return (
-    <View style={styles.wrapper}>
-      <View style={styles.labelRow}>
-        <Text style={styles.labelIcon}>📍</Text>
-        <Text style={styles.label}>Simulate Room</Text>
-        <Text style={styles.sublabel}>(BLE placeholder)</Text>
-      </View>
+    <View style={[styles.wrapper, { width: railWidth + 6 }]}>
       <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={[styles.scroll, { paddingVertical: Math.round(10 * uiScale) }]}
       >
         {/* "None" chip — clears room context */}
         <TouchableOpacity
           style={[
             styles.chip,
+            { width: chipSize, height: chipSize, borderRadius: Math.round(20 * uiScale) },
             !activeRoomId && styles.chipActiveNone,
           ]}
           onPress={() => onSelectRoom(null)}
           activeOpacity={0.7}
+          accessibilityRole="button"
+          accessibilityLabel="General room"
         >
-          <Text style={styles.chipEmoji}>🌐</Text>
+          <RoomPictogram
+            label="Home"
+            arasaacId={GENERAL_ROOM_ARASAAC_ID}
+            color="#6C63FF"
+            isActive={!activeRoomId}
+            uiScale={uiScale}
+          />
           <Text
-            style={[styles.chipText, !activeRoomId && styles.chipTextActive]}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.7}
+            style={[
+              styles.chipText,
+              !activeRoomId && styles.chipTextActive,
+              { fontSize: Math.round(10 * uiScale) },
+            ]}
           >
             General
           </Text>
@@ -53,14 +126,30 @@ export default function RoomSelector({ rooms, activeRoomId, onSelectRoom }) {
               key={room.id}
               style={[
                 styles.chip,
+                { width: chipSize, height: chipSize, borderRadius: Math.round(20 * uiScale) },
                 isActive && { backgroundColor: room.color, borderColor: room.color },
               ]}
               onPress={() => onSelectRoom(room.id)}
               activeOpacity={0.7}
+              accessibilityRole="button"
+              accessibilityLabel={room.label}
             >
-              <Text style={styles.chipEmoji}>{room.emoji}</Text>
+              <RoomPictogram
+                label={room.label}
+                arasaacId={room.arasaacId}
+                color={room.color}
+                isActive={isActive}
+                uiScale={uiScale}
+              />
               <Text
-                style={[styles.chipText, isActive && styles.chipTextActive]}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                minimumFontScale={0.7}
+                style={[
+                  styles.chipText,
+                  isActive && styles.chipTextActive,
+                  { fontSize: Math.round(10 * uiScale) },
+                ]}
               >
                 {room.label}
               </Text>
@@ -74,55 +163,49 @@ export default function RoomSelector({ rooms, activeRoomId, onSelectRoom }) {
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingTop: 4,
-    paddingBottom: 8,
-  },
-  labelRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    marginBottom: 6,
-    gap: 4,
-  },
-  labelIcon: {
-    fontSize: 14,
-  },
-  label: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#555',
-  },
-  sublabel: {
-    fontSize: 11,
-    color: '#aaa',
-    fontStyle: 'italic',
+    paddingTop: 8,
+    paddingBottom: 10,
+    paddingRight: 1,
   },
   scroll: {
-    paddingHorizontal: 12,
-    gap: 8,
+    alignItems: 'center',
+    gap: 10,
   },
   chip: {
-    flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 20,
+    justifyContent: 'center',
     backgroundColor: '#fff',
-    borderWidth: 1.5,
+    borderWidth: 2,
     borderColor: '#ddd',
-    gap: 6,
   },
   chipActiveNone: {
     backgroundColor: '#6C63FF',
     borderColor: '#6C63FF',
   },
-  chipEmoji: {
-    fontSize: 18,
+  chipPictogram: {
+    width: 42,
+    height: 42,
+  },
+  chipFallback: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  chipFallbackText: {
+    fontSize: 20,
+    fontWeight: '700',
   },
   chipText: {
-    fontSize: 13,
+    marginTop: 4,
+    fontSize: 11,
     fontWeight: '600',
     color: '#444',
+    textAlign: 'center',
+    width: '100%',
+    paddingHorizontal: 2,
   },
   chipTextActive: {
     color: '#fff',

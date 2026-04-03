@@ -15,7 +15,7 @@ const ROOM_CONTEXTS = {
     label: 'Kitchen',
     emoji: '🍳',
     color: '#FF9F43',
-    beaconId: 'beacon-kitchen-001', // placeholder – replace with real UUID
+    beaconId: '426C7565-4368-6172-6D42-6561636F6E73', // placeholder – replace with real UUID
     suggestions: [
       { label: 'Hungry', emoji: '🤤' },
       { label: 'Thirsty', emoji: '💧' },
