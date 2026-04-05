@@ -2,6 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import { Text, TouchableOpacity, ScrollView, Image, View, ActivityIndicator, StyleSheet } from 'react-native';
 import styles from '../styles/appStyles';
 import { usePictogram } from '../hooks/usePictogram';
+import { getFitzgeraldColorForWord } from '../utils/fitzgeraldKey';
 
 /**
  * PictogramTile
@@ -16,12 +17,16 @@ function PictogramTile({ label, arasaacId, color, onPress, uiScale, tileSize }) 
   const tilePadding = Math.round(1 * uiScale);
   const labelFontSize = Math.round(13 * uiScale);
   const tileHeight = pictogramSize + Math.round(28 * uiScale);
+  const isWhiteTile = color === '#FFFFFF';
+  const borderColor = isWhiteTile ? '#4B4B4B' : color;
+  const backgroundColor = isWhiteTile ? '#FFFFFF' : `${color}22`;
+  const iconColor = isWhiteTile ? '#4B4B4B' : color;
 
   return (
     <TouchableOpacity
       style={[
         styles.tile,
-        { backgroundColor: `${color}22`, borderColor: color },
+        { backgroundColor, borderColor },
         {
           width: tileSize,
           height: tileHeight,
@@ -36,7 +41,7 @@ function PictogramTile({ label, arasaacId, color, onPress, uiScale, tileSize }) 
     >
       <View style={[picStyles.imageWrapper, { width: pictogramSize, height: pictogramSize }]}>
         {loading && (
-          <ActivityIndicator size="small" color={color} />
+          <ActivityIndicator size="small" color={iconColor} />
         )}
 
         {!loading && uri && (
@@ -57,11 +62,11 @@ function PictogramTile({ label, arasaacId, color, onPress, uiScale, tileSize }) 
                 width: pictogramSize,
                 height: pictogramSize,
                 borderRadius: Math.round(8 * uiScale),
-                borderColor: color,
+                borderColor: borderColor,
               },
             ]}
           >
-            <Text style={[picStyles.fallbackText, { color, fontSize: Math.round(26 * uiScale) }]}>
+            <Text style={[picStyles.fallbackText, { color: iconColor, fontSize: Math.round(26 * uiScale) }]}> 
               {label.charAt(0).toUpperCase()}
             </Text>
           </View>
@@ -106,7 +111,7 @@ const picStyles = StyleSheet.create({
 
 export default function WordGrid({
   words,
-  activeCategoryColor,
+  getWordColor = getFitzgeraldColorForWord,
   onAddWord,
   uiScale = 1,
   onScrollMetricsChange,
@@ -171,7 +176,7 @@ export default function WordGrid({
           key={`${word.label}-${index}`}
           label={word.label}
           arasaacId={word.arasaacId}
-          color={activeCategoryColor}
+          color={getWordColor(word.label)}
           uiScale={uiScale}
           tileSize={tileSize}
           onPress={() => onAddWord(word.label)}
