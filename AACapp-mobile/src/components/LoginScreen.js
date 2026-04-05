@@ -25,6 +25,7 @@ const LoginScreen = ({ navigation }) => {
     setLoading(true);
     try {
       await signIn(email, password);
+      navigation.replace("AdminPage");
       // Navigation will be handled by auth state change
     } catch (error) {
       Alert.alert("Login Error", error.message);
@@ -73,10 +74,13 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.linkText}>Don't have an account? Register</Text>
       </TouchableOpacity>
 
+
+      
+
       {/* 🚧 DEV ONLY — remove before production */}
       <TouchableOpacity
         style={styles.devSkipLink}
-        onPress={() => navigation.replace("Main")}
+        onPress={() => navigation.replace("AdminPage")}
       >
         <Text style={styles.devSkipText}>⚙ Skip login (dev)</Text>
       </TouchableOpacity>

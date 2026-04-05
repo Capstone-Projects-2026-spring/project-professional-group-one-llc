@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
 import LoginScreen from "./src/components/LoginScreen";
 import RegisterScreen from "./src/components/RegisterScreen";
+import AdminPage from "./src/components/AdminPage";
 
 // Hooks
 import useLocationDetection from "./src/hooks/useLocationDetection";
@@ -165,20 +166,25 @@ function AppNavigator() {
   if (loading) return null;
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {user ? (
+  <NavigationContainer>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {user ? (
+        <>
+          <Stack.Screen name="AdminPage" component={AdminPage} />
           <Stack.Screen name="Main" component={MainContent} />
-        ) : (
-          <>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
-            <Stack.Screen name="Main" component={MainContent} />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+        </>
+      ) : (
+        <>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+	  <Stack.Screen name="AdminPage" component={AdminPage} />
+	  <Stack.Screen name="Main" component={MainContent} /> 
+       </>
+      )}
+    </Stack.Navigator>
+  </NavigationContainer>
+);
+
 }
 
 export default function App() {
