@@ -35,6 +35,12 @@
     "@docusaurus/module-type-aliases": "^3.9.2",
     "@docusaurus/types": "^3.9.2"
   },
+  "overrides": {
+    "axios": "1.13.2"
+  },
+  "resolutions": {
+    "axios": "1.13.2"
+  },
   "browserslist": {
     "production": [
       ">0.5%",
