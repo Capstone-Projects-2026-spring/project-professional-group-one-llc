@@ -21,6 +21,7 @@ import InteractionLogModal from "./src/components/InteractionLogModal";
 import SettingsMenuOverlay from "./src/components/SettingsMenuOverlay"; // Added back
 import SentenceBar from "./src/components/SentenceBar";
 import WordGrid from "./src/components/WordGrid";
+import { getFitzgeraldColorForWord } from "./src/utils/fitzgeraldKey";
 
 // Constants & Styles
 import { DEFAULT_SUGGESTIONS, CORE_WORDS } from "./src/constants/aacVocabulary";
@@ -102,8 +103,6 @@ function MainContent({ navigation }) {
     return mergeUniqueWords(CORE_WORDS, roomWords);
   }, [currentRoom]);
 
-  const activeCategoryColor = currentRoom ? currentRoom.color : "#6C63FF";
-
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar style="dark" />
@@ -125,10 +124,10 @@ function MainContent({ navigation }) {
         uiScale={uiScale}
       />
 
-      <View style={{ flex: 1, flexDirection: "row" }}>
+      <View style={{ flex: 1, flexDirection: "row", gap: 8 }}>
         <WordGrid
           words={words}
-          activeCategoryColor={activeCategoryColor}
+          getWordColor={getFitzgeraldColorForWord}
           onAddWord={addWord}
           uiScale={uiScale}
         />
