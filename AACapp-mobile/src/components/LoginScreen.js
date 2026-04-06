@@ -11,20 +11,20 @@ import {
 import { useAuth } from "../contexts/AuthContext";
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
 
   const handleLogin = async () => {
-    if (!email || !password) {
+    if (!identifier || !password) {
       Alert.alert("Error", "Please fill in all fields");
       return;
     }
 
     setLoading(true);
     try {
-      await signIn(email, password);
+      await signIn(identifier, password);
       // Navigation will be handled by auth state change
     } catch (error) {
       Alert.alert("Login Error", error.message);
@@ -39,10 +39,9 @@ const LoginScreen = ({ navigation }) => {
 
       <TextInput
         style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
+        placeholder="Email or username"
+        value={identifier}
+        onChangeText={setIdentifier}
         autoCapitalize="none"
       />
 
@@ -70,16 +69,10 @@ const LoginScreen = ({ navigation }) => {
         style={styles.link}
         onPress={() => navigation.navigate("Register")}
       >
-        <Text style={styles.linkText}>Don't have an account? Register</Text>
+        <Text style={styles.linkText}>Don&apos;t have an account? Register</Text>
       </TouchableOpacity>
 
-      {/* 🚧 DEV ONLY — remove before production */}
-      <TouchableOpacity
-        style={styles.devSkipLink}
-        onPress={() => navigation.replace("Main")}
-      >
-        <Text style={styles.devSkipText}>⚙ Skip login (dev)</Text>
-      </TouchableOpacity>
+      <Text style={styles.hintText}>Quick login: admin/admin or user/user</Text>
     </View>
   );
 };
@@ -124,12 +117,10 @@ const styles = StyleSheet.create({
     color: "#6C63FF",
     fontSize: 16,
   },
-  devSkipLink: {
-    alignItems: "center",
-    marginTop: 30,
-  },
-  devSkipText: {
-    color: "#aaa",
+  hintText: {
+    marginTop: 12,
+    textAlign: "center",
+    color: "#666",
     fontSize: 13,
   },
 });

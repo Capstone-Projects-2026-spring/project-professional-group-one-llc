@@ -79,9 +79,10 @@ export default function RoomSelector({
   railWidth = 78,
 }) {
   const chipSize = Math.round(Math.max(56, Math.min(96, 72 * uiScale)));
+  const railActualWidth = Math.max(railWidth + 6, chipSize + 8);
 
   return (
-    <View style={[styles.wrapper, { width: railWidth + 6 }]}>
+    <View style={[styles.wrapper, { width: railActualWidth }]}> 
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[styles.scroll, { paddingVertical: Math.round(10 * uiScale) }]}
@@ -165,6 +166,7 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingTop: 8,
     paddingBottom: 10,
+    paddingLeft: 4,
     paddingRight: 1,
   },
   scroll: {

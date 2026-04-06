@@ -241,6 +241,7 @@ const styles = StyleSheet.create({
   gridScroll: {
     flex: 1,
     marginTop: 12,
+  
   },
   grid: {
     flexDirection: 'row',
@@ -248,6 +249,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     gap: 10,
     paddingBottom: 12,
+    
+   
   },
   tile: {
     width: '30%',

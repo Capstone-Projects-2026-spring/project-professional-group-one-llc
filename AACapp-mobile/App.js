@@ -24,6 +24,7 @@ import SettingsMenuOverlay from "./src/components/SettingsMenuOverlay";
 import InteractionLogModal from "./src/components/InteractionLogModal";
 import SentenceBar from "./src/components/SentenceBar";
 import WordGrid from "./src/components/WordGrid";
+import { getFitzgeraldColorForWord } from "./src/utils/fitzgeraldKey";
 
 // Constants & Styles
 import { DEFAULT_SUGGESTIONS, CORE_WORDS } from "./src/constants/aacVocabulary";
@@ -54,6 +55,8 @@ function MainContent({ navigation }) {
   const [isLogsVisible, setIsLogsVisible] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const { width, height } = useWindowDimensions();
+  const { signOut, profile } = useAuth();
+  const isAdmin = profile?.role === "admin";
 
   const { currentRoom, allRooms, setRoomManually } = useLocationDetection();
   const {
@@ -65,7 +68,6 @@ function MainContent({ navigation }) {
     refreshAnalytics,
   } = useAdminAnalytics();
   const { interactionLogs, logButtonPress } = useInteractionLogger(currentRoom);
-  const { signOut, profile } = useAuth();
 
   // Dynamic UI Scaling
   const smallestSide = Math.min(width, height);
@@ -155,8 +157,6 @@ function MainContent({ navigation }) {
     return mergeUniqueWords(CORE_WORDS, roomWords);
   }, [currentRoom]);
 
-  const activeCategoryColor = currentRoom ? currentRoom.color : "#6C63FF";
-
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar style="dark" />
@@ -166,6 +166,7 @@ function MainContent({ navigation }) {
         onOpenSettings={handleOpenSettings}
         onLogout={handleLogout}
         userRole={profile?.role}
+        showSettings={isAdmin}
         uiScale={uiScale}
       />
 
@@ -177,10 +178,10 @@ function MainContent({ navigation }) {
         uiScale={uiScale}
       />
 
-      <View style={{ flex: 1, flexDirection: "row" }}>
+      <View style={{ flex: 1, flexDirection: "row", gap: 8 }}>
         <WordGrid
           words={words}
-          activeCategoryColor={activeCategoryColor}
+          getWordColor={getFitzgeraldColorForWord}
           onAddWord={addWord}
           uiScale={uiScale}
         />

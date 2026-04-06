@@ -3,12 +3,11 @@
 This app now supports loading room suggestions from Supabase and syncing interaction logs.
 It also supports an admin-only analytics dashboard backed by a Supabase RPC.
 
-## 1) Create Supabase project
+## 1) Create and initialize Supabase
 
-1. Go to Supabase and create a new project.
-2. Open SQL Editor.
-3. Run `supabase/schema.sql`.
-4. Run `supabase/seed.sql`.
+1. Create a Supabase project.
+2. In Supabase SQL Editor, run `supabase/schema.sql`.
+3. Run `supabase/seed.sql`.
 
 ## 1.1) Configure the admin analytics access code
 
@@ -32,22 +31,24 @@ The app sends the entered code to the `get_interaction_analytics` RPC. Supabase 
 
 ## 2) Configure app environment
 
-Create `AACapp-mobile/.env` using `.env.example`:
+## 2) Configure environment variables in Expo
 
-```bash
-cp .env.example .env
-```
-
-Fill values:
+Create `AACapp-mobile/.env` with:
 
 ```env
 EXPO_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
 EXPO_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
 ```
 
-Restart Expo after editing env vars.
+Then restart Expo:
 
-## 3) What is wired already
+```bash
+npx expo start -c
+```
+
+## 3) Configure Supabase Auth settings
+
+In Supabase Dashboard:
 
 - `src/services/supabaseClient.js`
 : Creates client from Expo public env vars.
@@ -76,16 +77,22 @@ Admin analytics does not depend on login yet. Access is controlled by the shared
 
 If you want real per-user data and stronger admin controls, add Supabase Auth and then call:
 
-- `getCurrentUser()` to resolve auth identity.
-- `upsertUserProfile()` after sign-in.
-- pass `userId` into interaction inserts for per-user analytics.
+- Login uses email/password against Supabase.
+- Register screen lets user pick role (`user` or `admin`) and set display name.
+- Profile role is stored in `public.user_profiles.role`.
+- Room selection enable/disable management has been removed (no one can toggle room availability).
+- Logout is available from app header.
 
 ## 6) Verify quickly
 
-Start app:
+1. Register a new account as `user`.
+2. Register another account as `admin`.
+3. In Supabase SQL Editor, run:
 
-```bash
-npm start
+```sql
+select id, display_name, role, created_at
+from public.user_profiles
+order by created_at desc;
 ```
 
 Expected behavior:
