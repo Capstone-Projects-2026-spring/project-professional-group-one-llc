@@ -24,7 +24,7 @@ export async function getUserProfile(userId) {
 
   const { data, error } = await supabase
     .from('user_profiles')
-    .select('id, display_name, created_at')
+    .select('id, display_name, role, created_at')
     .eq('id', userId)
     .maybeSingle();
 
@@ -35,7 +35,7 @@ export async function getUserProfile(userId) {
   return data;
 }
 
-export async function upsertUserProfile({ id, displayName }) {
+export async function upsertUserProfile({ id, displayName, role }) {
   if (!supabase || !id) {
     return null;
   }
@@ -43,12 +43,13 @@ export async function upsertUserProfile({ id, displayName }) {
   const payload = {
     id,
     display_name: displayName ?? null,
+    role: role === 'admin' ? 'admin' : 'user',
   };
 
   const { data, error } = await supabase
     .from('user_profiles')
     .upsert(payload)
-    .select('id, display_name, created_at')
+    .select('id, display_name, role, created_at')
     .single();
 
   if (error) {

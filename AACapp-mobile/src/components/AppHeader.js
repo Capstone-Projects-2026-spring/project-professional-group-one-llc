@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image, Pressable, View } from "react-native";
+import { ActivityIndicator, Image, Pressable, Text, View } from "react-native";
 import styles from "../styles/appStyles";
 import { usePictogram } from "../hooks/usePictogram";
 
@@ -29,6 +29,7 @@ function SettingsPictogram({ size }) {
 export default function AppHeader({
   // Settings (new)
   onOpenSettings,
+  showSettings = false,
   uiScale = 1,
   // Room / beacon / auth (existing)
   currentRoom,
@@ -42,6 +43,8 @@ export default function AppHeader({
   const headerTopPadding = Math.round(Math.min(12, 10 * uiScale));
   const headerBottomPadding = Math.round(Math.min(10, 8 * uiScale));
   const iconButtonSize = Math.round(Math.min(44, 40 * uiScale));
+  const logoutButtonWidth = Math.round(Math.min(102, 94 * uiScale));
+  const logoutButtonHeight = Math.round(Math.min(40, 36 * uiScale));
 
   return (
     <View
@@ -56,21 +59,43 @@ export default function AppHeader({
     >
       <View style={{ flex: 1 }} />
 
-      <Pressable
-        style={[
-          styles.settingsIconButton,
-          {
-            width: iconButtonSize,
-            height: iconButtonSize,
-            borderRadius: Math.round(10 * uiScale),
-          },
-        ]}
-        onPress={onOpenSettings}
-        accessibilityRole="button"
-        accessibilityLabel="Open settings"
-      >
-        <SettingsPictogram size={iconButtonSize} />
-      </Pressable>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: Math.round(8 * uiScale) }}>
+        {showSettings ? (
+          <Pressable
+            style={[
+              styles.settingsIconButton,
+              {
+                width: iconButtonSize,
+                height: iconButtonSize,
+                borderRadius: Math.round(10 * uiScale),
+              },
+            ]}
+            onPress={onOpenSettings}
+            accessibilityRole="button"
+            accessibilityLabel="Open settings"
+          >
+            <SettingsPictogram size={iconButtonSize} />
+          </Pressable>
+        ) : null}
+
+        <Pressable
+          style={[
+            styles.viewLogsButton,
+            {
+              width: logoutButtonWidth,
+              height: logoutButtonHeight,
+              borderRadius: Math.round(10 * uiScale),
+              alignItems: "center",
+              justifyContent: "center",
+            },
+          ]}
+          onPress={onLogout}
+          accessibilityRole="button"
+          accessibilityLabel="Log out"
+        >
+          <Text style={styles.viewLogsButtonText}>Logout</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
