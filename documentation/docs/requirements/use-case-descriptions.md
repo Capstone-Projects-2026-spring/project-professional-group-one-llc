@@ -4,28 +4,27 @@ sidebar_position: 5
 
 # Use-Case Descriptions
 
-### Use Case 1 - Account Creation
+### Use Case 1 - Select a Room
 
-<i>As a user, it is important that I can create an account so that I can store and access my personalized communication preferences.</i>
+<i>As a user, I want to manually select a room so that the app displays vocabulary relevant to my current location.</i>
 
-1. Upon accessing the AAC Beacon web application for the first time, the user is directed to a landing page with options to register or log in.
-2. The user selects the 'Register' button to access the account registration form.
-3. The user inputs their username, email address, password, chooses if it's an admin or child account, and any optional accessibility preferences, then selects the 'Sign Up' button.
-4. If the information is valid, the user receives confirmation that their account was successfully created.
-5. The user selects the 'Sign In' link and enters their credentials.
-6. The user is redirected to the home page.
+1. The user opens the AAC Beacon mobile application.
+2. The user views the vertical room selector rail on the right side of the screen.
+3. The user taps a room chip (e.g., "Kitchen", "Bedroom").
+4. The app sets the active room and fetches that room's suggested word set.
+5. The word grid updates to display room-specific vocabulary merged with core words.
 
 ---
 
-### Use Case 2 - Signing In
+### Use Case 2 - Build and Speak a Sentence
 
-<i>As a user, I want to log into my account so that I can access my personalized communication vocabulary.</i>
+<i>As a user, I want to tap words to build a sentence and have it spoken aloud so that I can communicate efficiently.</i>
 
-1. The user accesses the AAC Beacon application.
-2. The user selects the 'Login' button to access the sign-in page.
-3. The user enters their email address and password.
-4. If the credentials are valid, the user is redirected to the home page.
-5. If credentials are invalid, the user receives an error notification and is prompted to try again.
+1. The user opens the AAC Beacon mobile application.
+2. The user taps a word on the word grid; the word is spoken immediately as audio feedback and added to the sentence bar.
+3. The user continues tapping words to build a sentence.
+4. The user taps the speaker button in the sentence bar to speak the full sentence aloud.
+5. The user can tap ⌫ to remove the last word, or the trash icon to clear the entire sentence.
 
 ---
 
@@ -52,15 +51,18 @@ sidebar_position: 5
 
 ---
 
-### Use Case 5 - Updating Favorite Words
+### Use Case 5 - Access Admin Analytics
 
-<i>As an admin user, I want to update my frequently used words so that the system reflects my communication needs.</i>
+<i>As an admin, I want to unlock the analytics dashboard so that I can review usage data and interaction trends.</i>
 
-1. The user navigates to their vocabulary preferences page.
-2. The user selects a vocabulary set linked to a specific room or general usage.
-3. The user adds new words or removes unused words.
-4. The user saves their updates.
-5. The system synchronizes the updated vocabulary with associated beacons.
+1. The admin taps the settings icon in the app header.
+2. The admin selects **Admin Analytics** from the Settings menu.
+3. The Admin Access Modal appears, prompting for the shared admin access code.
+4. The admin enters the code and taps **Unlock**.
+5. The code is validated server-side via the `get_interaction_analytics` Supabase RPC.
+6. If valid, the Admin Analytics Modal opens showing total interactions, devices, rooms, and buttons used, as well as top buttons, top rooms, and a recent activity log.
+7. The admin can tap **Refresh** to pull updated data, or **Close** to exit and clear the session.
+8. If the code is incorrect, an error message is displayed and the modal remains open.
 
 ---
 
@@ -73,4 +75,3 @@ sidebar_position: 5
 3. The admin user receives a notification explaining the connection failure.
 4. The application automatically loads a default or previously used vocabulary set.
 5. The child user continues communication without interruption.
-
