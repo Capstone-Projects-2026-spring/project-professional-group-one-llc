@@ -5,6 +5,9 @@ sidebar_position: 3
 
 Demonstration of all of the functional and non-functional requirements. This can be a combination of automated tests derived from the use-cases (user stories) and manual tests with recorded observation of the results.
 
+[Download acceptance test](/Location%20Aware%20AAC%20QA%20Testing%20doc.xlsx)
+
+
 # Acceptance Test Documentation
 
 Acceptance tests verify that the system meets its functional and non-functional requirements from the perspective of an end user. Each test is derived directly from a use-case. Automated tests are indicated where all assertions can be made programmatically; manual tests include an observation record table for sign-off.
