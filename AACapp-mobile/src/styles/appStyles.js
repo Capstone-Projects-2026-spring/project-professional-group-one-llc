@@ -141,6 +141,40 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  settingsMenuOptionSpaced: {
+    marginTop: 10,
+  },
+  adminAccessOverlay: {
+    marginTop: 28,
+  },
+  adminAccessDescription: {
+    color: '#50556b',
+    marginBottom: 12,
+    lineHeight: 20,
+  },
+  adminAccessInput: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#d9ddea',
+    color: '#1a1a2e',
+  },
+  adminAccessErrorText: {
+    color: '#b42318',
+    marginTop: 10,
+    marginBottom: 2,
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  adminAccessActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 10,
+    marginTop: 16,
+  },
+  adminAccessButton: {
+    minWidth: 92,
+    alignItems: 'center',
+  },
   sentenceBar: {
     backgroundColor: '#fff',
     marginHorizontal: 12,
@@ -346,6 +380,72 @@ const styles = StyleSheet.create({
     color: '#444',
     marginBottom: 2,
   },
+  analyticsSubtitle: {
+    color: '#666',
+    fontSize: 12,
+    marginTop: 2,
+  },
+  analyticsStatGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginBottom: 18,
+  },
+  analyticsStatCard: {
+    width: '47%',
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    paddingVertical: 14,
+    paddingHorizontal: 14,
+    borderWidth: 1,
+    borderColor: '#e6e8ef',
+  },
+  analyticsStatValue: {
+    color: '#1a1a2e',
+    fontSize: 24,
+    fontWeight: '700',
+  },
+  analyticsStatLabel: {
+    color: '#666',
+    fontSize: 12,
+    marginTop: 4,
+  },
+  analyticsSection: {
+    marginBottom: 18,
+  },
+  analyticsSectionTitle: {
+    color: '#1a1a2e',
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 10,
+  },
+  analyticsEmptyText: {
+    color: '#666',
+    fontSize: 13,
+  },
+  analyticsRankRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#e6e8ef',
+  },
+  analyticsRankLabel: {
+    color: '#1a1a2e',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  analyticsRankValue: {
+    color: '#1a1a2e',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+
   beaconPanelWrap: {
     flex: 1,
     marginTop: 12,

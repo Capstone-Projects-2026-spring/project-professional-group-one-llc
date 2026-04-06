@@ -10,15 +10,18 @@ import LoginScreen from "./src/components/LoginScreen";
 import RegisterScreen from "./src/components/RegisterScreen";
 
 // Hooks
+import useAdminAnalytics from "./src/hooks/useAdminAnalytics";
 import useLocationDetection from "./src/hooks/useLocationDetection";
 import useSentenceBuilder from "./src/hooks/useSentenceBuilder";
 import useInteractionLogger from "./src/hooks/useInteractionLogger";
 
 // Components
+import AdminAccessModal from "./src/components/AdminAccessModal";
+import AdminAnalyticsModal from "./src/components/AdminAnalyticsModal";
 import RoomSelector from "./src/components/RoomSelector";
 import AppHeader from "./src/components/AppHeader";
+import SettingsMenuOverlay from "./src/components/SettingsMenuOverlay";
 import InteractionLogModal from "./src/components/InteractionLogModal";
-import SettingsMenuOverlay from "./src/components/SettingsMenuOverlay"; // Added back
 import SentenceBar from "./src/components/SentenceBar";
 import WordGrid from "./src/components/WordGrid";
 import { getFitzgeraldColorForWord } from "./src/utils/fitzgeraldKey";
@@ -46,6 +49,9 @@ function mergeUniqueWords(primaryWords, secondaryWords) {
 // --- Main Application Content ---
 
 function MainContent({ navigation }) {
+  const [adminAccessCode, setAdminAccessCode] = useState("");
+  const [isAdminAccessVisible, setIsAdminAccessVisible] = useState(false);
+  const [isAdminAnalyticsVisible, setIsAdminAnalyticsVisible] = useState(false);
   const [isLogsVisible, setIsLogsVisible] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
   const { width, height } = useWindowDimensions();
@@ -53,6 +59,14 @@ function MainContent({ navigation }) {
   const isAdmin = profile?.role === "admin";
 
   const { currentRoom, allRooms, setRoomManually } = useLocationDetection();
+  const {
+    analytics,
+    clearAdminSession,
+    errorMessage: adminAnalyticsError,
+    isLoading: isAdminAnalyticsLoading,
+    loadAnalytics,
+    refreshAnalytics,
+  } = useAdminAnalytics();
   const { interactionLogs, logButtonPress } = useInteractionLogger(currentRoom);
 
   // Dynamic UI Scaling
@@ -66,16 +80,56 @@ function MainContent({ navigation }) {
     navigation.replace("Login");
   }, [signOut, navigation]);
 
-  // Open the settings menu
   const handleOpenSettings = useCallback(() => {
     logButtonPress("open_settings");
     setIsSettingsVisible(true);
   }, [logButtonPress]);
 
-  // Close settings and open logs
-  const handleViewLogsFromSettings = useCallback(() => {
+  const handleCloseSettings = useCallback(() => {
+    setIsSettingsVisible(false);
+  }, []);
+
+  const handleOpenAdminAnalytics = useCallback(() => {
+    setIsSettingsVisible(false);
+    setIsAdminAccessVisible(true);
+  }, []);
+
+  const handleCloseAdminAccess = useCallback(() => {
+    clearAdminSession();
+    setIsAdminAccessVisible(false);
+    setAdminAccessCode("");
+  }, [clearAdminSession]);
+
+  const handleAdminAccessCodeChange = useCallback((value) => {
+    setAdminAccessCode(value);
+  }, []);
+
+  const handleSubmitAdminAccess = useCallback(async () => {
+    const didUnlock = await loadAnalytics(adminAccessCode);
+
+    if (!didUnlock) {
+      return;
+    }
+
+    logButtonPress("open_admin_analytics");
+    setIsAdminAccessVisible(false);
+    setIsAdminAnalyticsVisible(true);
+    setAdminAccessCode("");
+  }, [adminAccessCode, loadAnalytics, logButtonPress]);
+
+  const handleCloseAdminAnalytics = useCallback(() => {
+    clearAdminSession();
+    setIsAdminAnalyticsVisible(false);
+    setAdminAccessCode("");
+  }, [clearAdminSession]);
+
+  const handleOpenLogsFromSettings = useCallback(() => {
     setIsSettingsVisible(false);
     setIsLogsVisible(true);
+  }, []);
+
+  const handleCloseLogs = useCallback(() => {
+    setIsLogsVisible(false);
   }, []);
 
   const handleSelectRoom = useCallback(
@@ -140,19 +194,40 @@ function MainContent({ navigation }) {
         />
       </View>
 
-      {/* Settings Menu Modal */}
       <SettingsMenuOverlay
         visible={isSettingsVisible}
-        onClose={() => setIsSettingsVisible(false)}
-        onViewLogs={handleViewLogsFromSettings}
+        onClose={handleCloseSettings}
+        onOpenAdminAnalytics={handleOpenAdminAnalytics}
+        onViewLogs={handleOpenLogsFromSettings}
         uiScale={uiScale}
       />
 
-      {/* Logs Modal */}
       <InteractionLogModal
         visible={isLogsVisible}
         logs={interactionLogs}
-        onClose={() => setIsLogsVisible(false)}
+        onClose={handleCloseLogs}
+      />
+
+      <AdminAnalyticsModal
+        visible={isAdminAnalyticsVisible}
+        analytics={analytics}
+        errorMessage={adminAnalyticsError}
+        isLoading={isAdminAnalyticsLoading}
+        onRefresh={() => {
+          void refreshAnalytics();
+        }}
+        onClose={handleCloseAdminAnalytics}
+      />
+
+      <AdminAccessModal
+        visible={isAdminAccessVisible}
+        accessCode={adminAccessCode}
+        errorMessage={adminAnalyticsError}
+        isSubmitting={isAdminAnalyticsLoading}
+        onChangeAccessCode={handleAdminAccessCodeChange}
+        onClose={handleCloseAdminAccess}
+        onSubmit={handleSubmitAdminAccess}
+        uiScale={uiScale}
       />
     </SafeAreaView>
   );
